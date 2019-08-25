@@ -20,9 +20,9 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/hotel',
-                    component: resolve => require(['../components/page/Hotel.vue'], resolve),
-                    meta: { title: '酒店信息' }
+                    path: '/companyInfo',
+                    component: resolve => require(['../components/page/CompanyInfo.vue'], resolve),
+                    meta: { title: '公司信息' }
                 },
                 {
                     path: '/device',

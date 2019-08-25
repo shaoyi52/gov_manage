@@ -42,53 +42,35 @@
                         index: 'dashboard',
                         title: '系统首页'
                     },
-                    {
-                        icon: 'el-icon-lx-locationfill',
-                        index: 'scenic',
-                        title: '景区信息'
-                    },
-                    {
+                     {
                         icon: 'el-icon-lx-shop',
-                        index: 'hotel',
-                        title: '酒店信息'
+                        index: 'companyInfo',
+                        title: '公司信息'
                     },
                     {
-                        icon: 'el-icon-lx-mobile',
-                        index: 'device',
-                        title: '设备信息'
+                        icon: 'el-icon-lx-edit',
+                        index: 'scenic',
+                        title: '月报填报'
+                    },
+                    {
+                        icon: 'el-icon-lx-edit',
+                        index: 'hotel',
+                        title: '行程填报'
                     },
                     {
                         icon: 'el-icon-lx-hot',
-                        index: '0',
-                        title: '旅行社管理',
-                        subs: [
-                            {
-                                index: 'travel_itinerary',
-                                title: '委派及行程单',
-                            }
-                        ]
+                        index: 'visitorsRecord',
+                        title: '行程信息'
                     },
                     {
                         icon: 'el-icon-lx-group',
-                        index: '1',
-                        title: '导游管理',
-                        subs: [
-                            {
-                                index: 'touristGuide',
-                                title: '导游业绩',
-                            }
-                        ]
+                        index: 'touristGuide',
+                        title: '游客记录'
                     },
                     {
                         icon: 'el-icon-lx-rank',
-                        index: '2',
-                        title: '业绩报告',
-                        subs: [
-                            {
-                                index: 'visitorsRecord',
-                                title: '游客记录',
-                            }
-                        ]
+                        index: 'travel_itinerary',
+                        title: '统计分析'
                     }]
             }
         },
