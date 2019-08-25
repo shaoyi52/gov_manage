@@ -1,8 +1,12 @@
 https://github.com/lin-xin/vue-manage-system
 https://github.com/taylorchen709/vue-admin
 https://github.com/PanJiaChen/vue-element-admin
+https://github.com/luosijie/vue-manager
 
 
 http://blog.gdfengshuo.com/example/work/#/login
 https://taylorchen709.github.io/vue-admin/#/login
 https://panjiachen.github.io/vue-element-admin/#/login?redirect=%2Fdashboard
+https://luosijie.github.io/vue-manager/#/editable-table
+
+https://auauz.net/login?redirect=%2Fdashboard

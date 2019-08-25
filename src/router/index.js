@@ -20,9 +20,9 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/scenic',
-                    component: resolve => require(['../components/page/Scenic.vue'], resolve),
-                    meta: { title: '景区信息' }
+                    path: '/hotel',
+                    component: resolve => require(['../components/page/Hotel.vue'], resolve),
+                    meta: { title: '酒店信息' }
                 },
                 {
                     path: '/device',
@@ -30,31 +30,33 @@ export default new Router({
                     meta: { title: '设备信息' }
                 },
                 {
-                    path: '/icon',
-                    component: resolve => require(['../components/page/Icon.vue'], resolve),
-                    meta: { title: '自定义图标' }
+                    path: '/scenic',
+                    component: resolve => require(['../components/page/Scenic.vue'], resolve),
+                    meta: { title: '景区信息' }
+                },
+                
+                {
+                    path: '/travel_itinerary',
+                    component: resolve => require(['../components/page/Travel_itinerary.vue'], resolve),
+                    meta: { title: '委派及行程单' }
                 },
                 {
-                    path: '/table',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve),
-                    meta: { title: '基础表格' }
+                    path: '/touristGuide',
+                    component: resolve => require(['../components/page/TouristGuide.vue'], resolve),
+                    meta: { title: '导游业绩' }
                 },
                 {
-                    path: '/tabs',
-                    component: resolve => require(['../components/page/Tabs.vue'], resolve),
-                    meta: { title: 'tab选项卡' }
-                },
+                    // 富文本编辑器组件
+                    path: '/visitorsRecord',
+                    component: resolve => require(['../components/page/VisitorsRecord.vue'], resolve),
+                    meta: { title: '游客记录' }
+                },                                
                 {
                     path: '/form',
                     component: resolve => require(['../components/page/BaseForm.vue'], resolve),
                     meta: { title: '基本表单' }
                 },
-                {
-                    // 富文本编辑器组件
-                    path: '/editor',
-                    component: resolve => require(['../components/page/VueEditor.vue'], resolve),
-                    meta: { title: '富文本编辑器' }
-                },
+                
                 {
                     // markdown组件
                     path: '/markdown',

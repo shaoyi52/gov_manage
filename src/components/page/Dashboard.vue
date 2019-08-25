@@ -26,7 +26,56 @@
         <el-row :gutter="20">           
             <el-col :span="24">
                 <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :data="data" type="line" :options="options2"></schart>
+                    <div slot="header" class="clearfix">
+                        <span>2019年7月月报完成情况</span>
+                    </div>
+                    <el-tabs v-model="message">
+                        <el-tab-pane :label="`已提交家数(16)`" name="first">
+                            <el-table
+                            :data="tableData"
+                            style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                label="旅行社"
+                                width="180">
+                            </el-table-column> 
+                            <el-table-column
+                                prop="tel"
+                                label="联系电话"
+                                 width="180">
+                            </el-table-column>   
+                            <el-table-column
+                                prop="address"
+                                label="地址"
+                                width="180">
+                            </el-table-column>                          
+                            
+                            
+                            </el-table>
+                        </el-tab-pane>
+                        <el-tab-pane :label="`未提交家数(5)`" name="second">
+                            <template v-if="message === 'second'">
+                                 <el-table
+                                :data="tableData2"
+                                style="width: 100%">
+                            <el-table-column
+                                prop="name"
+                                label="旅行社"
+                                width="180">
+                            </el-table-column> 
+                            <el-table-column
+                                prop="tel"
+                                label="联系电话"
+                                 width="180">
+                            </el-table-column>   
+                            <el-table-column
+                                prop="address"
+                                label="地址"
+                                width="180">
+                            </el-table-column>                                </el-table>
+                            </template>
+                        </el-tab-pane>
+                    </el-tabs>
                 </el-card>
             </el-col>
         </el-row>
@@ -39,7 +88,8 @@
     export default {
         name: 'dashboard',
         data() {
-            return {
+            return {                
+                message: 'first',
                 name: localStorage.getItem('ms_username'),
                 todoList: [{
                         title: '今天要修复100个bug',
@@ -94,22 +144,40 @@
                         value: 1065
                     }
                 ],
-                options: {
-                    title: '最近七天每天的用户访问量',
-                    showValue: false,
-                    fillColor: 'rgb(45, 140, 240)',
-                    bottomPadding: 30,
-                    topPadding: 30
-                },
-                options2: {
-                    title: '最近七天用户访问趋势',
-                    fillColor: '#FC6FA1',
-                    axisColor: '#008ACD',
-                    contentColor: '#EEEEEE',
-                    bgColor: '#F5F8FD',
-                    bottomPadding: 30,
-                    topPadding: 30
-                }
+                tableData: [{
+                    tel: '0652-8888888',
+                    name: '福建瀚翔国际旅行社有限公司',
+                    address: '福建普陀区金沙江路 1518 弄'
+                }, {
+                    tel: '0652-6666666',
+                    name: '平安假日旅行社',
+                    address: '福建普陀区金沙江路 1318 弄'
+                },{
+                    tel: '0652-888777',
+                    name: '安假翔国际旅行社有限公司',
+                    address: '福建普陀区金沙江路 1118 弄'
+                },{
+                    tel: '0652-8844444',
+                    name: '福建安假旅行社有限公司',
+                    address: '福建普陀区金沙江路 145 弄'
+                }],
+                tableData2: [{
+                    tel: '0652-8888888',
+                    name: '安假日国际旅行社有限公司2',
+                    address: '福建普陀区金沙江路 1518 弄'
+                }, {
+                    tel: '0652-6666666',
+                    name: '平安假日旅行社3',
+                    address: '福建普陀区金沙江路 1318 弄'
+                },{
+                    tel: '0652-888777',
+                    name: '安假翔国际旅行社有限公司4',
+                    address: '福建普陀区金沙江路 1118 弄'
+                },{
+                    tel: '0652-8844444',
+                    name: '福建安假旅行社有限公司',
+                    address: '福建普陀区金沙江路 145 弄'
+                },]
             }
         },
         components: {
@@ -128,7 +196,7 @@
             this.handleListener();
         },
         deactivated(){
-            window.removeEventListener('resize', this.renderChart);
+            //window.removeEventListener('resize', this.renderChart);
             bus.$off('collapse', this.handleBus);
         },
         methods: {
@@ -142,7 +210,7 @@
             handleListener(){
                 bus.$on('collapse', this.handleBus);
                 // 调用renderChart方法对图表进行重新渲染
-                window.addEventListener('resize', this.renderChart)
+                //window.addEventListener('resize', this.renderChart)
             },
             handleBus(msg){
                 setTimeout(() => {
@@ -150,8 +218,8 @@
                 }, 300);
             },
             renderChart(){
-                this.$refs.bar.renderChart();
-                this.$refs.line.renderChart();
+                //this.$refs.bar.renderChart();
+               // this.$refs.line.renderChart();
             }
         }
     }

@@ -7,3 +7,15 @@ export const fetchData = (query) => {
         data: query
     })
 }
+
+export const fetch= (obj) => {    
+    let url=obj.url,
+        type=obj.type||'post',
+        query=obj.query;
+        console.log("params",obj)
+    return request({
+        url: url,
+        method: type,
+        params: query
+    })
+}
