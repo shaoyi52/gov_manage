@@ -20,6 +20,21 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/user',
+                    component: resolve => require(['../components/page/User.vue'], resolve),
+                    meta: { title: '用户信息' }
+                },
+                {
+                    path: '/role',
+                    component: resolve => require(['../components/page/Role.vue'], resolve),
+                    meta: { title: '角色信息' }
+                },
+                {
+                    path: '/function',
+                    component: resolve => require(['../components/page/Function.vue'], resolve),
+                    meta: { title: '功能菜单' }
+                },
+                {
                     path: '/hotel',
                     component: resolve => require(['../components/page/Hotel.vue'], resolve),
                     meta: { title: '酒店信息' }

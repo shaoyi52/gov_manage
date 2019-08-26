@@ -43,6 +43,25 @@
                         title: '系统首页'
                     },
                     {
+                        icon: 'el-icon-lx-group',
+                        index: '1',
+                        title: '用户管理',
+                        subs: [
+                            {
+                                index: 'user',
+                                title: '用户信息',
+                            },
+                            {
+                                index: 'role',
+                                title: '角色信息',
+                            },
+                            {
+                                index: 'function',
+                                title: '功能菜单',
+                            }
+                        ]
+                    },
+                    {
                         icon: 'el-icon-lx-locationfill',
                         index: 'scenic',
                         title: '景区信息'
