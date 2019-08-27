@@ -90,7 +90,7 @@
 </template>
 
 <script>
-    import { fetchData } from '../../api/index';
+    import { fetchData,fetch } from '../../api/index';
     export default {
         name: 'basetable',
         data() {
@@ -151,6 +151,18 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
+               let params={
+                    userName:"admin",
+                    password:"123456",
+                    
+                }
+                fetch({
+                    url:'Tourism/login',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.tableData = res.data;
+                })
                 fetchData({
                     page: this.cur_page
                 }).then((res) => {
@@ -160,8 +172,7 @@
             search() {
                 this.is_search = true;
             },
-            create(){
-                
+            create(){                
                 this.form = {
                     id: "",
                     name: "",

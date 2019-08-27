@@ -3,7 +3,10 @@ import axios from 'axios';
 const service = axios.create({
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     //baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    baseURL: 'https://www.easy-mock.com/mock/5bee35fe6142a550e9bdd941',    
+    baseURL: '/Api/',    
+    headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+    },  
     timeout: 5000
 })
 

@@ -16,6 +16,6 @@ export const fetch= (obj) => {
     return request({
         url: url,
         method: type,
-        params: query
+        data: query
     })
 }
