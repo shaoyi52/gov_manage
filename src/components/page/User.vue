@@ -152,12 +152,11 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                let params={
-                    userName:"admin",
-                    password:"123456",
-                    
+                    pageSize:10,
+                    pageCount:1,                    
                 }
                 fetch({
-                    url:'Tourism/login',
+                    url:'Web/GetUserList',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {

@@ -8,7 +8,14 @@ module.exports = {
                 target: "http://121.204.164.176:8001/Api",        
                 changeOrigin: true,        
                 pathRewrite: {        
-                '^/Api': '/'        
+                '^/Api': '/' ,       
+                } 
+            },
+            '/Web': {        
+                target: "http://121.204.164.176:8002/Web",        
+                changeOrigin: true,        
+                pathRewrite: {        
+                '^/Web': '/' ,       
                 } 
             }       
         }        

@@ -46,12 +46,13 @@
 </template>
 
 <script>
+    import { fetchData,fetch } from '../../api/index';
     export default {
         data: function(){
             return {
                 ruleForm: {
                     username: 'admin',
-                    password: '123123'
+                    password: '123456'
                 },
                 rules: {
                     username: [
@@ -67,8 +68,30 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        let params={
+                            userName:this.ruleForm.username,
+                            password:this.ruleForm.password,                            
+                        }
+                       
+                        fetch({
+                            url:'Api/Tourism/login',
+                            type:"post",                   
+                            query:{...params} 
+                        }).then((res) => {
+                            console.log("res",res)
+                            if(res.code=="00000"){
+                                localStorage.setItem('ms_username',this.ruleForm.username);
+                                sessionStorage.setItem("token", res.token)
+                                sessionStorage.setItem("uid", res.uid)
+                                
+                                this.$router.push('/');
+                            }else{
+                                this.$message.error(res.msg);
+                            }                           
+                            
+                        })
+                        //localStorage.setItem('ms_username',this.ruleForm.username);
+                        
                     } else {
                         console.log('error submit!!');
                         return false;
