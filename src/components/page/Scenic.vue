@@ -137,11 +137,10 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'/ms/GetScenicList',
-                    type:"get",
+                    url:'Api/Tourism/GetScenicList',
                     query:{...params}
                 }).then((res) => {
-                    this.tableData = res.data;
+                    this.tableData = res.result;
                 })
             },
             search() {

@@ -12,7 +12,7 @@ module.exports = {
                 } 
             },
             '/Web': {        
-                target: "http://121.204.164.176:8002/Web",        
+                target: "http://121.204.164.176:8001/Web",        
                 changeOrigin: true,        
                 pathRewrite: {        
                 '^/Web': '/' ,       

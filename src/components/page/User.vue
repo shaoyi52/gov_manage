@@ -11,15 +11,21 @@
                 <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="create">新建</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
+                <el-table-column prop="userName" label="用户登录名" sortable width="150">
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" width="120">
                 </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
+                <el-table-column prop="phone" label="手机号" width="120">
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column prop="mail" label="邮箱" >
+                </el-table-column>
+                <el-table-column prop="roleName" label="角色名称" >
+                </el-table-column>
+                <el-table-column prop="registerTime" label="注册时间" >
+                </el-table-column>
+                <el-table-column label="操作" width="180" align="center" v-if="false">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -153,20 +159,16 @@
             getData() {
                let params={
                     pageSize:10,
-                    pageCount:1,                    
+                    pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Web/GetUserList',
+                    url:'Api/Tourism/GetUserList',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
-                    this.tableData = res.data;
+                    this.tableData = res.result;
                 })
-                fetchData({
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.list;
-                })
+                
             },
             search() {
                 this.is_search = true;

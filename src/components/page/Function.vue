@@ -68,7 +68,7 @@
 </template>
 
 <script>
-    import { fetchData } from '../../api/index';
+    import { fetchData,fetch } from '../../api/index';
     export default {
         name: 'basetable',
         data() {
@@ -123,11 +123,18 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                fetchData({
-                    page: this.cur_page
+               let params={
+                    pageSize:10,
+                    pageCount:1,  // this.cur_page                  
+                }
+                fetch({
+                    url:'Api/Tourism/GetFunctionPage',
+                    type:"post",                   
+                    query:{...params} 
                 }).then((res) => {
-                    this.tableData = res.list;
+                    this.tableData = res.abilitiesList;
                 })
+                
             },
             search() {
                 this.is_search = true;
