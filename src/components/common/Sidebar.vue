@@ -78,7 +78,7 @@
                     },
                     {
                         icon: 'el-icon-lx-hot',
-                        index: '0',
+                        index: '2',
                         title: '旅行社管理',
                         subs: [
                             {
@@ -89,7 +89,7 @@
                     },
                     {
                         icon: 'el-icon-lx-group',
-                        index: '1',
+                        index: '3',
                         title: '导游管理',
                         subs: [
                             {
@@ -100,7 +100,7 @@
                     },
                     {
                         icon: 'el-icon-lx-rank',
-                        index: '2',
+                        index: '4',
                         title: '业绩报告',
                         subs: [
                             {

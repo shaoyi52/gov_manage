@@ -2,26 +2,28 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 基础表格</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 功能资源列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="createForm">新建</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
+                <el-table-column prop="definition" label="资源名称" sortable width="150">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
+                <el-table-column prop="superior" label="上级" width="120">
                 </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
+                <el-table-column prop="pathUrl" label="路径">
+                </el-table-column>
+                <el-table-column prop="status" label="状态" :formatter="formatter">
+                </el-table-column>
+                <el-table-column prop="addPerson" label="添加人" >
+                </el-table-column>
+                <el-table-column prop="describe" label="功能描述">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -37,17 +39,70 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
+        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="60%">
+            <el-form ref="form" :model="form" label-width="120px">
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="功能名称">
+                            <el-input v-model="form.definition"></el-input>
+                        </el-form-item>                       
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="路径">
+                            <el-input v-model="form.adminPath"></el-input>
+                        </el-form-item>                       
+                    </el-col>                   
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="上级">
+                             <el-cascader
+                             width="100%"
+                            :options="options"
+                            :props="{ checkStrictly: true }"
+                            clearable></el-cascader>
+                        </el-form-item>                       
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="状态">
+                            <el-radio-group v-model="form.status">
+                                <el-radio :label="1">启用</el-radio>
+                                <el-radio :label="0">禁用</el-radio>
+                            </el-radio-group>
+                        </el-form-item>                       
+                    </el-col>                   
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="是否菜单">
+                            <el-radio-group v-model="form.isMenu">
+                                <el-radio :label="1">是</el-radio>
+                                <el-radio :label="0">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>                       
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="功能请求路径">
+                            <el-input v-model="form.action"></el-input>
+                        </el-form-item>                       
+                    </el-col>                   
+                </el-row>
+                <el-row :gutter="20">
+                     <el-col :span="12">
+                        <el-form-item label="描述">
+                            <el-input
+                                type="textarea"
+                                placeholder="请输入描述内容"
+                                v-model="form.description"
+                                maxlength="30"
+                                show-word-limit
+                                >
+                            </el-input>
+                        </el-form-item>                
+                    </el-col>
+                    <el-col :span="12">
+                    </el-col>
+                </el-row>              
 
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -70,10 +125,26 @@
 <script>
     import { fetchData,fetch } from '../../api/index';
     export default {
-        name: 'basetable',
+        name: 'function',
         data() {
             return {
+                dialogTitle:'新增功能资源',
                 tableData: [],
+                options: [{
+                    value: 'zhinan',
+                    label: '指南',
+                    children: [{
+                        value: 'shejiyuanze',
+                        label: '设计原则',
+                        children: [{
+                            value: 'yizhi',
+                            label: '一致'
+                        }, {
+                            value: 'fankui',
+                            label: '反馈'
+                        }]
+                    }]
+                }],
                 cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
@@ -134,13 +205,34 @@
                 }).then((res) => {
                     this.tableData = res.abilitiesList;
                 })
+                fetch({
+                    url:'Api/Tourism/GetSourceChild',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log('GetSourceChild',res)
+                   // this.tableData = res.abilitiesList;
+                })
                 
+            },
+            createForm(){                
+                this.form = {
+                    definition: "",
+                    superiorId: "0",
+                    adminPath:"",
+                    status: "1",
+                    isMenu:"0",
+                    action:"",
+                    description:""
+                }
+                this.dialogTitle='新增用户',
+                this.editVisible = true;
             },
             search() {
                 this.is_search = true;
             },
             formatter(row, column) {
-                return row.address;
+                return row.status==1?"是":"否";
             },
             filterTag(value, row) {
                 return row.tag === value;
@@ -175,9 +267,18 @@
                 this.multipleSelection = val;
             },
             // 保存编辑
-            saveEdit() {
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+            saveEdit() {                
+                let params={...this.form}
+                fetch({
+                    url:'Api/Tourism/AddFunction',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log("AddFunction:",res)
+                    this.editVisible = false;
+                    //this.tableData = res.abilitiesList;
+                })
+                /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);
                 }else{
@@ -187,7 +288,7 @@
                             return ;
                         }
                     }
-                }
+                }*/
             },
             // 确定删除
             deleteRow(){
@@ -235,5 +336,8 @@
     }
     .mr10{
         margin-right: 10px;
+    }
+    .el-cascader{
+        width:100%;
     }
 </style>
