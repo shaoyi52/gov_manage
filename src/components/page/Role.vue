@@ -2,27 +2,23 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 基础表格</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 功能资源列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
-                </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="createForm">新建</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
+                <el-table-column prop="roleName" label="角色名称" sortable >
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
-                </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
-                </el-table-column>
+                <el-table-column prop="roleRemark" label="备注" width="120">
+                </el-table-column>                
+                <el-table-column prop="status" label="状态" width="100" :formatter="formatter">
+                </el-table-column> 
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -31,24 +27,55 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-
+        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="60%">
+            <el-form ref="form" :model="form" label-width="120px">
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item label="角色名称">
+                            <el-input v-model="form.adminPath"></el-input>
+                        </el-form-item>
+                        <el-form-item label="描述">
+                            <el-input
+                                type="textarea"
+                                placeholder="请输入描述内容"
+                                v-model="form.description"
+                                maxlength="20"
+                                show-word-limit
+                                >
+                            </el-input>
+                        </el-form-item>              
+                        <el-form-item label="状态">
+                            <el-radio-group v-model="form.status">
+                                <el-radio :label="1">启用</el-radio>
+                                <el-radio :label="0">禁用</el-radio>
+                            </el-radio-group>
+                        </el-form-item>                                     
+                    </el-col>                          
+                </el-row>  
+                 <el-row :gutter="20">
+                    <el-col :span="12">
+                    <el-form-item label="权限">
+                         <el-tree
+                        :data="treeData"
+                        show-checkbox
+                        default-expand-all
+                        node-key="id"
+                        ref="tree"
+                        highlight-current
+                        :props="{value:'id',label:'name'}">
+                        </el-tree>    
+                    </el-form-item>
+                           
+                    </el-col>
+                </el-row>
+                     
+                     
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -68,12 +95,16 @@
 </template>
 
 <script>
-    import { fetchData } from '../../api/index';
+    import { fetchData,fetch } from '../../api/index';
+    import { listToTree } from '../../utils/common';
     export default {
-        name: 'basetable',
+        name: 'function',
         data() {
             return {
+                dialogTitle:'新增角色',
                 tableData: [],
+                pageTotal:100,
+                treeData: [],
                 cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
@@ -85,13 +116,15 @@
                 form: {
                     name: '',
                     date: '',
-                    address: ''
+                    address: '',
+                    superiorId:''
                 },
                 idx: -1,
                 id: -1
             }
         },
         created() {
+            //https://www.jianshu.com/p/b021f3d94ccb
             this.getData();
         },
         computed: {
@@ -123,17 +156,51 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                fetchData({
-                    page: this.cur_page
+               let params={
+                    pageSize:10,
+                    pageCount:1,  // this.cur_page                  
+                }
+                fetch({
+                    url:'Api/Tourism/GetRolePage',
+                    type:"post",                   
+                    query:{...params} 
                 }).then((res) => {
-                    this.tableData = res.list;
+                    this.tableData = res.result;
+                    this.pageTotal=parseInt(res.pageTotal);
                 })
+                fetch({
+                    url:'Api/Tourism/GetMenuList',//'Api/Tourism/GetSourceChild',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log('GetSourceChild',res)
+                    let treeList=res.treeList;
+                    let treeData=treeList.concat([{id:"0",name:"顶级"}]);
+                    let tree=listToTree(treeData,"pId","id","0");
+                    this.treeData=tree;
+                    console.log(tree);
+                   // this.tableData = res.abilitiesList;
+                })
+                
+            },
+            createForm(){                
+                this.form = {
+                    definition: "",
+                    superiorId: ["0"],
+                    adminPath:"",
+                    status: 1,
+                    isMenu:0,
+                    action:"",
+                    description:""
+                }
+                this.dialogTitle='新增用户',
+                this.editVisible = true;
             },
             search() {
                 this.is_search = true;
             },
             formatter(row, column) {
-                return row.address;
+                return row.status==1?"是":"否";
             },
             filterTag(value, row) {
                 return row.tag === value;
@@ -141,13 +208,31 @@
             handleEdit(index, row) {
                 this.idx = index;
                 this.id = row.id;
-                this.form = {
-                    id: row.id,
-                    name: row.name,
-                    date: row.date,
-                    address: row.address
+                let params={
+                    abilitieId:row.abilitieId,
                 }
-                this.editVisible = true;
+                fetch({
+                    url:'Api/Tourism/GetFunctionIfo',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.form={...res, status: parseInt(res.status), isMenu:parseInt(res.isMenu),};
+                    this.editVisible = true;
+                })
+                
+               /* this.form={
+                    definition: row.definition,
+                    superiorId: ["0"],
+                    adminPath:row.superior,
+                    status: parseInt(row.status),
+                    isMenu:parseInt(row.isMenu),
+                    action:"",
+                    description:row.describe
+                }
+                
+                
+                console.log("form",this.form)
+                this.editVisible = true;*/
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -167,10 +252,25 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
+
             // 保存编辑
-            saveEdit() {
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+            saveEdit() {                
+                let params={...this.form}
+                let url="Api/Tourism/AddFunction"
+                if(params.abilitieId){
+                    url="Api/Tourism/UpdateFunction"
+                }
+                fetch({
+                    url:url,
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log("AddFunction:",res)
+                    this.editVisible = false;
+                    this.getData();
+                    //this.tableData = res.abilitiesList;
+                })
+                /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);
                 }else{
@@ -180,7 +280,7 @@
                             return ;
                         }
                     }
-                }
+                }*/
             },
             // 确定删除
             deleteRow(){
@@ -228,5 +328,14 @@
     }
     .mr10{
         margin-right: 10px;
+    }
+    .el-cascader{
+        width:100%;
+    }
+    .el-tree{
+        max-height: 240px;
+        overflow-y: scroll;
+        border: solid 1px #e0e0e0;
+        min-height: 150px;
     }
 </style>

@@ -124,8 +124,7 @@
                 id: -1
             }
         },
-        created() {
-            
+        created() {            
             this.getData();
         },
         computed: {

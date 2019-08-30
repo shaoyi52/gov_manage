@@ -15,3 +15,5 @@ https://adminpro.iviewui.com
 
 //任务对列，系统 角色
 https://auauz.net/login?redirect=%2Fdashboard
+
+http://120.76.247.196:7005/#/template/home

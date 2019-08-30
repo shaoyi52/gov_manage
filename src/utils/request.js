@@ -18,7 +18,10 @@ service.interceptors.request.use( config => {
 })
 
 service.interceptors.response.use(response => {
-    if(response.status === 200){
+    if(response.status === 200&&response.data&&response.data.code=='00000'){
+        return response.data;
+    }else if(response.status === 200&&response.data&&response.data.code=='407'){
+        
         return response.data;
     }else{
         Promise.reject();

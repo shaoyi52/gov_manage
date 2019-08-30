@@ -33,7 +33,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
@@ -58,8 +58,9 @@
                         <el-form-item label="上级">
                              <el-cascader
                              width="100%"
+                             v-model="form.superiorId"
                             :options="options"
-                            :props="{ checkStrictly: true }"
+                            :props="{ checkStrictly: true ,value:'id',label:'name',emitPath:false}"
                             clearable></el-cascader>
                         </el-form-item>                       
                     </el-col>
@@ -124,27 +125,15 @@
 
 <script>
     import { fetchData,fetch } from '../../api/index';
+    import { listToTree } from '../../utils/common';
     export default {
         name: 'function',
         data() {
             return {
                 dialogTitle:'新增功能资源',
                 tableData: [],
-                options: [{
-                    value: 'zhinan',
-                    label: '指南',
-                    children: [{
-                        value: 'shejiyuanze',
-                        label: '设计原则',
-                        children: [{
-                            value: 'yizhi',
-                            label: '一致'
-                        }, {
-                            value: 'fankui',
-                            label: '反馈'
-                        }]
-                    }]
-                }],
+                pageTotal:100,
+                options: [],
                 cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
@@ -156,13 +145,15 @@
                 form: {
                     name: '',
                     date: '',
-                    address: ''
+                    address: '',
+                    superiorId:''
                 },
                 idx: -1,
                 id: -1
             }
         },
         created() {
+            //https://www.jianshu.com/p/b021f3d94ccb
             this.getData();
         },
         computed: {
@@ -204,13 +195,19 @@
                     query:{...params} 
                 }).then((res) => {
                     this.tableData = res.abilitiesList;
+                    this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'Api/Tourism/GetSourceChild',
+                    url:'Api/Tourism/GetMenuList',//'Api/Tourism/GetSourceChild',
                     type:"post",                   
-                    query:{...params} 
+                    query:{"isMenu":1} 
                 }).then((res) => {
                     console.log('GetSourceChild',res)
+                    let treeList=res.treeList;
+                    let treeData=treeList.concat([{id:"0",name:"顶级"}]);
+                    let tree=listToTree(treeData,"pId","id","0");
+                    this.options=tree;
+                    console.log(tree);
                    // this.tableData = res.abilitiesList;
                 })
                 
@@ -218,10 +215,10 @@
             createForm(){                
                 this.form = {
                     definition: "",
-                    superiorId: "0",
+                    superiorId: ["0"],
                     adminPath:"",
-                    status: "1",
-                    isMenu:"0",
+                    status: 1,
+                    isMenu:0,
                     action:"",
                     description:""
                 }
@@ -240,13 +237,31 @@
             handleEdit(index, row) {
                 this.idx = index;
                 this.id = row.id;
-                this.form = {
-                    id: row.id,
-                    name: row.name,
-                    date: row.date,
-                    address: row.address
+                let params={
+                    abilitieId:row.abilitieId,
                 }
-                this.editVisible = true;
+                fetch({
+                    url:'Api/Tourism/GetFunctionIfo',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.form={...res, status: parseInt(res.status), isMenu:parseInt(res.isMenu),};
+                    this.editVisible = true;
+                })
+                
+               /* this.form={
+                    definition: row.definition,
+                    superiorId: ["0"],
+                    adminPath:row.superior,
+                    status: parseInt(row.status),
+                    isMenu:parseInt(row.isMenu),
+                    action:"",
+                    description:row.describe
+                }
+                
+                
+                console.log("form",this.form)
+                this.editVisible = true;*/
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -266,16 +281,22 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
+
             // 保存编辑
             saveEdit() {                
                 let params={...this.form}
+                let url="Api/Tourism/AddFunction"
+                if(params.abilitieId){
+                    url="Api/Tourism/UpdateFunction"
+                }
                 fetch({
-                    url:'Api/Tourism/AddFunction',
+                    url:url,
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     console.log("AddFunction:",res)
                     this.editVisible = false;
+                    this.getData();
                     //this.tableData = res.abilitiesList;
                 })
                 /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
