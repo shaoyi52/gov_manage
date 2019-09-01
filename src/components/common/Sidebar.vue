@@ -80,7 +80,11 @@
                         icon: 'el-icon-lx-hot',
                         index: '2',
                         title: '旅行社管理',
-                        subs: [
+                        subs: [                            
+                            {
+                                index: 'travelAgency',
+                                title: '旅行社',
+                            },
                             {
                                 index: 'travel_itinerary',
                                 title: '委派及行程单',

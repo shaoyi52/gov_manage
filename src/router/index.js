@@ -48,8 +48,12 @@ export default new Router({
                     path: '/scenic',
                     component: resolve => require(['../components/page/Scenic.vue'], resolve),
                     meta: { title: '景区信息' }
+                },                
+                {
+                    path: '/travelAgency',
+                    component: resolve => require(['../components/page/TravelAgency.vue'], resolve),
+                    meta: { title: '旅行社' }
                 },
-                
                 {
                     path: '/travel_itinerary',
                     component: resolve => require(['../components/page/Travel_itinerary.vue'], resolve),
