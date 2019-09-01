@@ -62,7 +62,7 @@
                         }
                        
                         fetch({
-                            url:'Api/Tourism/login',
+                            url:'Api/Travel/login',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
