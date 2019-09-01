@@ -34,7 +34,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
@@ -78,6 +78,7 @@
             return {
                 tableData: [],                
                 cur_page: 1,
+                pageTotal:0,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -141,6 +142,7 @@
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
+                    this.pageTotal=parseInt(res.pageTotal);
                 })
             },
             search() {

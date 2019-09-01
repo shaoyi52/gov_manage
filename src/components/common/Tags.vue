@@ -5,7 +5,7 @@
                 <router-link :to="item.path" class="tags-li-title">
                     {{item.title}}
                 </router-link>
-                <span class="tags-li-icon" @click="closeTags(index)"><i class="el-icon-close"></i></span>
+                <span class="tags-li-icon"  @click="closeTags(index)"><i class="el-icon-close"></i></span>
             </li>
         </ul>
         <div class="tags-close-box">
@@ -63,13 +63,24 @@
                 })
                 if(!isExist){
                     if(this.tagsList.length >= 8){
-                        this.tagsList.shift();
+                       // arr.splice(1,1)
+                        //this.tagsList.shift();
+                        this.tagsList.splice(1,1);
                     }
-                    this.tagsList.push({
-                        title: route.meta.title,
-                        path: route.fullPath,
-                        name: route.matched[1].components.default.name
-                    })
+                    if(route.fullPath==="dashboard"){                        
+                        this.tagsList.unshift({
+                            title: route.meta.title,
+                            path: route.fullPath,
+                            name: route.matched[1].components.default.name
+                        })
+                    }else{
+                        this.tagsList.push({
+                            title: route.meta.title,
+                            path: route.fullPath,
+                            name: route.matched[1].components.default.name
+                        })
+                    }
+                    
                 }
                 bus.$emit('tags', this.tagsList);
             },

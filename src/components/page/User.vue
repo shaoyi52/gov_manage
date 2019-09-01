@@ -6,11 +6,14 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="handle-box">
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+            <div class="handle-box">         
+                <el-input v-model="searchForm.phone" placeholder="电话" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.mail" placeholder="邮箱" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.name" placeholder="用户姓名" class="handle-input mr10"></el-input>
                 <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="create">新建</el-button>
             </div>
+           
             <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="userName" label="用户登录名" sortable width="150">
@@ -25,7 +28,7 @@
                 </el-table-column>
                 <el-table-column prop="registerTime" label="注册时间" >
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center" v-if="false">
+                <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -33,49 +36,39 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
 
         <!-- 编辑弹出框 -->
         <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="姓名">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>                       
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="日期">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                     <el-col :span="12">
-                        <el-form-item label="地址">
-                            <el-input v-model="form.address"></el-input>
-                        </el-form-item>                
-                    </el-col>
-                    <el-col :span="12">
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                     <el-col :span="12">
-                        <el-tree
-                        :props="props"
-                        :load="loadNode"
-                        lazy
-                        show-checkbox
-                        @check-change="handleCheckChange">
-                        </el-tree>
-                    </el-col>
-                </el-row>
-                
-                
-                
+            <el-form ref="form" :model="form" label-width="120px">
+                 <el-form-item label="手机号">
+                    <el-input v-model="form.phone"></el-input>
+                </el-form-item>  
+                 <el-form-item label="用户登录名">
+                    <el-input v-model="form.userName"></el-input>
+                </el-form-item>  
+                 <el-form-item label="密码">
+                    <el-input v-model="form.password"></el-input>
+                </el-form-item>  
+                 <el-form-item label="邮件">
+                    <el-input v-model="form.mail"></el-input>
+                </el-form-item>  
+                 <el-form-item label="用户姓名">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>                 
+                 <el-form-item label="角色">
+                    <el-select v-model="form.roleId" multiple placeholder="请选择">
+                    <el-option
+                    v-for="item in roles"
+                    :key="item.id"
+                    :label="item.roleName"
+                    :value="item.id">
+                    </el-option>
+                </el-select> 
+                </el-form-item> 
 
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -107,6 +100,9 @@
                 },
                 dialogTitle:'新增用户',
                 tableData: [],
+                searchForm:{},
+                pageTotal:0,
+                roles:[],
                 cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
@@ -116,15 +112,19 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name: '',
-                    date: '',
-                    address: ''
+                    phone:"",
+                    userName:"",
+                    password:"",
+                    mail:"",
+                    roleId:[],
+                    name:''
                 },
                 idx: -1,
                 id: -1
             }
         },
-        created() {            
+        created() {
+            console.log("this",this)            
             this.getData();
         },
         computed: {
@@ -157,6 +157,7 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                let params={
+                    ...this.searchForm,
                     pageSize:10,
                     pageCount:1,  // this.cur_page                  
                 }
@@ -166,19 +167,38 @@
                     query:{...params} 
                 }).then((res) => {
                     this.tableData = res.result;
+                    this.pageTotal=parseInt(res.pageTotal);
+                })
+                
+            },
+            getRoleData(){
+                let params={
+                    pageSize:20,
+                    pageCount:1,  // this.cur_page 
+                    status:1                 
+                }
+                fetch({
+                    url:'Api/Tourism/GetRolePage',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.roles = res.result;
                 })
                 
             },
             search() {
-                this.is_search = true;
+                this.getData() 
             },
-            create(){                
+            create(){  
+                this.getRoleData();              
                 this.form = {
-                    id: "",
-                    name: "",
-                    date:"",
-                    address: ""
-                }
+                    phone:"",
+                    userName:"",
+                    password:"",
+                    mail:"",
+                    roleId:[],
+                    name:''
+                },
                 this.dialogTitle='新增用户',
                 this.editVisible = true;
             },
@@ -227,14 +247,29 @@
             handleEdit(index, row) {
                 this.idx = index;
                 this.id = row.id;
-                this.form = {
-                    id: row.id,
-                    name: row.name,
-                    date: row.date,
-                    address: row.address
-                }
                 this.dialogTitle='编辑用户',
-                this.editVisible = true;
+                this.idx = index;
+                this.id = row.id;
+                let params={
+                    id:row.id,
+                }
+                let _this=this;
+                this.getRoleData();
+                fetch({
+                    url:'Api/Tourism/GetUserDetail',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    let rlt=res.result;
+                    let roleId=[]
+                    if(rlt.roleList.length>0){
+                        roleId=rlt.roleList.map(item=>{
+                            return item.id;
+                        })
+                    }
+                    this.form = {...res.result,roleId:[...roleId]}
+                    this.editVisible = true;
+                })
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -257,17 +292,22 @@
             // 保存编辑
             saveEdit() {
                 this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
-                if(this.tableData[this.idx].id === this.id){
-                    this.$set(this.tableData, this.idx, this.form);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.$set(this.tableData, i, this.form);
-                            return ;
-                        }
-                    }
+                let params={...this.form}
+                console.log("params",params)
+                let url="Api/Tourism/AddUser"
+                if(params.id){
+                    url="Api/Tourism/ EditUser"
                 }
+                fetch({
+                    url:url,
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log("AddFunction:",res)
+                    this.editVisible = false;
+                    this.getData();
+                    //this.tableData = res.abilitiesList;
+                })
             },
             // 确定删除
             deleteRow(){
@@ -299,7 +339,7 @@
     }
 
     .handle-input {
-        width: 300px;
+        width: 160px;
         display: inline-block;
     }
     .del-dialog-cnt{

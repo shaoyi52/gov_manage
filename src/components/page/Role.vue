@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 功能资源列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 角色列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -38,13 +38,13 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="角色名称">
-                            <el-input v-model="form.adminPath"></el-input>
+                            <el-input v-model="form.roleName"></el-input>
                         </el-form-item>
                         <el-form-item label="描述">
                             <el-input
                                 type="textarea"
                                 placeholder="请输入描述内容"
-                                v-model="form.description"
+                                v-model="form.roleRemark"
                                 maxlength="20"
                                 show-word-limit
                                 >
@@ -65,6 +65,7 @@
                         :data="treeData"
                         show-checkbox
                         default-expand-all
+                        :default-checked-keys="form.functionIds"
                         node-key="id"
                         ref="tree"
                         highlight-current
@@ -103,7 +104,7 @@
             return {
                 dialogTitle:'新增角色',
                 tableData: [],
-                pageTotal:100,
+                pageTotal:0,
                 treeData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -185,15 +186,12 @@
             },
             createForm(){                
                 this.form = {
-                    definition: "",
-                    superiorId: ["0"],
-                    adminPath:"",
+                    roleName: "",
+                    roleRemark:"",                    
                     status: 1,
-                    isMenu:0,
-                    action:"",
-                    description:""
+                    functionIds:[]                    
                 }
-                this.dialogTitle='新增用户',
+                this.dialogTitle='新增角色',
                 this.editVisible = true;
             },
             search() {
@@ -206,33 +204,50 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
+                this.dialogTitle='编辑角色',
                 this.idx = index;
                 this.id = row.id;
                 let params={
-                    abilitieId:row.abilitieId,
+                    id:row.id,
                 }
+                let _this=this;
                 fetch({
-                    url:'Api/Tourism/GetFunctionIfo',
+                    url:'Api/Tourism/GetRoleInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
-                    this.form={...res, status: parseInt(res.status), isMenu:parseInt(res.isMenu),};
-                    this.editVisible = true;
+                    let role={...res.result};
+                    fetch({
+                        url:'Api/Tourism/GetMenuByRole',
+                        type:"post",                   
+                        query:{...params} 
+                    }).then((res) => {
+                        let menu=[...res.checkedIdList];
+                        fetch({
+                            url:'Api/Tourism/GetFunsByRole',
+                            type:"post",                   
+                            query:{...params} 
+                        }).then((res) => {
+                            let funs=[...res.checkedfuncList];
+                            //console.log("role:",role,"menu:",menu,"funs:",funs)
+                            let functionIds=[];
+                            if(menu.length>0){
+                                functionIds=[...menu]
+                                if(funs.length>0){
+                                    functionIds=[...functionIds,...funs]
+                                }
+                            }else if(funs.length>0){
+                                functionIds=[...funs]
+                            }
+                            _this.form={...role,status:parseInt(role.status),functionIds:functionIds};
+                            //console.log("form:",..._this.form)
+                            _this.editVisible = true;
+                        })
+                       
+                    })
                 })
                 
-               /* this.form={
-                    definition: row.definition,
-                    superiorId: ["0"],
-                    adminPath:row.superior,
-                    status: parseInt(row.status),
-                    isMenu:parseInt(row.isMenu),
-                    action:"",
-                    description:row.describe
-                }
-                
-                
-                console.log("form",this.form)
-                this.editVisible = true;*/
+               
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -254,11 +269,14 @@
             },
 
             // 保存编辑
-            saveEdit() {                
-                let params={...this.form}
-                let url="Api/Tourism/AddFunction"
-                if(params.abilitieId){
-                    url="Api/Tourism/UpdateFunction"
+            saveEdit() {   
+                let selectKeys=this.$refs.tree.getCheckedKeys() ;
+                //console.log(selectKeys);
+                //return            
+                let params={...this.form,functionIds:[...selectKeys]}
+                let url="Api/Tourism/AddRole"
+                if(params.id){
+                    url="Api/Tourism/EditRole"
                 }
                 fetch({
                     url:url,

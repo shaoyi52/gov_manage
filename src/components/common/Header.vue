@@ -29,13 +29,17 @@
                     <span class="el-dropdown-link">
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <a href="http://blog.gdfengshuo.com/about/" target="_blank">
-                            <el-dropdown-item>关于作者</el-dropdown-item>
-                        </a>
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
+                    <el-dropdown-menu slot="dropdown" >
+                       
+                         <el-dropdown-item  v-if="false"> 
+                             <a href="http://blog.gdfengshuo.com/about/" target="_blank">
+                                <el-dropdown-item>关于作者</el-dropdown-item>
+                            </a>
+                            <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
+                                <el-dropdown-item>项目仓库</el-dropdown-item>
+                            </a>
+                        </el-dropdown-item>
+                        <el-dropdown-item>帮助文档</el-dropdown-item>
                         <el-dropdown-item divided  command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>

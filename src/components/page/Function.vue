@@ -132,7 +132,7 @@
             return {
                 dialogTitle:'新增功能资源',
                 tableData: [],
-                pageTotal:100,
+                pageTotal:0,
                 options: [],
                 cur_page: 1,
                 multipleSelection: [],
