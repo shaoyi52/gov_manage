@@ -1,14 +1,33 @@
 module.exports = {
-    baseUrl: './',
+    publicPath: './',
     assetsDir: 'static',
-    productionSourceMap: false,
+    productionSourceMap: false,    
+    devServer: {
+        proxy: {
+            '/Api': {        
+                target: "http://121.204.164.176:8001/Api",        
+                changeOrigin: true,        
+                pathRewrite: {        
+                '^/Api': '/' ,       
+                } 
+            },
+            '/Web': {        
+                target: "http://121.204.164.176:8002/Web",        
+                changeOrigin: true,        
+                pathRewrite: {        
+                '^/Web': '/' ,       
+                } 
+            }       
+        }        
+    },
     // devServer: {
     //     proxy: {
-    //         '/api':{
-    //             target:'http://jsonplaceholder.typicode.com',
+    //         '/Api':{
+    //             //target:'http://jsonplaceholder.typicode.com',
+    //             target:"http://121.204.164.176:8001/Api",
     //             changeOrigin:true,
     //             pathRewrite:{
-    //                 '/api':''
+    //                 '^/Api':'/Api'
     //             }
     //         }
     //     }

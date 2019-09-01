@@ -121,6 +121,13 @@ export default new Router({
             component: resolve => require(['../components/page/Login.vue'], resolve)
         },
         {
+            path: '/regist',
+            name:'regist',
+            meta: { title: 'regist' },
+            component: resolve => require(['../components/page/Regist.vue'], resolve)
+
+        },
+        {
             path: '*',
             redirect: '/404'
         }

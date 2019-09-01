@@ -13,9 +13,14 @@ export const fetch= (obj) => {
         type=obj.type||'post',
         query=obj.query;
         console.log("params",obj)
+        if(sessionStorage.getItem("token")&&sessionStorage.getItem("uid")){
+            query['token']=sessionStorage.getItem("token");
+            query['uid']=sessionStorage.getItem("uid");
+        }
+        //localStorage.setItem('ms_username',this.ruleForm.username);
     return request({
         url: url,
         method: type,
-        params: query
+        data: query
     })
 }

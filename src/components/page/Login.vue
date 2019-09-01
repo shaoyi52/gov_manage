@@ -1,25 +1,6 @@
 <template>
     <div class="login-wrap">
-        <div class="ms-header">晋江智慧旅游旅行社管理平台</div>
-        <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="ruleForm.username" placeholder="username">
-                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
-                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
-                    </el-input>
-                </el-form-item>
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-                </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
-            </el-form>
-        </div>
+        <div class="ms-header">晋江市智慧旅游管理平台<span>(旅行社入口)</span></div>
         <div class="ms-login-wrap">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-login-content">
                 <el-form-item prop="username">
@@ -33,9 +14,16 @@
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <el-button type="success" @click="registForm('ruleForm')">注册</el-button>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                        </el-col>
+                    </el-row>                    
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips" v-if="false">Tips : 用户名和密码随便填。</p>
             </el-form>
 
             
@@ -46,12 +34,13 @@
 </template>
 
 <script>
+    import { fetchData,fetch } from '../../api/index';
     export default {
         data: function(){
             return {
                 ruleForm: {
                     username: 'admin',
-                    password: '123123'
+                    password: '123456'
                 },
                 rules: {
                     username: [
@@ -64,16 +53,40 @@
             }
         },
         methods: {
-            submitForm(formName) {
+            submitForm(formName) {               
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        let params={
+                            userName:this.ruleForm.username,
+                            password:this.ruleForm.password,                            
+                        }
+                       
+                        fetch({
+                            url:'Api/Tourism/login',
+                            type:"post",                   
+                            query:{...params} 
+                        }).then((res) => {
+                            console.log("res",res)
+                            if(res.code=="00000"){
+                                localStorage.setItem('ms_username',this.ruleForm.username);
+                                sessionStorage.setItem("token", res.token)
+                                sessionStorage.setItem("uid", res.uid)
+                                this.$router.push('/');
+                            }else{
+                                this.$message.error(res.msg);
+                            }                           
+                            
+                        })
+                        //localStorage.setItem('ms_username',this.ruleForm.username);
+                        
                     } else {
                         console.log('error submit!!');
                         return false;
                     }
                 });
+            },
+            registForm(formName){              
+               this.$router.push({path:'/regist'}); 
             }
         }
     }
@@ -111,11 +124,15 @@
     }
     
     .ms-header{
-        letter-spacing:1em;
+        letter-spacing:0.5em;
         text-align: center;
         font-size:24px;
         color: #fff;
-        padding-top:120px;
+        padding-top:80px;
+        span{
+            letter-spacing: normal;
+            font-size: 18px;
+        }
     }
     .ms-footer{
         position:absolute;
