@@ -98,7 +98,7 @@ s                                </el-input>
                     uscc:'F15E2',
                     incumbents:56,
                     legalName:"林大伟",
-                    businessLicense:"49f52293-aebc-4d9c-ab05-46dd0120b938",                    
+                    businessLicense:"",                    
                     address:'靖江市高新创业园'
                 },
                 rules: {
@@ -117,6 +117,10 @@ s                                </el-input>
         
         methods: {
             submitForm(formName) {
+                if(this.ruleForm.businessLicense==""){
+                    this.$message.error("请先上传营业执照！");
+                    return false
+                }
                 let params={
                             ...this.ruleForm                          
                         }
@@ -211,6 +215,8 @@ s                                </el-input>
                 })
             },
             handleAvatarSuccess(res, file) {
+                console.log('handleAvatarSuccess',res)
+                this.ruleForm.businessLicense=res.imgId;
                 this.imageUrl = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {
