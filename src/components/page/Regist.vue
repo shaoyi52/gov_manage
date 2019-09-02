@@ -36,16 +36,13 @@ s                                </el-input>
                             <el-form-item label="公司编号" >
                                 <el-input v-model="ruleForm.number"></el-input>
                             </el-form-item>
-                            <el-form-item label="在职人数" >
-                                <el-input v-model="ruleForm.incumbents"></el-input>
-                            </el-form-item>
-                            <el-form-item label="公司编号" >
-                                <el-input v-model="ruleForm.number"></el-input>
-                            </el-form-item>
                             <el-form-item label="统一社会信用代码" >
                                 <el-input v-model="ruleForm.uscc"></el-input>
                             </el-form-item>
-                            <el-form-item label="营业执照文件" >
+                            <el-form-item label="在职人数" >
+                                <el-input v-model="ruleForm.incumbents"></el-input>
+                            </el-form-item>
+                            <el-form-item label="法人姓名" >
                                 <el-input v-model="ruleForm.legalName"></el-input>
                             </el-form-item>
                             <el-form-item label="公司地址" >
@@ -93,11 +90,19 @@ s                                </el-input>
                 imageUrl:"",
                 upLoadData:{FileType:'F'},
                 ruleForm: {
-                    username: 'admin',
-                    password: '123456'
+                    para:'dt',
+                    name: '少逸旅游文化公司',
+                    contactName: '林逸',
+                    contactPhone:'13148779245',
+                    number:'107856',
+                    uscc:'F15E2',
+                    incumbents:56,
+                    legalName:"林大伟",
+                    businessLicense:"49f52293-aebc-4d9c-ab05-46dd0120b938",                    
+                    address:'靖江市高新创业园'
                 },
                 rules: {
-                    username: [
+                    username: [ 
                         { required: true, message: '请输入用户名', trigger: 'blur' }
                     ],
                     password: [
@@ -113,22 +118,22 @@ s                                </el-input>
         methods: {
             submitForm(formName) {
                 let params={
-                            userName:this.ruleForm.username,
-                            password:this.ruleForm.password,                            
+                            ...this.ruleForm                          
                         }
                        
                 fetch({
-                    url:'Api/Tourism/regist',
+                    url:'Api/Travel/TravelRegister',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     console.log("res",res)
                     if(res.code=="00000"){
-                        localStorage.setItem('ms_username',this.ruleForm.username);
+                        console.log(res);
+                        /*localStorage.setItem('ms_username',this.ruleForm.username);
                         sessionStorage.setItem("token", res.token)
                         sessionStorage.setItem("uid", res.uid)
                         
-                        this.$router.push('/');
+                        this.$router.push('/');*/
                     }else{
                         this.$message.error(res.msg);
                     }                           
@@ -187,7 +192,7 @@ s                                </el-input>
             getCode(){
                 let params={
                     captchaId:this.captchaId.toString(),
-                    phoneNum:"13428984418",//this.ruleForm.contactPhone,
+                    phoneNum:this.ruleForm.contactPhone,
                     imageCode:this.ruleForm.imageCode,
                     type:0,
                 }
@@ -204,7 +209,6 @@ s                                </el-input>
                     }                           
                     
                 })
-                console.log(val);
             },
             handleAvatarSuccess(res, file) {
                 this.imageUrl = URL.createObjectURL(file.raw);
