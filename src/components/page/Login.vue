@@ -39,8 +39,8 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123456'
+                    username: '13148779245',
+                    password: 'lxs123'
                 },
                 rules: {
                     username: [
@@ -71,6 +71,7 @@
                                 localStorage.setItem('ms_username',this.ruleForm.username);
                                 sessionStorage.setItem("token", res.token)
                                 sessionStorage.setItem("uid", res.uid)
+                                sessionStorage.setItem("taId", res.taId)
                                 this.$router.push('/');
                             }else{
                                 this.$message.error(res.msg);

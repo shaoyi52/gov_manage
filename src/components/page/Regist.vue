@@ -1,7 +1,6 @@
 <template>
     <div class="regist-wrap">
         <div class="ms-header">晋江市智慧旅游管理平台<span>(旅行社注册入口)</span></div>
-  
         <div class="ms-regist-wrap">
             <el-card class="box-card">
                 <div slot="header" class="clearfix" style="text-align:center">
@@ -26,11 +25,11 @@
                                     slot="append"
                                     style="width: 100px; height: 32px"
                                     :src="url"></el-image>
-s                                </el-input>
+                                </el-input>
                             </el-form-item>
                             <el-form-item label="验证码" >
                                 <el-input   v-model="ruleForm.verificationCode"  class="getVerCode">
-                                    <el-button slot="append" @click="getCode">获取验证码</el-button>
+                                    <el-button type="primary" slot="append" :disabled="telCodeSendFlag" @click="getCode">获取验证码<span v-if="telCodeSendFlag" v-html="'('+timeCountDown+')' "></span></el-button>
                                 </el-input>
                             </el-form-item>
                             <el-form-item label="公司编号" >
@@ -72,8 +71,6 @@ s                                </el-input>
                     <p class="regist-tips" v-if="false">Tips : 用户名和密码随便填。</p>
                 </el-form>
             </el-card>
-           
-           
         </div>
         <div class="ms-footer">copyright ©2019-2020 隆升信息 版权所有</div>
     </div>
@@ -90,7 +87,7 @@ s                                </el-input>
                 imageUrl:"",
                 upLoadData:{FileType:'F'},
                 ruleForm: {
-                    para:'dt',
+                    /*para:'dt',
                     name: '少逸旅游文化公司',
                     contactName: '林逸',
                     contactPhone:'13148779245',
@@ -99,8 +96,10 @@ s                                </el-input>
                     incumbents:56,
                     legalName:"林大伟",
                     businessLicense:"",                    
-                    address:'靖江市高新创业园'
+                    address:'靖江市高新创业园'*/
                 },
+                timeCountDown:"",//倒计时值
+                telCodeSendFlag:false,
                 rules: {
                     username: [ 
                         { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -194,6 +193,10 @@ s                                </el-input>
                 })
             },
             getCode(){
+                if(this.ruleForm.contactPhone==""){
+                    this.$message.error("联系电话不能为空！");
+                }
+                this.countDown();
                 let params={
                     captchaId:this.captchaId.toString(),
                     phoneNum:this.ruleForm.contactPhone,
@@ -206,13 +209,25 @@ s                                </el-input>
                     query:{...params} 
                 }).then((res) => {
                     console.log("res",res)
-                    if(res.code=="00000"){
+                    if(res&&res.code=="00000"){
                        this.$message.success(res.msg); 
-                    }else{
-                        this.$message.error(res.msg);
-                    }                           
+                    }                         
                     
                 })
+            },
+            countDown(){
+                //let count=60;
+                this.timeCountDown=60;
+                this.telCodeSendFlag=true;
+                let intervalId=setInterval(()=>{
+                    this.timeCountDown=this.timeCountDown-1
+                    if(this.timeCountDown==1){                        
+                        this.timeCountDown="";
+                        clearInterval(intervalId);
+                        this.telCodeSendFlag=false;
+
+                    }
+                },1000)   
             },
             handleAvatarSuccess(res, file) {
                 console.log('handleAvatarSuccess',res)
@@ -247,12 +262,7 @@ s                                </el-input>
             border-color: #3a8ee6;
             color: #FFF;
             
-        }
-        .el-button--primary:active,.el-button--primary:hover{
-           color: #FFF;
-           background-color: #409EFF;
-           border-color: #409EFF;
-        }
+        }        
     }
     .getImgCode{
         .el-input-group__append{
@@ -261,7 +271,7 @@ s                                </el-input>
             cursor: pointer;
         }
     }
-    .getVerCode{
+    .getVerCode1{
         .el-input-group__append{
             background-color:#409EFF;
             color:#fff;
