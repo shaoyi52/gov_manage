@@ -49,27 +49,23 @@
                     },
                     {
                         icon: 'el-icon-lx-edit',
-                        index: 'scenic',
-                        title: '月报填报'
-                    },
-                    {
-                        icon: 'el-icon-lx-edit',
-                        index: 'hotel',
-                        title: '行程填报'
+                        index: 'guideManage',
+                        title: '导游管理'
                     },
                     {
                         icon: 'el-icon-lx-hot',
-                        index: 'visitorsRecord',
+                        index: 'travelManage',
                         title: '行程信息'
                     },
+                    
                     {
                         icon: 'el-icon-lx-group',
-                        index: 'touristGuide',
+                        index: 'visitorsRecord',
                         title: '游客记录'
                     },
                     {
                         icon: 'el-icon-lx-rank',
-                        index: 'travel_itinerary',
+                        index: 'statistics',
                         title: '统计分析'
                     }]
             }

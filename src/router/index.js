@@ -25,14 +25,24 @@ export default new Router({
                     meta: { title: '公司信息' }
                 },
                 {
-                    path: '/device',
-                    component: resolve => require(['../components/page/Device.vue'], resolve),
-                    meta: { title: '设备信息' }
+                    path: '/guideManage',
+                    component: resolve => require(['../components/page/GuideManage.vue'], resolve),
+                    meta: { title: '导游管理' }
                 },
                 {
-                    path: '/scenic',
-                    component: resolve => require(['../components/page/Scenic.vue'], resolve),
-                    meta: { title: '景区信息' }
+                    path: '/travelManage',
+                    component: resolve => require(['../components/page/TravelManage.vue'], resolve),
+                    meta: { title: '行程管理' }
+                },   
+                {
+                    path: '/visitorsRecord',
+                    component: resolve => require(['../components/page/VisitorsRecord.vue'], resolve),
+                    meta: { title: '游客记录' }
+                },               
+                {
+                    path: '/statistics',
+                    component: resolve => require(['../components/page/Statistics.vue'], resolve),
+                    meta: { title: '统计分析' }
                 },
                 
                 {
@@ -44,48 +54,6 @@ export default new Router({
                     path: '/touristGuide',
                     component: resolve => require(['../components/page/TouristGuide.vue'], resolve),
                     meta: { title: '导游业绩' }
-                },
-                {
-                    // 富文本编辑器组件
-                    path: '/visitorsRecord',
-                    component: resolve => require(['../components/page/VisitorsRecord.vue'], resolve),
-                    meta: { title: '游客记录' }
-                },                                
-                {
-                    path: '/form',
-                    component: resolve => require(['../components/page/BaseForm.vue'], resolve),
-                    meta: { title: '基本表单' }
-                },
-                
-                {
-                    // markdown组件
-                    path: '/markdown',
-                    component: resolve => require(['../components/page/Markdown.vue'], resolve),
-                    meta: { title: 'markdown编辑器' }    
-                },
-                {
-                    // 图片上传组件
-                    path: '/upload',
-                    component: resolve => require(['../components/page/Upload.vue'], resolve),
-                    meta: { title: '文件上传' }   
-                },
-                {
-                    // vue-schart组件
-                    path: '/charts',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve),
-                    meta: { title: 'schart图表' }
-                },
-                {
-                    // 拖拽列表组件
-                    path: '/drag',
-                    component: resolve => require(['../components/page/DragList.vue'], resolve),
-                    meta: { title: '拖拽列表' }
-                },
-                {
-                    // 拖拽Dialog组件
-                    path: '/dialog',
-                    component: resolve => require(['../components/page/DragDialog.vue'], resolve),
-                    meta: { title: '拖拽弹框' }
                 },
                 {
                     // 国际化组件

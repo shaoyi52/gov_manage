@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 导游列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 行程列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -16,21 +16,21 @@
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="guideName" label="导游名称" sortable width="150">
                 </el-table-column>
-                <el-table-column prop="guideNum" label="导游证号" >
+                <el-table-column prop="guidePhone" label="导游电话" >
                 </el-table-column>
-                 <el-table-column prop="leadership" label="导游资格" >
+                 <el-table-column prop="visitorCount" label="游客人数" >
                 </el-table-column>
-                 <el-table-column prop="idCard" label="身份证" width="120">
+                 <el-table-column prop="startTime" label="行程开始时间" width="120">
                 </el-table-column>
-                 <el-table-column prop="phone" label="联系电话" width="120">
+                 <el-table-column prop="scenicCount" label="行程景点数" width="120">
+                </el-table-column>                 
+                 <el-table-column prop="dateCount" label="行程天数" width="120">
                 </el-table-column>
-                  <el-table-column prop="sex" label="性别" width="120" :formatter="formatter">
+                 <el-table-column prop="stayPeriod" label="住宿天数" width="120">
                 </el-table-column>
-                 <el-table-column prop="grade" label="等级" width="120">
+                 <el-table-column prop="addTime" label="填报时间" width="120">
                 </el-table-column>
-                 <el-table-column prop="approvalDate" label="审批时间" width="120">
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center" v-if="false">
+                <el-table-column label="操作" width="180" align="center" >
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -45,15 +45,39 @@
 
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+            <el-form ref="form" :model="form" label-width="110px">
+                 <el-form-item label="导游名称">
+                    <el-input v-model="form.guideName"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
+                 <el-form-item label="导游电话">
+                    <el-input v-model="form.guidePhone"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                 <el-form-item label="游客人数">
+                    <el-input v-model="form.visitorCount"></el-input>
+                </el-form-item>
+                 <el-form-item label="行程开始时间">
+                    <el-input v-model="form.startTime"></el-input>
+                </el-form-item>
+                 <el-form-item label="行程景点数">
+                    <el-input v-model="form.scenicCount"></el-input>
+                </el-form-item>
+                 <el-form-item label="行程天数">
+                    <el-input v-model="form.dateCount"></el-input>
+                </el-form-item>
+                 <el-form-item label="住宿天数">
+                    <el-input v-model="form.stayPeriod"></el-input>
+                </el-form-item>
+                 <el-form-item label="填报时间">
+                    <el-input v-model="form.addTime"></el-input>
+                </el-form-item>                
+                <el-form-item label="性别">
+                    <el-radio-group v-model="form.sex">
+                        <el-radio :label="1">男</el-radio>
+                        <el-radio :label="0">女</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="审批时间">
+                    <el-date-picker type="date" placeholder="选择日期" v-model="form.approvalDate" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
                 </el-form-item>
 
             </el-form>
@@ -133,17 +157,15 @@
             // 获取 列表数据
             getData() {
                 let params={
-                    scenicName:this.scenicName,
-                    ticket:this.ticket,
-                    grade:this.grade,
+                    ...this.searchForm,
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideList',
-                    type:"get",
+                    url:'Api/Travel/GetTravelList',
+                    type:"post",
                     query:{...params}
-                }).then((res) => {
-                    this.tableData = res.data;
+                }).then((res) => {                    
+                    this.tableData = res.result;
                     this.pageTotal=parseInt(res.pageTotal);
                 })
             },
@@ -158,18 +180,19 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
+                this.dialogTitle='修改导游人员',
                 this.idx = index;
                 this.id = row.id;
                 let params={
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideList',
-                    type:"get",
+                    url:'Api/Travel/GetGuideDetail',
+                    type:"post",
                     query:{...params}
                 }).then((res) => {
                     let rlt =res.result;
-                    this.form = {...rlt};
+                    this.form = {...rlt,sex:parseInt(rlt.sex)};
                     this.editVisible = true;
                 })
                 
@@ -181,16 +204,19 @@
                 this.delVisible = true;
             },
             create(){  
-                //this.getRoleData();              
+                //this.getRoleData();
+                this.dialogTitle='新增导游人员';              
                 this.form = {
+                    guideName:"",
+                    idCard:"",
+                    guideNum:"",
+                    leadership:"",
                     phone:"",
-                    userName:"",
-                    password:"",
-                    mail:"",
-                    roleId:[],
-                    name:''
-                },
-                this.dialogTitle='新增用户',
+                    grade:"",
+                    sex:1,
+                    approvalDate:""
+                };
+                
                 this.editVisible = true;
             },
             delAll() {
@@ -208,8 +234,24 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                let params={...this.form}
+                console.log("params",params)
+                let url="Api/Travel/GuideAdd"
+                if(params.id){
+                    url="Api/Travel/GuideEdit"
+                }
+                fetch({
+                    url:url,
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    console.log("AddFunction:",res)
+                    this.editVisible = false;
+                    this.$message.success(`保存成功`)
+                    this.getData();
+                    //this.tableData = res.abilitiesList;
+                })
+                /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);
                 }else{
@@ -219,7 +261,7 @@
                             return ;
                         }
                     }
-                }
+                }*/
             },
             // 确定删除
             deleteRow(){
