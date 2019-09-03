@@ -44,43 +44,166 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+        <el-dialog title="编辑" :visible.sync="editVisible" width="80%">
             <el-form ref="form" :model="form" label-width="110px">
-                 <el-form-item label="导游名称">
-                    <el-input v-model="form.guideName"></el-input>
-                </el-form-item>
-                 <el-form-item label="导游电话">
-                    <el-input v-model="form.guidePhone"></el-input>
-                </el-form-item>
-                 <el-form-item label="游客人数">
-                    <el-input v-model="form.visitorCount"></el-input>
-                </el-form-item>
-                 <el-form-item label="行程开始时间">
-                    <el-input v-model="form.startTime"></el-input>
-                </el-form-item>
-                 <el-form-item label="行程景点数">
-                    <el-input v-model="form.scenicCount"></el-input>
-                </el-form-item>
-                 <el-form-item label="行程天数">
-                    <el-input v-model="form.dateCount"></el-input>
-                </el-form-item>
-                 <el-form-item label="住宿天数">
-                    <el-input v-model="form.stayPeriod"></el-input>
-                </el-form-item>
-                 <el-form-item label="填报时间">
-                    <el-input v-model="form.addTime"></el-input>
-                </el-form-item>                
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.sex">
-                        <el-radio :label="1">男</el-radio>
-                        <el-radio :label="0">女</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="审批时间">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.approvalDate" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="团队编号">
+                            <el-input v-model="form.teamNum"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="线路名称">
+                            <el-input v-model="form.route"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="接团日期">
+                            <el-input v-model="form.startTime"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="送团日期">
+                            <el-input v-model="form.endTime"></el-input>
+                        </el-form-item>
+                    </el-col> 
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="车牌号">
+                            <el-input v-model="form.carNum"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="司机姓名">
+                            <el-input v-model="form.driverName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="司机电话">
+                            <el-input v-model="form.driverPhone"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="司机身份证">
+                            <el-input v-model="form.driverIdCard"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="导游姓名">
+                            <el-input v-model="form.guideName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="导游电话">
+                            <el-input v-model="form.guidePhone"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="导游证号">
+                            <el-input v-model="form.guideNum"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="导游身份证">
+                            <el-input v-model="form.guideIdCard"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="游玩天数">
+                            <el-input v-model="form.dateCount"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="游客人数">
+                            <el-input v-model="form.visitorCount"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                 
             </el-form>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>行程单</span>
+                </div>
+                <el-table
+                    :data="travelList"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    header-align="center">
+                    <el-table-column label="序列"   width="50" header-align="center">
+                        <template slot-scope="{row,$index}">
+                            <span>{{$index + 1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="景点"  prop="scenicName"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.scenicName">
+                            <span v-if="!showEdit[$index]">{{row.scenicName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100"
+                        align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-button type="text" size="small"     @click.native="handleUpdate($index, row)"     v-if="showBtn[$index]">更新</el-button>
+                            <el-button type="text" size="small"     @click.native="handleCancel($index, row)"     v-if="showBtn[$index]">取消</el-button>
+                    
+                            <el-button type="text" size="small"     @click.native="handleEdit($index, row)"     v-if="!showBtn[$index]">编辑</el-button>
+                            <el-button type="text" size="small"     @click.native="handleDelete($index, row)"     v-if="!showBtn[$index]">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+            </el-card>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>游客信息</span>
+                </div>
+                <el-table
+                    :data="travelList"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    header-align="center">
+                    <el-table-column label="序列"   width="50" header-align="center">
+                        <template slot-scope="{row,$index}">
+                            <span>{{$index + 1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="景点"  prop="scenicName"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.scenicName">
+                            <span v-if="!showEdit[$index]">{{row.scenicName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100"
+                        align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-button type="text" size="small"     @click.native="handleUpdate($index, row)"     v-if="showBtn[$index]">更新</el-button>
+                            <el-button type="text" size="small"     @click.native="handleCancel($index, row)"     v-if="showBtn[$index]">取消</el-button>
+                    
+                            <el-button type="text" size="small"     @click.native="handleEdit($index, row)"     v-if="!showBtn[$index]">编辑</el-button>
+                            <el-button type="text" size="small"     @click.native="handleDelete($index, row)"     v-if="!showBtn[$index]">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+            </el-card>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
@@ -107,6 +230,17 @@
                 tableData: [],                
                 cur_page: 1,
                 pageTotal:0,
+                showEdit: [],
+                showBtn: [],
+                travelList:[{
+                    date:"",
+                    scenicName:"文博宫",
+                    scenicId:"",
+                    hotelName:"",
+                    hotelId:"",
+                    description:""
+                }],
+                visitorsdList:[],
                 multipleSelection: [],
                 searchForm:{},
                 scenicName:'',
