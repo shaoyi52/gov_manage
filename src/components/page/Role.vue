@@ -162,7 +162,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Api/Tourism/GetRolePage',
+                    url:'web/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -170,7 +170,7 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'Api/Tourism/GetMenuList',//'Api/Tourism/GetSourceChild',
+                    url:'web/GetMenuList',//'web/GetSourceChild',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -212,19 +212,19 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'Api/Tourism/GetRoleInfo',
+                    url:'web/GetRoleInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     let role={...res.result};
                     fetch({
-                        url:'Api/Tourism/GetMenuByRole',
+                        url:'web/GetMenuByRole',
                         type:"post",                   
                         query:{...params} 
                     }).then((res) => {
                         let menu=[...res.checkedIdList];
                         fetch({
-                            url:'Api/Tourism/GetFunsByRole',
+                            url:'web/GetFunsByRole',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
@@ -274,9 +274,9 @@
                 //console.log(selectKeys);
                 //return            
                 let params={...this.form,functionIds:[...selectKeys]}
-                let url="Api/Tourism/AddRole"
+                let url="web/AddRole"
                 if(params.id){
-                    url="Api/Tourism/EditRole"
+                    url="web/EditRole"
                 }
                 fetch({
                     url:url,

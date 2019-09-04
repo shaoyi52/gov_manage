@@ -138,7 +138,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Tourism/GetScenicList',
+                    url:'web/GetScenicList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;

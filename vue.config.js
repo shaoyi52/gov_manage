@@ -3,19 +3,13 @@ module.exports = {
     assetsDir: 'static',
     productionSourceMap: false,    
     devServer: {
-        proxy: {
-            '/Api': {        
-                target: "http://121.204.164.176:8001/Api",        
+        proxy: {           
+            '/web': { 
+                target: "http://121.204.164.176:8002/web", 
+                ws: false,       
                 changeOrigin: true,        
                 pathRewrite: {        
-                '^/Api': '/' ,       
-                } 
-            },
-            '/Web': {        
-                target: "http://121.204.164.176:8001/Web",        
-                changeOrigin: true,        
-                pathRewrite: {        
-                '^/Web': '/' ,       
+                '^/web': '/' ,       
                 } 
             }       
         }        

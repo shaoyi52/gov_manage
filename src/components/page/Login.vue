@@ -1,6 +1,6 @@
 <template>
     <div class="login-wrap">
-        <div class="ms-header">晋江市智慧旅游管理平台</div>
+        <div class="ms-header">晋江市旅游广告管理平台</div>
         <div class="ms-login">
             <div class="ms-title">后台管理系统</div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
@@ -74,7 +74,7 @@
                         }
                        
                         fetch({
-                            url:'Api/Tourism/login',
+                            url:'web/login',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {

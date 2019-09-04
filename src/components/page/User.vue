@@ -162,7 +162,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Api/Tourism/GetUserList',
+                    url:'web/GetUserList',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -178,7 +178,7 @@
                     status:1                 
                 }
                 fetch({
-                    url:'Api/Tourism/GetRolePage',
+                    url:'web/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -256,7 +256,7 @@
                 let _this=this;
                 this.getRoleData();
                 fetch({
-                    url:'Api/Tourism/GetUserDetail',
+                    url:'web/GetUserDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {

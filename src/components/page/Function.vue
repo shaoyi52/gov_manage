@@ -190,7 +190,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Api/Tourism/GetFunctionPage',
+                    url:'web/GetFunctionPage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -198,7 +198,7 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'Api/Tourism/GetMenuList',//'Api/Tourism/GetSourceChild',
+                    url:'web/GetMenuList',//'web/GetSourceChild',
                     type:"post",                   
                     query:{"isMenu":1} 
                 }).then((res) => {
@@ -241,7 +241,7 @@
                     abilitieId:row.abilitieId,
                 }
                 fetch({
-                    url:'Api/Tourism/GetFunctionIfo',
+                    url:'web/GetFunctionIfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -285,9 +285,9 @@
             // 保存编辑
             saveEdit() {                
                 let params={...this.form}
-                let url="Api/Tourism/AddFunction"
+                let url="web/AddFunction"
                 if(params.abilitieId){
-                    url="Api/Tourism/UpdateFunction"
+                    url="web/UpdateFunction"
                 }
                 fetch({
                     url:url,
