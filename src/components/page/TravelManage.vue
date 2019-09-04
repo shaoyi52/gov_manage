@@ -146,7 +146,45 @@
                             <span>{{$index + 1}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="景点"  prop="scenicName"   align="center">
+                    <el-table-column label="日期"  prop="date"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-date-picker
+                             v-if="showEdit[$index]"
+                            v-model="row.date"
+                            type="date"
+                            class="edit-cell"
+                            placeholder="选择日期">
+                            </el-date-picker>
+                            <span v-if="!showEdit[$index]">{{row.date}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="景区"  prop="scenicName"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-select v-if="showEdit[$index]"  v-model="row.scenicId" placeholder="请选择">
+                                <el-option
+                                v-for="item in scenicList"                                
+                                :key="item.id"
+                                :label="item.scenicName"
+                                :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <span  v-if="!showEdit[$index]">{{row.scenicName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="酒店"  prop="hotelName"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-select v-if="showEdit[$index]"  v-model="row.hotelId" placeholder="请选择">
+                                <el-option
+                                v-for="item in hotelList"                                
+                                :key="item.id"
+                                :label="item.hotelName"
+                                :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <span v-if="!showEdit[$index]">{{row.hotelName}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="行程描述"  prop="description"   align="center">
                         <template slot-scope="{row,$index}">
                             <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.scenicName">
                             <span v-if="!showEdit[$index]">{{row.scenicName}}</span>
@@ -161,7 +199,7 @@
                             <el-button type="text" size="small"     @click.native="handleUpdate($index, row)"     v-if="showBtn[$index]">更新</el-button>
                             <el-button type="text" size="small"     @click.native="handleCancel($index, row)"     v-if="showBtn[$index]">取消</el-button>
                     
-                            <el-button type="text" size="small"     @click.native="handleEdit($index, row)"     v-if="!showBtn[$index]">编辑</el-button>
+                            <el-button type="text" size="small"     @click.native="handleEditTravelRow($index, row)"     v-if="!showBtn[$index]">编辑</el-button>
                             <el-button type="text" size="small"     @click.native="handleDelete($index, row)"     v-if="!showBtn[$index]">删除</el-button>
                         </template>
                     </el-table-column>
@@ -182,12 +220,51 @@
                             <span>{{$index + 1}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="景点"  prop="scenicName"   align="center">
+                    <el-table-column label="证件类型"  prop="IdType"   align="center">
                         <template slot-scope="{row,$index}">
-                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.scenicName">
-                            <span v-if="!showEdit[$index]">{{row.scenicName}}</span>
+                            <el-select v-if="showEdit[$index]"  v-model="row.IdType" placeholder="请选择">
+                                <el-option
+                                v-for="item in idList"                                
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <span v-if="!showEdit[$index]">{{row.IdType}}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column label="证件号码"  prop="IdNumber"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.IdNumber">
+                            <span v-if="!showEdit[$index]">{{row.IdNumber}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="姓名"  prop="name"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.name">
+                            <span v-if="!showEdit[$index]">{{row.name}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="性别"  prop="sex"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <input class="edit-cell" v-if="showEdit[$index]"    v-model="row.sex">
+                            <span v-if="!showEdit[$index]">{{row.sex}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="出生日期"  prop="birthday"   align="center">
+                        <template slot-scope="{row,$index}">
+                            <el-date-picker
+                            v-if="showEdit[$index]"
+                            v-model="row.birthday"
+                            type="date"
+                            class="edit-cell"
+                            placeholder="选择日期">
+                            </el-date-picker>
+                            <span v-if="!showEdit[$index]">{{row.birthday}}</span>
+                        </template>
+                    </el-table-column>
+
+
                     <el-table-column
                         fixed="right"
                         label="操作"
@@ -227,7 +304,28 @@
         name: 'basetable',
         data() {
             return {
-                tableData: [],                
+                tableData: [],  
+                hotelList:[],
+                scenicList:[],
+                idList:[{
+                    id:1,
+                    name:"身份证"
+                },{
+                    id:2,
+                    name:"回乡证"
+                },{
+                    id:3,
+                    name:"台胞证"
+                },{
+                    id:4,
+                    name:"港澳通行证"
+                },{
+                    id:5,
+                    name:"护照"
+                },{
+                    id:6,
+                    name:"军官证"
+                }],             
                 cur_page: 1,
                 pageTotal:0,
                 showEdit: [],
@@ -328,8 +426,7 @@
                     let rlt =res.result;
                     this.form = {...rlt,sex:parseInt(rlt.sex)};
                     this.editVisible = true;
-                })
-                
+                })                
                 
             },
             handleDelete(index, row) {
@@ -350,8 +447,30 @@
                     sex:1,
                     approvalDate:""
                 };
+                this.getInitData();
                 
                 this.editVisible = true;
+            },
+            getInitData(){
+                let params={pageCount:1,pageSize:100}
+                fetch({
+                    url:'Api/Tourism/GetScenicList',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    this.scenicList=res.result;
+                   console.log('GetScenicList',res)
+                    
+                })
+                fetch({
+                    url:'Api/Tourism/GetHotelList',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    this.hotelList=res.result;
+                   console.log('GetHotelList',res)
+                    
+                })
             },
             delAll() {
                 const length = this.multipleSelection.length;
@@ -365,6 +484,12 @@
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
+            },
+
+            //编辑旅途行
+            handleEditTravelRow(index,row){
+                console.log(index);
+                this.showEdit[index]=true;
             },
             // 保存编辑
             saveEdit() {
