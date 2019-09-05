@@ -1,0 +1,105 @@
+{
+    
+"uid": "{{uid}}",
+    
+"token": "{{token}}",
+   
+ "taId": "{{TAId}}",
+   
+ "teamNum": "{{$timestamp}}{{$randomInt}}",
+    
+"route": "行程测试{{$timestamp}}_{{$randomInt}}",
+    
+"startTime": "2019-10-01",
+    
+"endTime": "2019-10-03",
+   
+ "carNum": "粤A1111",
+    
+"driverName": "张三",
+    
+"driverPhone": "13570339011",
+    
+"driverIdCard": "350582199502112022",
+   
+ "guideName": "李四",
+    
+"guidePhone": "13570339011",
+    
+"guideNum": "OV43015F",
+   
+ "guideIdCard": "350582199502112022",
+    
+"remark": "行程测试",
+    
+"dateCount": "0",
+   
+ "visitorCount": "0",
+    
+"detail": [
+        
+	{
+            "date": "2019-10-01",
+           
+ 		"scenicName": "景区固定测试专用",
+            
+"scenicId": "02AB0D02-3065-4D5A-B31F-46D00113AA93",
+           
+ "hotelName": "酒店固定测试专用",
+           
+ "hotelId": "F71BE181-74B1-4469-9F69-46D000FE5893",
+           
+ "description": "旅游行程描述"
+        },
+      
+  {
+            "date": "2019-10-02",
+            
+"scenicName": "景区固定测试专用",
+          
+  "scenicId": "DE90100C-FF94-4E4E-AF62-46D00113AB61",
+          
+  "hotelName": "酒店固定测试专用",
+           
+ "hotelId": "02A7725A-D2D7-4AF3-AE56-46D000FE68C1",
+          
+  "description": "旅游行程描述"
+       
+ },
+        {
+            "date": "2019-10-03",
+           
+ "scenicName": "景区固定测试专用",
+            
+"scenicId": "93EC4F61-9C61-4286-99DA-46D00113ABBA",
+           
+ "hotelName": "酒店固定测试专用",
+            
+"hotelId": "4418D2C5-5B47-4BA9-9C59-46D000FF8E51",
+            "description": "旅游行程描述"
+        }
+    ],
+    "visitor": [
+        {
+            "IdNumber": "440882199206064424",
+            "IdType": "1",
+            "name": "小红",
+            "sex": "0",
+            "birthday": "19920606"
+        },
+        {
+            "IdNumber": "440882199206064427",
+            "IdType": "1",
+            "name": "小李",
+            "sex": "0",
+            "birthday": "19920606"
+        },
+        {
+            "IdNumber": "440882199206064425",
+            "IdType": "1",
+            "name": "小王",
+            "sex": "1",
+            "birthday": "19920606"
+        }
+    ]
+}
