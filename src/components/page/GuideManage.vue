@@ -44,7 +44,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="460px">
             <el-form ref="form" :model="form" label-width="110px">
                  <el-form-item label="导游名称">
                     <el-input v-model="form.guideName"></el-input>
@@ -259,18 +259,20 @@
             },
             // 确定删除
             deleteRow(){
-                this.$message.success('删除成功');
-                this.delVisible = false;
-                if(this.tableData[this.idx].id === this.id){
-                    this.tableData.splice(this.idx, 1);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.tableData.splice(i, 1);
-                            return ;
-                        }
-                    }
+                 let params={
+                    id:this.id
                 }
+                fetch({
+                    url:'Api/Travel/GuideDel',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    if(res.code=="00000"){
+                        this.$message.success('删除成功');
+                        this.delVisible = false;
+                        this.getData();
+                    }                   
+                })
             }
         }
     }

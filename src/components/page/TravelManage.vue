@@ -44,7 +44,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="80%">
+        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="80%">
             <el-form ref="form" :model="form" label-width="110px">
                 <el-row :gutter="40">
                     <el-col :span="12">
@@ -409,7 +409,7 @@
             },
             handleEdit(index, row) {
                 this.getInitData();
-                this.dialogTitle='修改导游人员',
+                this.dialogTitle='修改行程',
                 this.idx = index;
                 this.id = row.id;
                 let params={
@@ -426,14 +426,14 @@
                 })                
                 
             },
-            handleDelete(index, row) {
+            handleDelete(index, row) {                
                 this.idx = index;
                 this.id = row.id;
                 this.delVisible = true;
             },
             create(){  
                 //this.getRoleData();
-                this.dialogTitle='新增导游人员';              
+                this.dialogTitle='新增行程';              
                 this.form2 = { 
                     "teamNum": "sd45221",
                         
@@ -643,18 +643,21 @@
             },
             // 确定删除
             deleteRow(){
-                this.$message.success('删除成功');
-                this.delVisible = false;
-                if(this.tableData[this.idx].id === this.id){
-                    this.tableData.splice(this.idx, 1);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.tableData.splice(i, 1);
-                            return ;
-                        }
-                    }
+                 let params={
+                    id:this.id
                 }
+                fetch({
+                    url:'Api/Travel/TravelDel',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    if(res.code=="00000"){
+                        this.$message.success('删除成功');
+                        this.delVisible = false;
+                        this.getData();
+                    }                   
+                })
+                
             },
             /*******travelList action****** */
             addTravel(){
@@ -666,7 +669,7 @@
             },
             /*******visitorlList action****** */
             addVisitors(){
-                const  travel={IdType:"", IdNumber:"",name:"",sex:1,birthday:"",}
+                const  travel={IdType:"", IdNumber:"",name:"",sex:"1",birthday:"",}
                 this.form["visitor"].push(travel);
             },
             deleteVisitorsRow(index,row){
