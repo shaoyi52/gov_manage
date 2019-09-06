@@ -61,13 +61,13 @@
                 </el-form-item>                 
                  <el-form-item label="角色">
                     <el-select v-model="form.roleId" multiple placeholder="请选择">
-                    <el-option
-                    v-for="item in roles"
-                    :key="item.id"
-                    :label="item.roleName"
-                    :value="item.id">
-                    </el-option>
-                </el-select> 
+                        <el-option
+                        v-for="item in roles"
+                        :key="item.id"
+                        :label="item.roleName"
+                        :value="item.id">
+                        </el-option>
+                    </el-select> 
                 </el-form-item> 
 
             </el-form>
@@ -293,7 +293,6 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                console.log("params",params)
                 let url="Api/Tourism/AddUser"
                 if(params.id){
                     url="Api/Tourism/ EditUser"
