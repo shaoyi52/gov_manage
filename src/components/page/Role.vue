@@ -22,7 +22,7 @@
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button type="text" icon="el-icon-delete" v-if="false" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -159,7 +159,7 @@
             getData() {
                let params={
                     pageSize:10,
-                    pageCount:1,  // this.cur_page                  
+                    pageCount:this.cur_page,  // this.cur_page                  
                 }
                 fetch({
                     url:'Api/Tourism/GetRolePage',
@@ -302,18 +302,20 @@
             },
             // 确定删除
             deleteRow(){
-                this.$message.success('删除成功');
-                this.delVisible = false;
-                if(this.tableData[this.idx].id === this.id){
-                    this.tableData.splice(this.idx, 1);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.tableData.splice(i, 1);
-                            return ;
-                        }
-                    }
+                let params={
+                    id:this.id
                 }
+                fetch({
+                    url:'Api/Tourism/DelUser',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    if(res.code=="00000"){
+                        this.$message.success('删除成功');
+                        this.delVisible = false;
+                        this.getData();
+                    }                   
+                })
             }
         }
     }

@@ -1,5 +1,6 @@
 import request from '../utils/request';
-
+import router from '../router'
+import {Loading,Message} from "element-ui";
 export const fetchData = (query) => {
     return request({
         url: '/ms/table/list',
@@ -11,13 +12,24 @@ export const fetchData = (query) => {
 export const fetch= (obj) => {    
     let url=obj.url,
         type=obj.type||'post',
-        query=obj.query;
+        query=obj.query,
+        disToken=obj.disToken;
         console.log("params",obj)
-        if(sessionStorage.getItem("token")&&sessionStorage.getItem("uid")){
-            query['token']=sessionStorage.getItem("token");
-            query['uid']=sessionStorage.getItem("uid");
-        }
-        //localStorage.setItem('ms_username',this.ruleForm.username);
+        if(!disToken){
+            if(sessionStorage.getItem("token")&&sessionStorage.getItem("uid")){
+                query['token']=sessionStorage.getItem("token");
+                query['uid']=sessionStorage.getItem("uid");
+            }else{
+                Message({
+                    type: 'error',
+                    message: '登录信息过期！'
+                });
+                router.replace({ 
+                    path: '/login' // 到登录页重新获取token     
+                })
+                return false
+            }
+        };
     return request({
         url: url,
         method: type,

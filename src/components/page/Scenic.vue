@@ -135,7 +135,7 @@
                     scenicName:this.scenicName,
                     ticket:this.ticket,
                     grade:this.grade,
-                    page:this.cur_page,
+                    pageCount:this.cur_page,
                 }
                 fetch({
                     url:'Api/Tourism/GetScenicList',

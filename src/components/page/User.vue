@@ -159,7 +159,7 @@
                let params={
                     ...this.searchForm,
                     pageSize:10,
-                    pageCount:1,  // this.cur_page                  
+                    pageCount:this.cur_page,  // this.cur_page                  
                 }
                 fetch({
                     url:'Api/Tourism/GetUserList',
@@ -311,18 +311,21 @@
             },
             // 确定删除
             deleteRow(){
-                this.$message.success('删除成功');
-                this.delVisible = false;
-                if(this.tableData[this.idx].id === this.id){
-                    this.tableData.splice(this.idx, 1);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.tableData.splice(i, 1);
-                            return ;
-                        }
-                    }
+                let params={
+                    id:this.id
                 }
+                fetch({
+                    url:'Api/Tourism/DelUser',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    if(res.code=="00000"){
+                        this.$message.success('删除成功');
+                        this.delVisible = false;
+                        this.getData();
+                    }                   
+                })
+                
             }
         }
     }

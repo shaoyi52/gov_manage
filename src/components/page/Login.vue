@@ -75,7 +75,8 @@
                        
                         fetch({
                             url:'Api/Tourism/login',
-                            type:"post",                   
+                            type:"post",   
+                            disToken:true,
                             query:{...params} 
                         }).then((res) => {
                             console.log("res",res)
