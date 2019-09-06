@@ -104,12 +104,13 @@
                         }
                        
                 fetch({
-                    url:'Api/Travel/TravelRegister',
+                    url:'Api/Travel/EditCompany',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     console.log("res",res)
                     if(res.code=="00000"){
+                        this.$message.success("公司信息修改成功！");
                         console.log(res);
                         /*localStorage.setItem('ms_username',this.ruleForm.username);
                         sessionStorage.setItem("token", res.token)

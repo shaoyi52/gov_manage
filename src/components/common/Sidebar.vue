@@ -65,7 +65,7 @@
                     },
                     {
                         icon: 'el-icon-lx-rank',
-                        index: 'statistics',
+                        index: 'statistics1',
                         title: '统计分析'
                     }]
             }

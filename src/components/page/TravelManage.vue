@@ -18,7 +18,7 @@
                 </el-table-column>
                 <el-table-column prop="guidePhone" label="导游电话" >
                 </el-table-column>
-                 <el-table-column prop="visitorCount" label="游客人数" >
+                 <el-table-column prop="visitorNum" label="游客人数" >
                 </el-table-column>
                  <el-table-column prop="startTime" label="行程开始时间" width="120">
                 </el-table-column>
@@ -76,7 +76,7 @@
                             v-model="form.endTime"
                             type="date"
                             class="edit-cell"
-                            format="yyyyMMdd"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
                         </el-form-item>
@@ -102,7 +102,7 @@
                     </el-col>
                     <el-col :span="12">
                          <el-form-item label="司机身份证">
-                            <el-input v-model="form.DriverIdCard"></el-input>
+                            <el-input v-model="form.driverIdCard"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row> 
@@ -114,7 +114,7 @@
                     </el-col>
                     <el-col :span="12">
                          <el-form-item label="导游电话">
-                            <el-input v-model="form.GuidePhone"></el-input>
+                            <el-input v-model="form.guidePhone"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row> 
@@ -166,7 +166,7 @@
                             <el-date-picker
                             v-model="row.date"
                             type="date"
-                            format="yyyyMMdd"
+                            value-format="yyyy-MM-dd"
                             class="edit-cell"
                             placeholder="选择日期">
                             </el-date-picker>
@@ -230,9 +230,9 @@
                             <span>{{$index + 1}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="证件类型"  prop="IdType"   align="center">
+                    <el-table-column label="证件类型"     align="center">
                         <template slot-scope="{row}">
-                            <el-select  v-model="row.IdType" placeholder="请选择">
+                            <el-select  v-model="row.IdType" name="row.name" placeholder="请选择">
                                 <el-option
                                 v-for="item in idList"                                
                                 :key="item.id"
@@ -242,9 +242,9 @@
                             </el-select>
                         </template>
                     </el-table-column>
-                    <el-table-column label="证件号码"  prop="IdCard"   align="center">
+                    <el-table-column label="证件号码"  prop="IdNumber"   align="center">
                         <template slot-scope="{row}">
-                            <el-input v-model="row.IdCard"></el-input>
+                            <el-input v-model="row.IdNumber"></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column label="姓名"  prop="name"   align="center">
@@ -266,7 +266,7 @@
                             v-model="row.birthday"
                             type="date"
                             class="edit-cell"
-                            format="yyyyMMdd"
+                            value-format="yyyy-MM-dd"
                             placeholder="选择日期">
                             </el-date-picker>
                         </template>
@@ -312,22 +312,22 @@
                 hotelList:[],
                 scenicList:[],
                 idList:[{
-                    id:1,
+                    id:"1",
                     name:"身份证"
                 },{
-                    id:2,
+                    id:"2",
                     name:"回乡证"
                 },{
-                    id:3,
+                    id:"3",
                     name:"台胞证"
                 },{
-                    id:4,
+                    id:"4",
                     name:"港澳通行证"
                 },{
-                    id:5,
+                    id:"5",
                     name:"护照"
                 },{
-                    id:6,
+                    id:"6",
                     name:"军官证"
                 }],             
                 cur_page: 1,
@@ -408,6 +408,7 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
+                this.getInitData();
                 this.dialogTitle='修改导游人员',
                 this.idx = index;
                 this.id = row.id;
@@ -415,7 +416,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideDetail',
+                    url:'Api/Travel/GetTravelDetail',
                     type:"post",
                     query:{...params}
                 }).then((res) => {
@@ -433,41 +434,130 @@
             create(){  
                 //this.getRoleData();
                 this.dialogTitle='新增导游人员';              
-                this.form = {
-                    carNum: "123456",
-                    dateCount: "3",
-                    DriverIdCard: "360732198906265337",
-                    driverName: "yuzhoufen",
-                    driverPhone: "13428984417",
-                    endTime: "20190902",
-                    guideIdCard: "360732198906265337",
-                    guideName: "yangyi",
-                    guideNum: "12345",
-                    GuidePhone: "13728984417",
-                    route: "1222",
+                this.form2 = { 
+                    "teamNum": "sd45221",
+                        
+                    "route": "行程测试11",
+                        
+                    "startTime": "2019-10-01",
+                        
+                    "endTime": "2019-10-03",
+                    
+                    "carNum": "粤A1111",
+                        
+                    "driverName": "张三",
+                        
+                    "driverPhone": "13570339011",
+                        
+                    "driverIdCard": "350582199502112022",
+                    
+                    "guideName": "李四",
+                        
+                    "guidePhone": "13570339011",
+                        
+                    "guideNum": "OV43015F",
+                    
+                    "guideIdCard": "350582199502112022",
+                        
+                    "remark": "行程测试",
+                        
+                    "dateCount": "0",
+                    
+                    "visitorCount": "0",
+                        
+                    "detail": [
+                            
+                        {
+                                "date": "2019-10-01",
+                            
+                            "scenicName": "景区固定测试专用",
+                                
+                    "scenicId": "02AB0D02-3065-4D5A-B31F-46D00113AA93",
+                            
+                    "hotelName": "酒店固定测试专用",
+                            
+                    "hotelId": "F71BE181-74B1-4469-9F69-46D000FE5893",
+                            
+                    "description": "旅游行程描述"
+                            },
+                        
+                    {
+                                "date": "2019-10-02",
+                                
+                    "scenicName": "景区固定测试专用",
+                            
+                    "scenicId": "DE90100C-FF94-4E4E-AF62-46D00113AB61",
+                            
+                    "hotelName": "酒店固定测试专用",
+                            
+                    "hotelId": "02A7725A-D2D7-4AF3-AE56-46D000FE68C1",
+                            
+                    "description": "旅游行程描述"
+                        
+                    },
+                            {
+                                "date": "2019-10-03",
+                            
+                                "scenicName": "景区固定测试专用",
+                                            
+                                "scenicId": "93EC4F61-9C61-4286-99DA-46D00113ABBA",
+                                        
+                                "hotelName": "酒店固定测试专用",
+                                            
+                                "hotelId": "4418D2C5-5B47-4BA9-9C59-46D000FF8E51",
+                                "description": "旅游行程描述"
+                            }
+                        ],
+                        "visitor": [
+                            {
+                                "IdNumber": "440882199206064424",
+                                "IdType": "1",
+                                "name": "小红",
+                                "sex": "0",
+                                "birthday": "2019-09-02"
+                            },
+                            {
+                                "IdNumber": "440882199206064427",
+                                "IdType": "1",
+                                "name": "小李",
+                                "sex": "0",
+                                "birthday": "2019-09-02"
+                            },
+                            {
+                                "IdNumber": "440882199206064425",
+                                "IdType": "1",
+                                "name": "小王",
+                                "sex": "1",
+                                "birthday": "2019-09-02"
+                            }
+                        ]
+                    };
+                this.form={
+                    carNum: "",
+                    dateCount: "",
+                    DriverIdCard: "",
+                    driverName: "",
+                    driverPhone: "",
+                    endTime: "",
+                    guideIdCard: "",
+                    guideName: "",
+                    guideNum: "",
+                    GuidePhone: "",
+                    route: "",
                     sex: 1,
-                    startTime: "2019-09-02",
-                    taId: "1e2a1f35-5a31-4c82-a620-46dd012df98f",
-                    teamNum: "111111",
-                    visitorCount: "15",
-                    /*guideName:"",
-                    idCard:"",
-                    guideNum:"",
-                    leadership:"",
-                    phone:"",
-                    grade:"",
-                    sex:1,
-                    approvalDate:"",*/
+                    startTime: "",
+                    teamNum: "",
+                    visitorCount: "",
                     detail:[{
-                        date: 20190902,
-                        description: "文博宫",
-                        hotelId: "7de70fb0-ec65-493f-af8b-46d001007e39",
-                        hotelName: "ff",
-                        scenicId: "7ada828f-1753-4dc4-b054-46d00113ac03",
-                        scenicName: "dfd",
+                        date: '',
+                        description: "",
+                        hotelId: "",
+                        hotelName: "",
+                        scenicId: "",
+                        scenicName: "",
                     }],
                     visitor:[{ 
-                            IdCard: "36073219890626", IdNumber: "36344", IdType: 5,birthday: "20190915", name: "yuyi",sex: "0"
+                            IdCard: "", IdNumber: "", IdType:"" ,birthday: "", name: "",sex: ""
                         }  
                     
                     ],
@@ -523,7 +613,7 @@
                 console.log("params",params)
                 let url="Api/Travel/TravelAdd"
                 if(params.id){
-                    url="Api/Travel/TravelAdd"
+                    url="Api/Travel/TravelEdit"
                 }
                 fetch({
                     url:url,
@@ -531,9 +621,12 @@
                     query:{...params} 
                 }).then((res) => {
                     console.log("AddFunction:",res)
-                    this.editVisible = false;
-                    this.$message.success(`保存成功`)
-                    this.getData();
+                    if(res.code=="00000"){
+                        this.editVisible = false;
+                        this.$message.success(`保存成功`)
+                        this.getData();
+                    }
+                   
                     //this.tableData = res.abilitiesList;
                 })
                 /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
