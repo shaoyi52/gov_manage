@@ -58,12 +58,13 @@
                     if (valid) {
                         let params={
                             userName:this.ruleForm.username,
-                            password:this.ruleForm.password,                            
+                            password:this.ruleForm.password,
                         }
                        
                         fetch({
                             url:'Api/Travel/login',
-                            type:"post",                   
+                            type:"post",  
+                            disToken:true,                 
                             query:{...params} 
                         }).then((res) => {
                             console.log("res",res)
