@@ -45,6 +45,16 @@ export default new Router({
                     meta: { title: '设备信息' }
                 },
                 {
+                    path: '/deviceType',
+                    component: resolve => require(['../components/page/DeviceType.vue'], resolve),
+                    meta: { title: '设备类型列表' }
+                },
+                {
+                    path: '/version',
+                    component: resolve => require(['../components/page/Version.vue'], resolve),
+                    meta: { title: '版本列表' }
+                },
+                {
                     path: '/scenic',
                     component: resolve => require(['../components/page/Scenic.vue'], resolve),
                     meta: { title: '景区信息' }

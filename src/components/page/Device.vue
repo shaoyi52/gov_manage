@@ -10,7 +10,8 @@
                 <el-input v-model="searchForm.sn" placeholder="设备SN" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.type" placeholder="设备类型名" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.belongName" placeholder="设备归属" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="create">新建</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -26,7 +27,7 @@
                 </el-table-column>
                  <el-table-column prop="location" label="设备部署位置" width="120">
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center" v-if="false">
+                <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -40,16 +41,28 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="日期">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" value-format="yyyy-MM-dd" style="width: 100%;"></el-date-picker>
+        <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
+            <el-form ref="form" :model="form" label-width="110px">
+                <el-form-item label="设备SN">
+                    <el-input v-model="form.sn"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
+                <el-form-item label="设备类型名">
+                    <el-input v-model="form.version"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="设备版本名">
+                    <el-input v-model="form.type"></el-input>
+                </el-form-item>
+                <el-form-item label="设备归属">
+                    <el-input v-model="form.type"></el-input>
+                </el-form-item>
+                <el-form-item label="设备类型名">
+                    <el-input v-model="form.belongName"></el-input>
+                </el-form-item>
+                <el-form-item label="设备部署位置">
+                    <el-input v-model="form.location"></el-input>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="form.remark"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -145,6 +158,18 @@
                 //this.is_search = true;
                 this.getData();
             },
+            create(){  
+                this.form = {
+                    sn:"",
+                    type:"",
+                    remark:"",
+                    version:"",
+                    belongName:'',
+                    location:''
+                },
+                this.dialogTitle='新增设备',
+                this.editVisible = true;
+            },
             formatter(row, column) {
                 return row.address;
             },
@@ -154,13 +179,22 @@
             handleEdit(index, row) {
                 this.idx = index;
                 this.id = row.id;
-                this.form = {
-                    id: row.id,
-                    name: row.name,
-                    date: row.date,
-                    address: row.address
+                let params={
+                    id:row.id,
                 }
-                this.editVisible = true;
+                let _this=this;
+                fetch({
+                    url:'web/GetDeviceInfo',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    let rlt=res.result;
+                    if(rlt.length>0){
+                        this.form = {...rlt[0]}
+                        this.editVisible = true;
+                    }                    
+                   
+                })
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -183,17 +217,21 @@
             // 保存编辑
             saveEdit() {
                 this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
-                if(this.tableData[this.idx].id === this.id){
-                    this.$set(this.tableData, this.idx, this.form);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.$set(this.tableData, i, this.form);
-                            return ;
-                        }
-                    }
+                let params={...this.form}
+                let url="web/AddDevice"
+                if(params.id){
+                    url="web/DeviceInfoEdit"
                 }
+                fetch({
+                    url:url,
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {                    
+                    this.editVisible = false;
+                    this.$message.success(`保存成功`);
+                    this.getData();
+                    //this.tableData = res.abilitiesList;
+                })
             },
             // 确定删除
             deleteRow(){

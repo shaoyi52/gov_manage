@@ -2,32 +2,29 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>酒店列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>设备类型列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">         
-                <el-input v-model="searchForm.hotelName" placeholder="酒店名称" class="handle-input mr10"></el-input>
-                <el-input v-model="searchForm.responsible" placeholder="酒店负责人" class="handle-input mr10"></el-input>
-                <el-input v-model="searchForm.grade" placeholder="酒店星级" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.sn" placeholder="设备SN" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.type" placeholder="设备类型名" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.belongName" placeholder="设备归属" class="handle-input mr10"></el-input>
                 <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="create">新建</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="hotelName" label="酒店名称" sortable width="150">
-                </el-table-column>               
-                <el-table-column prop="address" label="地址" :formatter="formatter">
+                <el-table-column type="selection" width="55" align="center"></el-table-column>                            
+                <el-table-column prop="typename" label="设备类型名">
                 </el-table-column>
-                 <el-table-column prop="roomCount" label="房间数" width="120">
+                <el-table-column prop="desc" label="设备型号">
                 </el-table-column>
-                 <el-table-column prop="responsible" label="酒店负责人" width="120">
+                 <el-table-column prop="remarks" label="备注" width="120">
                 </el-table-column>
-                 <el-table-column prop="phone" label="联系电话" width="120">
+                 <el-table-column prop="addTime" label="添加时间" width="120">
                 </el-table-column>
-                 <el-table-column prop="grade" label="酒店星级" width="120">
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center" >
+                
+                <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -41,25 +38,17 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="110px">
-                <el-form-item label="酒店名称">
-                    <el-input v-model="form.hotelName"></el-input>
+        <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
+            <el-form ref="form" :model="form" label-width="110px">               
+                <el-form-item label="设备类型名">
+                    <el-input v-model="form.typename"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                <el-form-item label="设备型号">
+                    <el-input v-model="form.desc"></el-input>
                 </el-form-item>
-                <el-form-item label="房间数">
-                    <el-input v-model="form.roomCount"></el-input>
-                </el-form-item>
-                <el-form-item label="酒店负责人">
-                    <el-input v-model="form.responsible"></el-input>
-                </el-form-item>
-                <el-form-item label="联系电话">
-                    <el-input v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="酒店星级">
-                    <el-input v-model="form.grade"></el-input>
+   
+                <el-form-item label="备注">
+                    <el-input type='textarea' v-model="form.remarks"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -89,6 +78,9 @@
                 tableData: [],                
                 cur_page: 1,
                 pageTotal:0,
+                multipleSelection: [],
+                select_cate: '',
+                select_word: '',
                 searchForm:{},
                 del_list: [],
                 is_search: false,
@@ -141,29 +133,28 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetHotelList',
+                    url:'web/GetDeviceTypeList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
                     this.pageTotal=parseInt(res.pageTotal);
                 })
             },
-            create(){  
-                this.form = {
-                    hotelName:"",
-                    address:"",
-                    roomCount:"",
-                    responsible:"",
-                    phone:'',
-                    grade:''
-                },
-                this.dialogTitle='新增酒店',
-                this.editVisible = true;
-            },
-
             search() {
                 //this.is_search = true;
                 this.getData();
+            },
+            create(){  
+                this.form = {
+                    sn:"",
+                    type:"",
+                    remark:"",
+                    version:"",
+                    belongName:'',
+                    location:''
+                },
+                this.dialogTitle='新增设备',
+                this.editVisible = true;
             },
             formatter(row, column) {
                 return row.address;
@@ -179,13 +170,14 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetHotelDetail',
+                    url:'web/GetDeviceTypeInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
-                    let rlt=res.result;                    
+                    let rlt=res.result;
                     this.form = {...rlt}
-                    this.editVisible = true;
+                    this.editVisible = true;               
+                   
                 })
             },
             handleDelete(index, row) {
@@ -210,9 +202,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web/HotelAdd"
+                let url="web/AddDeviceType"
                 if(params.id){
-                    url="web/HotelEdit"
+                    url="web/DeviceTypeEdit"
                 }
                 fetch({
                     url:url,
@@ -224,7 +216,6 @@
                     this.getData();
                     //this.tableData = res.abilitiesList;
                 })
-
             },
             // 确定删除
             deleteRow(){

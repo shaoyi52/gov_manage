@@ -73,13 +73,39 @@
                     },
                     {
                         icon: 'el-icon-lx-mobile',
-                        index: 'device',
-                        title: '设备信息'
+                        index: '2',
+                        title: '设备管理',
+                        subs: [                            
+                            {
+                                index: 'device',
+                                title: '设备管理列表'
+                            },
+                            {
+                                index: 'deviceType',
+                                title: '设备类型管理',
+                            },
+                            {
+                                index: 'version',
+                                title: '版本管理列表',
+                            }
+                        ]
+                        
+                    },                   
+                    {
+                        icon: 'el-icon-lx-group',
+                        index: '3',
+                        title: '客户管理',
+                        subs: [
+                            {
+                                index: 'touristGuide',
+                                title: '导游业绩',
+                            }
+                        ]
                     },
                     {
                         icon: 'el-icon-lx-hot',
-                        index: '2',
-                        title: '旅行社管理',
+                        index: '4',
+                        title: '广告管理',
                         subs: [                            
                             {
                                 index: 'travelAgency',
@@ -92,20 +118,9 @@
                         ]
                     },
                     {
-                        icon: 'el-icon-lx-group',
-                        index: '3',
-                        title: '导游管理',
-                        subs: [
-                            {
-                                index: 'touristGuide',
-                                title: '导游业绩',
-                            }
-                        ]
-                    },
-                    {
                         icon: 'el-icon-lx-rank',
-                        index: '4',
-                        title: '业绩报告',
+                        index: '5',
+                        title: '统计报表',
                         subs: [
                             {
                                 index: 'visitorsRecord',

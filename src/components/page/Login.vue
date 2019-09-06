@@ -75,7 +75,8 @@
                        
                         fetch({
                             url:'web/login',
-                            type:"post",                   
+                            type:"post",   
+                            disToken:true,
                             query:{...params} 
                         }).then((res) => {
                             console.log("res",res)
