@@ -41,6 +41,10 @@ service.interceptors.response.use(response => {
     }
 }, error => {
     console.log(error);
+    Message({
+        type: 'error',
+        message: error
+    });
     return Promise.reject();
 })
 

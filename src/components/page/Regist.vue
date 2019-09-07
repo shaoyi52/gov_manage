@@ -126,7 +126,8 @@
                        
                 fetch({
                     url:'Api/Travel/TravelRegister',
-                    type:"post",                   
+                    type:"post", 
+                    disToken:true,                   
                     query:{...params} 
                 }).then((res) => {
                     console.log("res",res)
@@ -186,7 +187,8 @@
                        
                 fetch({
                     url:'Api/Web/getImageCode',
-                    type:"post",                   
+                    type:"post",  
+                    disToken:true,                  
                     query:{...params} 
                 }).then((res) => {
                     this.url="data:image/jpg;base64,"+res.result                   
@@ -205,7 +207,8 @@
                 }
                 fetch({
                     url:'Api/Web/GetVerificationCode',
-                    type:"post",                   
+                    type:"post",  
+                    disToken:true,                  
                     query:{...params} 
                 }).then((res) => {
                     console.log("res",res)
