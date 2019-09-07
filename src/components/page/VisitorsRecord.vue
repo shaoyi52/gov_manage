@@ -2,36 +2,48 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 基础表格</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>游客记录列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="handle-box">
-                <el-button type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
+            <div class="handle-box">         
+                <el-input v-model="searchForm.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.guideName" placeholder="导游姓名" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.visitorName" placeholder="游客姓名" class="handle-input mr10"></el-input>
+                <el-select v-model="searchForm.isSameNum" placeholder="证件号比对">
+                    <el-option   key="" label="全部" value=""> </el-option>
+                    <el-option   key="1" label="证件号一致" value="1"> </el-option>
+                    <el-option   key="0" label="证件号不一致" value="0"> </el-option>
                 </el-select>
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="date" label="日期" sortable width="150">
+                <el-table-column prop="travelName" label="旅行社名称" sortable width="150">
+                </el-table-column>               
+                <el-table-column prop="guideName" label="导游姓名">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="120">
+                 <el-table-column prop="visitorName" label="游客姓名" width="120">
                 </el-table-column>
-                <el-table-column prop="address" label="地址" :formatter="formatter">
+                 <el-table-column prop="isReward" label="是否计入奖励" width="120">
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                 <el-table-column prop="scenicHotel" label="景区/酒店" width="120">
+                </el-table-column>
+                 <el-table-column prop="brushTime" label="刷证时间"  width="150">
+                </el-table-column>
+                 <el-table-column prop="registerNum" label="登记时证件号"  width="170">
+                </el-table-column>
+                 <el-table-column prop="brushNum" label="刷证时证件号"  width="170">
+                </el-table-column>
+                <el-table-column label="操作" width="180" align="center" v-if="false">
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table>            
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
@@ -68,16 +80,18 @@
 </template>
 
 <script>
-    import { fetchData } from '../../api/index';
+    import { fetchData,fetch } from '../../api/index';
     export default {
         name: 'basetable',
         data() {
             return {
-                tableData: [],
-                cur_page: 1,
+                tableData: [],                
+                cur_pageCount: 1,
+                pageTotal:0,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
+                searchForm:{},
                 del_list: [],
                 is_search: false,
                 editVisible: false,
@@ -96,6 +110,7 @@
         },
         computed: {
             data() {
+                return this.tableData;
                 return this.tableData.filter((d) => {
                     let is_del = false;
                     for (let i = 0; i < this.del_list.length; i++) {
@@ -123,14 +138,21 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                fetchData({
-                    page: this.cur_page
+                let params={
+                    ...this.searchForm,
+                    pageCount:this.cur_page,
+                }
+                fetch({
+                    url:'Tourism/GetVisitorRecordList',
+                    query:{...params}
                 }).then((res) => {
-                    this.tableData = res.list;
+                    this.tableData = res.result;
+                    this.pageTotal=parseInt(res.pageTotal);
                 })
             },
             search() {
-                this.is_search = true;
+                //this.is_search = true;
+                this.getData();
             },
             formatter(row, column) {
                 return row.address;
@@ -212,7 +234,7 @@
     }
 
     .handle-input {
-        width: 300px;
+        width: 160px;
         display: inline-block;
     }
     .del-dialog-cnt{
@@ -230,3 +252,7 @@
         margin-right: 10px;
     }
 </style>
+
+
+
+

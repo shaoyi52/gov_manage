@@ -136,7 +136,7 @@
         data() {
             return {
                 tableData: [],                
-                cur_page: 1,
+                cur_pageCount: 1,
                 pageTotal:0,
                 multipleSelection: [],
                 select_cate: '',
@@ -194,7 +194,7 @@
                     scenicName:this.scenicName,
                     ticket:this.ticket,
                     grade:this.grade,
-                    page:this.cur_page,
+                    pageCount:this.cur_page,
                 }
                 fetch({
                     url:'/Tourism/GetTravelList',

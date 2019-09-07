@@ -103,7 +103,7 @@
                 searchForm:{},
                 pageTotal:0,
                 roles:[],
-                cur_page: 1,
+                cur_pageCount: 1,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -291,7 +291,6 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
                 let params={...this.form}
                 console.log("params",params)
                 let url='/Tourism/AddUser'

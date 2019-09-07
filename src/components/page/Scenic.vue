@@ -77,7 +77,7 @@
         data() {
             return {
                 tableData: [],                
-                cur_page: 1,
+                cur_pageCount: 1,
                 pageTotal:0,
                 multipleSelection: [],
                 select_cate: '',

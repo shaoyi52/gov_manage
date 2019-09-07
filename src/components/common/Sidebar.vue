@@ -97,7 +97,7 @@
                         title: '导游管理',
                         subs: [
                             {
-                                index: 'touristGuide',
+                                index: 'touristGuide1',
                                 title: '导游业绩',
                             }
                         ]

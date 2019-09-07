@@ -134,7 +134,7 @@
                 tableData: [],
                 pageTotal:0,
                 options: [],
-                cur_page: 1,
+                cur_pageCount: 1,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',

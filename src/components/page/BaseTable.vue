@@ -74,7 +74,7 @@
         data() {
             return {
                 tableData: [],
-                cur_page: 1,
+                cur_pageCount: 1,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -124,7 +124,7 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 fetchData({
-                    page: this.cur_page
+                    pageCount: this.cur_page
                 }).then((res) => {
                     this.tableData = res.list;
                 })

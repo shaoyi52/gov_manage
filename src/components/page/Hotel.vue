@@ -77,7 +77,7 @@
         data() {
             return {
                 tableData: [],                
-                cur_page: 1,
+                cur_pageCount: 1,
                 pageTotal:0,
                 searchForm:{},
                 del_list: [],
@@ -128,7 +128,7 @@
             getData() {
                 let params={
                     ...this.searchForm,
-                    page:this.cur_page,
+                    pageCount:this.cur_page,
                 }
                 fetch({
                     url:'/Tourism/GetHotelList',
