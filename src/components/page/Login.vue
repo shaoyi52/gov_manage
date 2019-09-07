@@ -51,8 +51,10 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123456'
+                    //username: 'admin',
+                    //password: '123456'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -74,7 +76,7 @@
                         }
                        
                         fetch({
-                            url:'web/login',
+                            url:'/login',
                             type:"post",   
                             disToken:true,
                             query:{...params} 

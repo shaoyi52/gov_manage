@@ -190,7 +190,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'web/GetFunctionPage',
+                    url:'/GetFunctionPage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -198,7 +198,7 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'web/GetMenuList',//'web/GetSourceChild',
+                    url:'/GetMenuList',//'/GetSourceChild',
                     type:"post",                   
                     query:{"isMenu":1} 
                 }).then((res) => {
@@ -241,7 +241,7 @@
                     abilitieId:row.abilitieId,
                 }
                 fetch({
-                    url:'web/GetFunctionIfo',
+                    url:'/GetFunctionIfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -285,9 +285,9 @@
             // 保存编辑
             saveEdit() {                
                 let params={...this.form}
-                let url="web/AddFunction"
+                let url="/AddFunction"
                 if(params.abilitieId){
-                    url="web/UpdateFunction"
+                    url="/UpdateFunction"
                 }
                 fetch({
                     url:url,

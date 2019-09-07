@@ -133,7 +133,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetDeviceTypeList',
+                    url:'/GetDeviceTypeList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -170,7 +170,7 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetDeviceTypeInfo',
+                    url:'/GetDeviceTypeInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -202,9 +202,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web/AddDeviceType"
+                let url="/AddDeviceType"
                 if(params.id){
-                    url="web/DeviceTypeEdit"
+                    url="/DeviceTypeEdit"
                 }
                 fetch({
                     url:url,

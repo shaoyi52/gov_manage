@@ -162,7 +162,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'web/GetRolePage',
+                    url:'/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -170,7 +170,7 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'web/GetMenuList',//'web/GetSourceChild',
+                    url:'/GetMenuList',//'/GetSourceChild',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -212,19 +212,19 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetRoleInfo',
+                    url:'/GetRoleInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     let role={...res.result};
                     fetch({
-                        url:'web/GetMenuByRole',
+                        url:'/GetMenuByRole',
                         type:"post",                   
                         query:{...params} 
                     }).then((res) => {
                         let menu=[...res.checkedIdList];
                         fetch({
-                            url:'web/GetFunsByRole',
+                            url:'/GetFunsByRole',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
@@ -274,9 +274,9 @@
                 //console.log(selectKeys);
                 //return            
                 let params={...this.form,functionIds:[...selectKeys]}
-                let url="web/AddRole"
+                let url="/AddRole"
                 if(params.id){
-                    url="web/EditRole"
+                    url="/EditRole"
                 }
                 fetch({
                     url:url,

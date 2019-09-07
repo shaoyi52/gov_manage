@@ -141,7 +141,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetHotelList',
+                    url:'/GetHotelList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -179,7 +179,7 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetHotelDetail',
+                    url:'/GetHotelDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -210,9 +210,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web/HotelAdd"
+                let url="/HotelAdd"
                 if(params.id){
-                    url="web/HotelEdit"
+                    url="/HotelEdit"
                 }
                 fetch({
                     url:url,

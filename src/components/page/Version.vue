@@ -167,7 +167,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetVersionList',
+                    url:'/GetVersionList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -180,7 +180,7 @@
                     pageCount:1,
                 }
                  fetch({
-                    url:'web/GetDeviceTypeList',
+                    url:'/GetDeviceTypeList',
                     query:{...params}
                 }).then((res) => {
                     this.DeviceTypes = res.result;
@@ -218,7 +218,7 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetVersionInfo',
+                    url:'/GetVersionInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -252,9 +252,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web/AddVersion"
+                let url="/AddVersion"
                 if(params.id){
-                    url="web/EditVersion"
+                    url="/EditVersion"
                 }
                 fetch({
                     url:url,

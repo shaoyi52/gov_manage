@@ -162,7 +162,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'web/GetUserList',
+                    url:'/GetUserList',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -178,7 +178,7 @@
                     status:1                 
                 }
                 fetch({
-                    url:'web/GetRolePage',
+                    url:'/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -256,7 +256,7 @@
                 let _this=this;
                 this.getRoleData();
                 fetch({
-                    url:'web/GetUserDetail',
+                    url:'/GetUserDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {

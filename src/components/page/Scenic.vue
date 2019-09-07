@@ -147,7 +147,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetScenicList',
+                    url:'/GetScenicList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -184,7 +184,7 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetScenicDetail',
+                    url:'/GetScenicDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -215,9 +215,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web//ScenicAdd"
+                let url="//ScenicAdd"
                 if(params.id){
-                    url="web/ScenicEdit"
+                    url="/ScenicEdit"
                 }
                 fetch({
                     url:url,

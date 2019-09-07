@@ -1,3 +1,4 @@
+import BaseUrl from "../config";
 import request from '../utils/request';
 import router from '../router'
 import {Loading,Message} from "element-ui";
@@ -16,7 +17,7 @@ export const fetch= (obj) => {
         disToken=obj.disToken;
         console.log("params",obj)
         if(!disToken){
-            if(sessionStorage.getItem("token")&&sessionStorage.getItem("uid")&&sessionStorage.getItem("taId")){
+            if(sessionStorage.getItem("token")&&sessionStorage.getItem("uid")){
                 query['token']=sessionStorage.getItem("token");
                 query['uid']=sessionStorage.getItem("uid");
             }else{
@@ -31,7 +32,7 @@ export const fetch= (obj) => {
             }
         };
     return request({
-        url: url,
+        url: BaseUrl.ROOT + url,
         method: type,
         data: query
     })

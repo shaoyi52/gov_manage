@@ -147,7 +147,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'web/GetDeviceList',
+                    url:'/GetDeviceList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -184,7 +184,7 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'web/GetDeviceInfo',
+                    url:'/GetDeviceInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -218,9 +218,9 @@
             saveEdit() {
                 this.editVisible = false;
                 let params={...this.form}
-                let url="web/AddDevice"
+                let url="/AddDevice"
                 if(params.id){
-                    url="web/DeviceInfoEdit"
+                    url="/DeviceInfoEdit"
                 }
                 fetch({
                     url:url,

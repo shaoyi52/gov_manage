@@ -1,15 +1,17 @@
+// 引进config.js
+const BaseUrl = require("./src/config.js");
 module.exports = {
     publicPath: './',
     assetsDir: 'static',
     productionSourceMap: false,    
     devServer: {
         proxy: {           
-            '/web': { 
-                target: "http://121.204.164.176:8002/web", 
+            [BaseUrl.ROOT]: { 
+                target: BaseUrl.URL, // 通过本地服务器将你的请求转发到这个地址
                 ws: false,       
-                changeOrigin: true,        
+                changeOrigin: true, // 设置这个参数可以避免跨域       
                 pathRewrite: {        
-                '^/web': '/' ,       
+                    [`^${BaseUrl.ROOT}`]: '/' ,       
                 } 
             }       
         }        
