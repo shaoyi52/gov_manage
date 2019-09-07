@@ -32,10 +32,19 @@ service.interceptors.response.use(response => {
         })
         return response.data;
     }else{
-        Promise.reject();
+        Message({
+            type: 'error',
+            message: response.data.msg
+        });
+
+        Promise.reject(response.data);
     }
 }, error => {
     console.log(error);
+    Message({
+        type: 'error',
+        message: error
+    });
     return Promise.reject();
 })
 
