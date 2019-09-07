@@ -125,7 +125,7 @@
                         }
                        
                 fetch({
-                    url:'Api/Travel/TravelRegister',
+                    url:'/Travel/TravelRegister',
                     type:"post", 
                     disToken:true,                   
                     query:{...params} 
@@ -152,7 +152,7 @@
                         }
                        
                         fetch({
-                            url:'Api/Tourism/regist',
+                            url:'/Tourism/regist',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
@@ -186,7 +186,7 @@
                         }
                        
                 fetch({
-                    url:'Api/Web/getImageCode',
+                    url:'/Web/getImageCode',
                     type:"post",  
                     disToken:true,                  
                     query:{...params} 
@@ -206,7 +206,7 @@
                     type:0,
                 }
                 fetch({
-                    url:'Api/Web/GetVerificationCode',
+                    url:'/Web/GetVerificationCode',
                     type:"post",  
                     disToken:true,                  
                     query:{...params} 

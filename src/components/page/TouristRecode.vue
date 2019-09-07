@@ -139,7 +139,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideList',
+                    url:'/Travel/GetGuideList',
                     type:"get",
                     query:{...params}
                 }).then((res) => {
@@ -164,7 +164,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideList',
+                    url:'/Travel/GetGuideList',
                     type:"get",
                     query:{...params}
                 }).then((res) => {

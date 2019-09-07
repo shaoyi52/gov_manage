@@ -104,7 +104,7 @@
                         }
                        
                 fetch({
-                    url:'Api/Travel/EditCompany',
+                    url:'/Travel/EditCompany',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -131,7 +131,7 @@
                         }
                        
                         fetch({
-                            url:'Api/Tourism/regist',
+                            url:'/Tourism/regist',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
@@ -159,7 +159,7 @@
             getCompanyInfo(){
                 let params={}
                 fetch({
-                    url:'Api/Travel/GetCompanyDetail',
+                    url:'/Travel/GetCompanyDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -181,7 +181,7 @@
                     type:0,
                 }
                 fetch({
-                    url:'Api/Web/GetVerificationCode',
+                    url:'/Web/GetVerificationCode',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {

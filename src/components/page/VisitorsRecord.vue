@@ -102,7 +102,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Travel/GetVisitorRecordList',
+                    url:'/Travel/GetVisitorRecordList',
                     type:"post",
                     query:{...params}
                 }).then((res) => {                    

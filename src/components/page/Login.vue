@@ -4,12 +4,12 @@
         <div class="ms-login-wrap">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-login-content">
                 <el-form-item prop="username">
-                    <el-input v-model="ruleForm.username" placeholder="username">
+                    <el-input v-model="ruleForm.username" placeholder="用户名">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
+                    <el-input type="password" placeholder="密码" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
@@ -23,7 +23,6 @@
                         </el-col>
                     </el-row>                    
                 </div>
-                <p class="login-tips" v-if="false">Tips : 用户名和密码随便填。</p>
             </el-form>
 
             
@@ -39,8 +38,10 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: '13148779245',
-                    password: 'lxs123'
+                    //username: '13148779245',
+                    //password: 'lxs123'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -62,7 +63,7 @@
                         }
                        
                         fetch({
-                            url:'Api/Travel/login',
+                            url:'/Travel/login',
                             type:"post",  
                             disToken:true,                 
                             query:{...params} 

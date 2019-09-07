@@ -104,6 +104,7 @@
                 multipleSelection: [],
                 searchForm:{},
                 scenicName:'',
+                dialogTitle:"",
                 del_list: [],
                 is_search: false,
                 editVisible: false,
@@ -155,7 +156,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideList',
+                    url:'/Travel/GetGuideList',
                     type:"post",
                     query:{...params}
                 }).then((res) => {                    
@@ -181,7 +182,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GetGuideDetail',
+                    url:'/Travel/GetGuideDetail',
                     type:"post",
                     query:{...params}
                 }).then((res) => {
@@ -230,9 +231,9 @@
             saveEdit() {
                 let params={...this.form}
                 console.log("params",params)
-                let url="Api/Travel/GuideAdd"
+                let url="/Travel/GuideAdd"
                 if(params.id){
-                    url="Api/Travel/GuideEdit"
+                    url="/Travel/GuideEdit"
                 }
                 fetch({
                     url:url,
@@ -263,7 +264,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GuideDel',
+                    url:'/Travel/GuideDel',
                     type:"post",
                     query:{...params}
                 }).then((res) => {

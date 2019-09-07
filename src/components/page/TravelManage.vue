@@ -334,7 +334,7 @@
                 pageTotal:0,
                 showEdit: [],
                 showBtn: [],
-                
+                dialogTitle:"",
                 multipleSelection: [],
                 searchForm:{},
                 scenicName:'',
@@ -389,7 +389,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Travel/GetTravelList',
+                    url:'/Travel/GetTravelList',
                     type:"post",
                     query:{...params}
                 }).then((res) => {                    
@@ -416,7 +416,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/GetTravelDetail',
+                    url:'/Travel/GetTravelDetail',
                     type:"post",
                     query:{...params}
                 }).then((res) => {
@@ -569,7 +569,7 @@
             getInitData(){
                 let params={pageCount:1,pageSize:100}
                 fetch({
-                    url:'Api/Tourism/GetScenicList',
+                    url:'/Tourism/GetScenicList',
                     type:"post",
                     query:{...params}
                 }).then((res) => {
@@ -578,7 +578,7 @@
                     
                 })
                 fetch({
-                    url:'Api/Tourism/GetHotelList',
+                    url:'/Tourism/GetHotelList',
                     type:"post",
                     query:{...params}
                 }).then((res) => {
@@ -611,9 +611,9 @@
             saveEdit() {
                 let params={...this.form}
                 console.log("params",params)
-                let url="Api/Travel/TravelAdd"
+                let url="/Travel/TravelAdd"
                 if(params.id){
-                    url="Api/Travel/TravelEdit"
+                    url="/Travel/TravelEdit"
                 }
                 fetch({
                     url:url,
@@ -647,7 +647,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Travel/TravelDel',
+                    url:'/Travel/TravelDel',
                     type:"post",
                     query:{...params}
                 }).then((res) => {

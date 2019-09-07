@@ -162,7 +162,7 @@
                     pageCount:1,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Api/Tourism/GetUserList',
+                    url:'/Tourism/GetUserList',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -178,7 +178,7 @@
                     status:1                 
                 }
                 fetch({
-                    url:'Api/Tourism/GetRolePage',
+                    url:'/Tourism/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -256,7 +256,7 @@
                 let _this=this;
                 this.getRoleData();
                 fetch({
-                    url:'Api/Tourism/GetUserDetail',
+                    url:'/Tourism/GetUserDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -294,9 +294,9 @@
                 this.editVisible = false;
                 let params={...this.form}
                 console.log("params",params)
-                let url="Api/Tourism/AddUser"
+                let url="/Tourism/AddUser"
                 if(params.id){
-                    url="Api/Tourism/ EditUser"
+                    url="/Tourism/ EditUser"
                 }
                 fetch({
                     url:url,
