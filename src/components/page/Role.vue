@@ -162,7 +162,7 @@
                     pageCount:this.cur_page,  // this.cur_page                  
                 }
                 fetch({
-                    url:'Api/Tourism/GetRolePage',
+                    url:'/Tourism/GetRolePage',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -170,7 +170,7 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
                 fetch({
-                    url:'Api/Tourism/GetMenuList',//'Api/Tourism/GetSourceChild',
+                    url:'/Tourism/GetMenuList',//'/Tourism/GetSourceChild',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
@@ -212,19 +212,19 @@
                 }
                 let _this=this;
                 fetch({
-                    url:'Api/Tourism/GetRoleInfo',
+                    url:'/Tourism/GetRoleInfo',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
                     let role={...res.result};
                     fetch({
-                        url:'Api/Tourism/GetMenuByRole',
+                        url:'/Tourism/GetMenuByRole',
                         type:"post",                   
                         query:{...params} 
                     }).then((res) => {
                         let menu=[...res.checkedIdList];
                         fetch({
-                            url:'Api/Tourism/GetFunsByRole',
+                            url:'/Tourism/GetFunsByRole',
                             type:"post",                   
                             query:{...params} 
                         }).then((res) => {
@@ -274,9 +274,9 @@
                 //console.log(selectKeys);
                 //return            
                 let params={...this.form,functionIds:[...selectKeys]}
-                let url="Api/Tourism/AddRole"
+                let url='/Tourism/AddRole'
                 if(params.id){
-                    url="Api/Tourism/EditRole"
+                    url='/Tourism/EditRole'
                 }
                 fetch({
                     url:url,
@@ -306,7 +306,7 @@
                     id:this.id
                 }
                 fetch({
-                    url:'Api/Tourism/DelUser',
+                    url:'/Tourism/DelUser',
                     type:"post",
                     query:{...params}
                 }).then((res) => {

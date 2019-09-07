@@ -1,3 +1,4 @@
+import BaseUrl from "../config";
 import request from '../utils/request';
 import router from '../router'
 import {Loading,Message} from "element-ui";
@@ -31,7 +32,7 @@ export const fetch= (obj) => {
             }
         };
     return request({
-        url: url,
+        url: BaseUrl.ROOT + url,
         method: type,
         data: query
     })

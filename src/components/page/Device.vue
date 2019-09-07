@@ -134,7 +134,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Tourism/GetDeviceList',
+                    url:'/Tourism/GetDeviceList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;

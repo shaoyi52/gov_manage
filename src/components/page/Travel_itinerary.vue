@@ -197,7 +197,7 @@
                     page:this.cur_page,
                 }
                 fetch({
-                    url:'Api/Tourism/GetTravelList',
+                    url:'/Tourism/GetTravelList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -230,7 +230,7 @@
                  }
                 this.editVisible = true;
                 fetch({
-                    url:'Api/Tourism/GetTravelDetail',
+                    url:'/Tourism/GetTravelDetail',
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
