@@ -256,7 +256,6 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
                 this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);

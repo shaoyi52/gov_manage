@@ -47,17 +47,30 @@
                     <el-input v-model="form.sn"></el-input>
                 </el-form-item>
                 <el-form-item label="设备类型名">
-                    <el-input v-model="form.version"></el-input>
+                    <el-select v-model="form.deviceTypeId" placeholder="请选择">
+                        <el-option
+                        v-for="item in deviceTypes"
+                        :key="item.id"
+                        :label="item.typename"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="设备版本名">
-                    <el-input v-model="form.type"></el-input>
+                    <el-select v-model="form.versionId" placeholder="请选择">
+                        <el-option
+                        v-for="item in versionList"
+                        :key="item.Id"
+                        :label="item.versionName"
+                        :value="item.Id">
+                        </el-option>
+                    </el-select>
+                    
                 </el-form-item>
                 <el-form-item label="设备归属">
-                    <el-input v-model="form.type"></el-input>
-                </el-form-item>
-                <el-form-item label="设备类型名">
                     <el-input v-model="form.belongName"></el-input>
                 </el-form-item>
+                
                 <el-form-item label="设备部署位置">
                     <el-input v-model="form.location"></el-input>
                 </el-form-item>
@@ -89,7 +102,9 @@
         name: 'basetable',
         data() {
             return {
-                tableData: [],                
+                tableData: [], 
+                deviceTypes:[],
+                versionList:[],               
                 cur_page: 1,
                 pageTotal:0,
                 multipleSelection: [],
@@ -154,11 +169,41 @@
                     this.pageTotal=parseInt(res.pageTotal);
                 })
             },
+            getDeviceTypeData(){
+                let params={
+                    pageSize:20,
+                    pageCount:1,  // this.cur_page 
+                }
+                fetch({
+                    url:'/GetDeviceTypeList',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.deviceTypes = res.result;
+                })
+                
+            },
+            getVersionData(){
+                let params={
+                    pageSize:20,
+                    pageCount:1,  // this.cur_page 
+                }
+                fetch({
+                    url:'/GetVersionList',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.versionList = res.result;
+                })
+                
+            },
             search() {
                 //this.is_search = true;
                 this.getData();
             },
             create(){  
+                this.getDeviceTypeData()
+                this.getVersionData()
                 this.form = {
                     sn:"",
                     type:"",
@@ -177,6 +222,9 @@
                 return row.tag === value;
             },
             handleEdit(index, row) {
+                this.getDeviceTypeData()
+                this.getVersionData()
+
                 this.idx = index;
                 this.id = row.id;
                 let params={
@@ -216,7 +264,6 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
                 let params={...this.form}
                 let url="/AddDevice"
                 if(params.id){
@@ -235,18 +282,18 @@
             },
             // 确定删除
             deleteRow(){
-                this.$message.success('删除成功');
-                this.delVisible = false;
-                if(this.tableData[this.idx].id === this.id){
-                    this.tableData.splice(this.idx, 1);
-                }else{
-                    for(let i = 0; i < this.tableData.length; i++){
-                        if(this.tableData[i].id === this.id){
-                            this.tableData.splice(i, 1);
-                            return ;
-                        }
-                    }
+                let params={
+                    id:this.id,
                 }
+                fetch({
+                    url:'/DelDevice',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    this.$message.success('删除成功');
+                    this.delVisible = false;                  
+                    this.getData();
+                })
             }
         }
     }

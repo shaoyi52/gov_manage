@@ -291,7 +291,6 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
                 let params={...this.form}
                 let url="Api/Tourism/AddUser"
                 if(params.id){

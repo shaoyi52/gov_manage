@@ -97,8 +97,12 @@
                         title: '客户管理',
                         subs: [
                             {
-                                index: 'touristGuide',
-                                title: '导游业绩',
+                                index: 'customInfo',
+                                title: '客户信息',
+                            },
+                            {
+                                index: 'GetPaymentList',
+                                title: '缴费记录',
                             }
                         ]
                     },
@@ -108,12 +112,16 @@
                         title: '广告管理',
                         subs: [                            
                             {
-                                index: 'travelAgency',
-                                title: '旅行社',
+                                index: 'adInfo',
+                                title: '广告信息',
                             },
                             {
-                                index: 'travel_itinerary',
-                                title: '委派及行程单',
+                                index: 'adType',
+                                title: '广告类型',
+                            },
+                            {
+                                index: 'ad_play',
+                                title: '广告投放',
                             }
                         ]
                     },
@@ -123,8 +131,12 @@
                         title: '统计报表',
                         subs: [
                             {
-                                index: 'visitorsRecord',
-                                title: '游客记录',
+                                index: 'adPlayRecode',
+                                title: '播放记录',
+                            },
+                            {
+                                index: 'staticTop',
+                                title: '统计排列',
                             }
                         ]
                     }]

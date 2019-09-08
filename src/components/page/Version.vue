@@ -2,7 +2,7 @@
     <div class="version">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>设备列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>版本列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -47,7 +47,7 @@
         <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
             <el-form ref="form" :model="form" label-width="110px">
                 <el-form-item label="设备类型名">
-                    <el-select v-model="form.deviceTypeName" class="deviceTypeSelect" placeholder="请选择">
+                    <el-select v-model="form.deviceTypeId" class="deviceTypeSelect" placeholder="请选择">
                         <el-option
                         v-for="item in DeviceTypes"
                         :key="item.id"
@@ -70,7 +70,9 @@
                         <el-upload
                         slot="append"
                         class="upload-demo"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="uploadUrl"
+                        :on-success="uploadSuccess"
+                        :data="uploadFileParam"
                         :on-change="handleChange"
                         >
                             <el-button size="small" type="primary">点击上传</el-button>
@@ -102,6 +104,7 @@
 </template>
 
 <script>
+    import BaseUrl from "../../config";
     import { fetchData,fetch } from '../../api/index';
     export default {
         name: 'basetable',
@@ -110,6 +113,8 @@
                 tableData: [],                
                 cur_page: 1,
                 pageTotal:0,
+                uploadUrl:BaseUrl.FileRoot + '/FileUpload',
+                uploadFileParam:{FileType:'F',token:sessionStorage.getItem("token"),uid:sessionStorage.getItem("uid")}, 
                 DeviceTypes:[],
                 multipleSelection: [],
                 select_cate: '',
@@ -193,11 +198,10 @@
             create(){
                 this.getDeviceTypes();
                 this.form = {
-                    versionName: "测试用",
-                    versionNum: "0",
-                    desc: "测试用",
-                    deviceTypeName: "固定测试专用类型",
-                    path: '\test',
+                    versionName: "",
+                    versionNum: "",
+                    desc: "",
+                    path: '',
                     status: 1                   
                 },
                 this.dialogTitle='新增版本',
@@ -209,12 +213,24 @@
             filterTag(value, row) {
                 return row.tag === value;
             },
+            //文件上传回调
+            uploadSuccess(response, file, fileList){
+                if(response.code=="00000"){
+                    this.form['path']=response.pathUrl
+                    this.form['fileId']=response.imgId                    
+                    this.$message.success(response.msg);
+                }else{
+                    response.msg&&this.$message.error(response.msg);
+
+                }
+                console.log('uploadSuccess',response, file, fileList)
+            },
             handleEdit(index, row) {
                 this.idx = index;
-                this.id = row.id;
+                this.id = row.Id;
                 this.getDeviceTypes();
                 let params={
-                    id:row.id,
+                    id:row.Id,
                 }
                 let _this=this;
                 fetch({
@@ -222,11 +238,10 @@
                     type:"post",                   
                     query:{...params} 
                 }).then((res) => {
-                    let rlt=res.result;
-                    if(rlt.length>0){
-                        this.form = {...rlt[0]}
-                        this.editVisible = true;
-                    }                    
+                    let rlt=res.result;                   
+                    this.form = {...rlt,status:parseInt(rlt.status)}
+                    this.editVisible = true;
+                                       
                    
                 })
             },
@@ -250,7 +265,6 @@
             },
             // 保存编辑
             saveEdit() {
-                this.editVisible = false;
                 let params={...this.form}
                 let url="/AddVersion"
                 if(params.id){

@@ -13,7 +13,15 @@ module.exports = {
                 pathRewrite: {        
                     [`^${BaseUrl.ROOT}`]: '/' ,       
                 } 
-            }       
+            },
+            [BaseUrl.FileRoot]: { 
+                target: BaseUrl.FileUrl, // 通过本地服务器将你的请求转发到这个地址
+                ws: false,       
+                changeOrigin: true, // 设置这个参数可以避免跨域       
+                pathRewrite: {        
+                    [`^${BaseUrl.FileRoot}`]: '/' ,       
+                } 
+            }         
         }        
     },
     // devServer: {
