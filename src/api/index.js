@@ -1,6 +1,8 @@
 import BaseUrl from "../config";
 import request from '../utils/request';
 import router from '../router'
+import qs  from 'qs'
+
 import {Loading,Message} from "element-ui";
 export const fetchData = (query) => {
     return request({
@@ -34,6 +36,7 @@ export const fetch= (obj) => {
     return request({
         url: BaseUrl.ROOT + url,
         method: type,
-        data: query
+        data: qs.stringify(query)
+        //data: JSON.stringify(query)
     })
 }

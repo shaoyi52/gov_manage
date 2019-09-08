@@ -6,7 +6,8 @@ const service = axios.create({
     //baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
     baseURL: '/',    
     headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        //'Content-Type': 'application/json; charset=utf-8'
     },  
     timeout: 5000
 })
