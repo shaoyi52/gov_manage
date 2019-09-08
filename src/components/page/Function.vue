@@ -215,7 +215,7 @@
             createForm(){                
                 this.form = {
                     definition: "",
-                    superiorId: ["0"],
+                    superiorId: '',
                     adminPath:"",
                     status: 1,
                     isMenu:0,
