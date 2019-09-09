@@ -1,29 +1,48 @@
 <template>
     <div>
-        <el-row :gutter="20">
+        <el-row :gutter="20" class="sumDataWrap">
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg1">                   
+                    <div class="card-caption">在案酒店数</div>
+                    <div class="card-data">30家</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg2">                   
+                    <div class="card-caption">管理景点数</div>
+                    <div class="card-data">15个</div>
+                </el-card>  
+                              
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg3">                   
+                    <div class="card-caption">在册旅行社数</div>
+                    <div class="card-data">38家</div>
+                </el-card>                           
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg4">                   
+                    <div class="card-caption">平台注册导游数</div>
+                    <div class="card-data">2345人</div>
+                </el-card>  
             </el-col>
            
         </el-row>
         <el-row :gutter="20">           
+            <el-col :span="24">
+                <el-card shadow="hover">
+                    <div slot="header" class="clearfix">
+                        <span>旅行社每天游客数</span>
+                    </div>
+                     <div class="schart-box">
+                        <div class="content-title" v-if=false>柱状图</div>
+                        <schart class="schart" canvasId="bar" :data="data1" type="bar" :options="options1"></schart>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+       
+        <el-row :gutter="20" v-if=false>           
             <el-col :span="24">
                 <el-card shadow="hover">
                     <div slot="header" class="clearfix">
@@ -72,7 +91,8 @@
                                 prop="address"
                                 label="地址"
                                 width="180">
-                            </el-table-column>                                </el-table>
+                            </el-table-column>                                
+                        </el-table>
                             </template>
                         </el-tab-pane>
                     </el-tabs>
@@ -144,6 +164,33 @@
                         value: 1065
                     }
                 ],
+                data1:[
+                    {name:'9-1', value:108},       
+                    {name:'9-2',value:120},
+                    {name:'9-3',  value:200},
+                    {name:'9-4', value:234},  
+                    {name:'9-5', value:290},
+                    {name:'9-6', value:230},
+                    {name:'9-7',value:220},
+                    {name:'9-8',value:108},
+                    {name:'9-9',value:220},
+                    {name:'9-10',value:220},   
+                    {name:'9-11',value:234},
+                    {name:'9-12',value:290},
+                    {name:'9-13', value:230},    
+                    {name:'9-14',value:220},
+                    {name:'9-15',value:245}
+                    
+                ],
+                options1: {
+                    title: '旅行社每天游客数',
+                    autoWidth: true,   // 设置宽高自适应
+                    showValue: false,
+                    bgColor: '#F9EFCC',
+                    fillColor: '#00887C',
+                    contentColor: 'rgba(46,199,201,0.3)',
+                    yEqual: 7
+                },
                 tableData: [{
                     tel: '0652-8888888',
                     name: '福建瀚翔国际旅行社有限公司',
@@ -227,7 +274,33 @@
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
+    .sumDataWrap{
+        .bg1{
+            background: #33CCFF;
+        }
+        .bg2{
+            background: rgb(39, 123, 248);
+        }
+        .bg3{
+            background: rgb(20, 118, 245);
+        }
+        .bg4{
+            background: rgb(25, 0, 255);
+        }
+        
+        .card-wrap{
+            color:#fff;
+            font-size: 18px;
+        }       
+        .card-data{
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 74px;
+        }
+        
+    }
     .el-row {
         margin-bottom: 20px;
     }
