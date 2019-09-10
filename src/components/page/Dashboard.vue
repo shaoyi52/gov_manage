@@ -28,7 +28,7 @@
             </el-col>
            
         </el-row>
-        <el-row :gutter="20">           
+        <el-row :gutter="20" v-if=false >           
             <el-col :span="24">
                 <el-card shadow="hover">
                     <div slot="header" class="clearfix">
@@ -37,6 +37,19 @@
                      <div class="schart-box">
                         <div class="content-title" v-if=false>柱状图</div>
                         <schart class="schart" canvasId="bar" :data="data1" type="bar" :options="options1"></schart>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">           
+            <el-col :span="24">
+                <el-card shadow="hover">
+                    <div slot="header" class="clearfix">
+                        <span>旅行社每天游客数</span>
+                    </div>
+                     <div class="schart-box">
+                        <div class="content-title" v-if=false>柱状图</div>
+                            <ve-histogram :data="chartData"></ve-histogram>                        
                     </div>
                 </el-card>
             </el-col>
@@ -111,6 +124,26 @@
             return {                
                 message: 'first',
                 name: localStorage.getItem('ms_username'),
+                chartData: {
+                    columns: ['日期', '游客数'],
+                    rows: [
+                        {"日期":'9-1', "游客数":108},       
+                        {"日期":'9-2',"游客数":120},
+                        {"日期":'9-3',  "游客数":200},
+                        {"日期":'9-4', "游客数":234},  
+                        {"日期":'9-5', "游客数":290},
+                        {"日期":'9-6', "游客数":230},
+                        {"日期":'9-7',"游客数":220},
+                        {"日期":'9-8',"游客数":108},
+                        {"日期":'9-9',"游客数":220},
+                        {"日期":'9-10',"游客数":220},   
+                        {"日期":'9-11',"游客数":234},
+                        {"日期":'9-12',"游客数":290},
+                        {"日期":'9-13', "游客数":230},    
+                        {"日期":'9-14',"游客数":220},
+                        {"日期":'9-15',"游客数":245}
+                    ], 
+                },       
                 todoList: [{
                         title: '今天要修复100个bug',
                         status: false,
