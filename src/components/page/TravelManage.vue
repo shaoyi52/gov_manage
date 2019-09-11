@@ -44,7 +44,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="80%">
+        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="80%"  :close-on-click-modal="false">
             <el-form ref="form" :model="form" label-width="110px">
                 <el-row :gutter="40">
                     <el-col :span="12">
