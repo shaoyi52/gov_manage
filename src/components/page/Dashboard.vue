@@ -1,24 +1,28 @@
 <template>
     <div>
-        <el-row :gutter="20">
+        <el-row :gutter="20" class="sumDataWrap">
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg1">                   
+                    <div class="card-caption">在案酒店数</div>
+                    <div class="card-data">30家</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg2">                   
+                    <div class="card-caption">管理景点数</div>
+                    <div class="card-data">18个</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg3">                   
+                    <div class="card-caption">在册旅行社数</div>
+                    <div class="card-data">30家</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg4">                   
+                    <div class="card-caption">平台注册导游数</div>
+                    <div class="card-data">1234人</div>
                 </el-card>               
             </el-col>
            
@@ -227,7 +231,34 @@
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
+    .sumDataWrap{
+        .bg1{
+            background: #33CCFF;
+        }
+        .bg2{
+            background: rgb(39, 123, 248);
+        }
+        .bg3{
+            background: rgb(20, 118, 245);
+        }
+        .bg4{
+            background: rgb(25, 0, 255);
+        }
+        
+        .card-wrap{
+            color:#fff;
+            font-size: 18px;
+        }       
+        .card-data{
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 74px;
+        }
+        
+    }
+
     .el-row {
         margin-bottom: 20px;
     }

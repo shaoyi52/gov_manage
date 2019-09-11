@@ -60,6 +60,11 @@ export default new Router({
                     meta: { title: '委派及行程单' }
                 },
                 {
+                    path: '/travel_performance',
+                    component: resolve => require(['../components/page/TravelPerformance.vue'], resolve),
+                    meta: { title: '旅行社业绩' }
+                },
+                {
                     path: '/touristGuide',
                     component: resolve => require(['../components/page/TouristGuide.vue'], resolve),
                     meta: { title: '导游业绩' }

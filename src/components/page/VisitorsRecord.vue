@@ -85,6 +85,7 @@
         name: 'basetable',
         data() {
             return {
+                tourId:"",
                 tableData: [],                
                 cur_pageCount: 1,
                 pageTotal:0,
@@ -130,6 +131,12 @@
                 })
             }
         },
+        activated(){
+            //let tourId=this.$route.query.tourId||'';
+            console.log('activated')            
+            this.getData();
+            
+        },
         methods: {
             // 分页导航
             handleCurrentChange(val) {
@@ -138,12 +145,14 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
+                let tourId=this.$route.query.tourId;
                 let params={
                     ...this.searchForm,
+                    tourId,
                     pageCount:this.cur_page,
                 }
                 fetch({
-                    url:'Tourism/GetVisitorRecordList',
+                    url:'/Tourism/GetVisitorRecordList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;

@@ -12,7 +12,7 @@
             </div>
             <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="旅行社名称" sortable width="150">
+                <el-table-column prop="name" label="旅行社名称" sortable width="250">
                 </el-table-column>               
                 <el-table-column prop="scale" label="公司规模">
                 </el-table-column>                
@@ -20,7 +20,7 @@
                 </el-table-column>
                  <el-table-column prop="CreateTime" label="成立日期" width="120">
                 </el-table-column>
-                 <el-table-column prop="address" label="注册地址" width="120">
+                 <el-table-column prop="address" label="注册地址" width="240">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center" v-if="false" >
                     <template slot-scope="scope">

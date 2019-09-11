@@ -131,6 +131,8 @@
 
 <script>
     import { fetchData,fetch } from '../../api/index';
+    import bus from '../common/bus';
+
     export default {
         name: 'basetable',
         data() {
@@ -206,7 +208,7 @@
             },
             linkTo(index, row) {
                 //this.$router.push({path:'/VisitorsRecord',query: {paicheNo: obj.paicheNo}})
-                this.$router.push({path:'/visitorsRecord'})
+                this.$router.push({path:'/visitorsRecord',query: {tourId: row.id,refresh:true}})
             },
             search() {
                 //this.is_search = true;

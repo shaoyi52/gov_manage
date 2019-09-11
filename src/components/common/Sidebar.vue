@@ -88,6 +88,10 @@
                             {
                                 index: 'travel_itinerary',
                                 title: '委派及行程单',
+                            },
+                            {
+                                index: 'travel_performance',
+                                title: '旅行社业绩',
                             }
                         ]
                     },
@@ -97,7 +101,7 @@
                         title: '导游管理',
                         subs: [
                             {
-                                index: 'touristGuide1',
+                                index: 'touristGuide',
                                 title: '导游业绩',
                             }
                         ]
