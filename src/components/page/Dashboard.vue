@@ -3,26 +3,26 @@
         <el-row :gutter="20" class="sumDataWrap">
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg1">                   
-                    <div class="card-caption">在案酒店数</div>
-                    <div class="card-data">30家</div>
+                    <div class="card-caption">注册导游数</div>
+                    <div class="card-data">15人</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg2">                   
-                    <div class="card-caption">管理景点数</div>
-                    <div class="card-data">15个</div>
+                    <div class="card-caption">授权景点数</div>
+                    <div class="card-data">3个</div>
                 </el-card>  
                               
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg3">                   
-                    <div class="card-caption">在册旅行社数</div>
-                    <div class="card-data">38家</div>
+                    <div class="card-caption">昨日游客数</div>
+                    <div class="card-data">150人</div>
                 </el-card>                           
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg4">                   
-                    <div class="card-caption">平台注册导游数</div>
+                    <div class="card-caption">本月累计游客数</div>
                     <div class="card-data">2345人</div>
                 </el-card>  
             </el-col>
