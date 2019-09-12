@@ -10,7 +10,8 @@
                 <el-input v-model="searchForm.guideName" placeholder="导游名称" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.leadership" placeholder="导游资格" class="handle-input mr10"></el-input>
                 <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
-                <el-button type="primary" icon="el-icon-plus" class="handle-del mr10" @click="create">新建</el-button>
+                <el-button type="primary" icon="el-icon-plus" class="handle-del" @click="create">新建</el-button>
+                <el-button type="primary" icon="el-icon-plus" class="handle-del" @click="importTravel">导入行程</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -299,6 +300,17 @@
                 <el-button type="primary" @click="deleteRow">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-- 行程导入 -->
+        <el-dialog title="行程导入" :visible.sync="importTravelVisible" width="80%"  :close-on-click-modal="false">
+            <div class="importTravelWrap">
+                <h3 class="importTraveHeader">请按照模板格式整理团队信息</h3>
+                <el-button type="success" icon="el-icon-download" @click="downLoadModal">下载团队信息模板</el-button>
+                <el-button type="primary" icon="el-icon-upload" class="handle-del mr10" @click="uploadTravelGroup">上传并导入团队信息</el-button>
+            </div>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -308,6 +320,7 @@
         name: 'basetable',
         data() {
             return {
+                importTravelVisible:false,
                 tableData: [],  
                 hotelList:[],
                 scenicList:[],
@@ -566,6 +579,15 @@
                 
                 this.editVisible = true;
             },
+            downLoadModal(){
+                this.$message.warning('开发中，即将发布！');
+            },
+            uploadTravelGroup(){
+                this.$message.warning('开发中，即将发布！');
+            },
+            importTravel(){
+                this.importTravelVisible=true;
+            },
             getInitData(){
                 let params={pageCount:1,pageSize:100}
                 fetch({
@@ -686,7 +708,7 @@
     }
     
 </style>
-<style scoped>
+<style scoped  lang="scss">
     .handle-box {
         margin-bottom: 20px;
     }
@@ -716,6 +738,16 @@
     
     .edit-cell{
         width:100%
+    }
+    .importTravelWrap{
+        height: 350px;
+        text-align: center;
+        .importTraveHeader{
+            margin: 40px 0 85px 0;
+        }
+        .el-button+.el-button{
+            margin-left: 30px;
+        }
     }
     
 </style>

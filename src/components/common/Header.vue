@@ -4,7 +4,7 @@
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">后台管理系统</div>
+        <div class="logo" v-html="companyName"></div>
         <div class="header-right">
             <div class="header-user-con">
                
@@ -25,15 +25,17 @@
 </template>
 <script>
     import bus from '../common/bus';
+    import { fetchData,fetch } from '../../api/index';
     export default {
         data() {
             return {
                 collapse: false,
                 fullscreen: false,
-                name: 'linxin',
+                name: 'admin',
+                companyName:'',
                 message: 2
             }
-        },
+        },        
         computed:{
             username(){
                 let username = localStorage.getItem('ms_username');
@@ -79,12 +81,27 @@
                     }
                 }
                 this.fullscreen = !this.fullscreen;
-            }
+            },
+            getCompanyInfo(){
+                let params={}
+                fetch({
+                    url:'/Travel/GetCompanyDetail',
+                    type:"post",                   
+                    query:{...params} 
+                }).then((res) => {
+                    let rlt=res.result
+                    this.companyName=rlt.name
+                    //this.ruleForm={...rlt}
+                    //this.imageUrl="http://121.204.164.176:8001/"+rlt.businessLicenseUrl 
+                    //this.url="data:image/jpg;base64,"+res.result                   
+                })
+            },
         },
         mounted(){
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }
+            this.getCompanyInfo()
         }
     }
 </script>
