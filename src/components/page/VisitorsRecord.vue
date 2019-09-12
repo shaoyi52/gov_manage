@@ -10,12 +10,13 @@
                 <el-input v-model="searchForm.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.guideName" placeholder="导游姓名" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.visitorName" placeholder="游客姓名" class="handle-input mr10"></el-input>
-                <el-select v-model="searchForm.isSameNum" placeholder="证件号比对">
+                <el-select v-model="searchForm.isSameNum" placeholder="证件号比对" class="handle-input mr10">
                     <el-option   key="" label="全部" value=""> </el-option>
                     <el-option   key="1" label="证件号一致" value="1"> </el-option>
                     <el-option   key="0" label="证件号不一致" value="0"> </el-option>
                 </el-select>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+                <el-button type="primary" icon="el-icon-circle-plus-outline" @click="calAward">计入奖励</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -25,8 +26,7 @@
                 </el-table-column>
                  <el-table-column prop="visitorName" label="游客姓名" width="120">
                 </el-table-column>
-                 <el-table-column prop="isReward" label="是否计入奖励" width="120">
-                </el-table-column>
+                
                  <el-table-column prop="scenicHotel" label="景区/酒店" width="120">
                 </el-table-column>
                  <el-table-column prop="brushTime" label="刷证时间"  width="150">
@@ -35,10 +35,17 @@
                 </el-table-column>
                  <el-table-column prop="brushNum" label="刷证时证件号"  width="170">
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center" v-if="false">
+                 <el-table-column prop="isReward" label="是否计入奖励" width="120">
+                     <template slot-scope="scope">
+                         <el-tag type="success" v-if="scope.row.isReward==1">是</el-tag>
+                        <el-tag type="info" v-if="scope.row.isReward==0" >否</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否计入奖励" width="200" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-switch v-model="scope.row.isReward" active-value='1' inactive-value='0'  active-text="是" inactive-text="否" @change="awardSwich(scope.$index, scope.row)"></el-switch>
+                        <el-button v-if="false" type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button v-if="false"  type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>            
@@ -162,6 +169,41 @@
             search() {
                 //this.is_search = true;
                 this.getData();
+            },
+            //计入奖励
+            calAward(){
+                if(this.multipleSelection.length==0){
+                    this.$message.error("请选择一条记录！")
+                }else if(this.multipleSelection.length>1){
+                    this.$message.error("只能选择一条记录！")
+                }else{
+                    let recode=this.multipleSelection[0];
+                    let params={
+                        id:recode.id,
+                        isReward:1,
+                    };
+                    fetch({
+                        url:'/Tourism/RecordIsReward',
+                        query:{...params}
+                    }).then((res) => {
+                        this.$message.success("记入奖励成功！")
+                        this.getData();
+                    })
+                }
+                
+               
+            },
+            awardSwich(index,row){
+                let params={
+                    id:row.id,
+                    isReward:row.isReward
+                };
+                fetch({
+                    url:'/Tourism/RecordIsReward',
+                    query:{...params}
+                }).then((res) => {
+                    this.$message.success("记入奖励成功！")
+                })
             },
             formatter(row, column) {
                 return row.address;
