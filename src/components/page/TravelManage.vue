@@ -1,5 +1,5 @@
 <template>
-    <div class="table">
+    <div class="table travelManage">
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 行程列表</el-breadcrumb-item>
@@ -305,8 +305,18 @@
         <el-dialog title="行程导入" :visible.sync="importTravelVisible" width="80%"  :close-on-click-modal="false">
             <div class="importTravelWrap">
                 <h3 class="importTraveHeader">请按照模板格式整理团队信息</h3>
-                <el-button type="success" icon="el-icon-download" @click="downLoadModal">下载团队信息模板</el-button>
-                <el-button type="primary" icon="el-icon-upload" class="handle-del mr10" @click="uploadTravelGroup">上传并导入团队信息</el-button>
+                <el-button type="success" icon="el-icon-download" @click="downLoadModal" class='mr10'>下载团队信息模板</el-button>
+                <el-upload
+                class='uploadWrap'
+                :action="uploadTravelFileUrl"
+                name="File"
+                :data="upLoadData"                 
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <el-button size="small" type="primary" icon="el-icon-upload" >上传并导入团队信息</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
             </div>
         </el-dialog>
 
@@ -316,11 +326,19 @@
 
 <script>
     import { fetchData,fetch } from '../../api/index';
+    import BaseUrl from "../../config";
+
     export default {
         name: 'basetable',
         data() {
             return {
                 importTravelVisible:false,
+                uploadTravelFileUrl:BaseUrl.ROOT+'/Travel/UploadTravelFile',
+                upLoadData:{                    
+                    taId:sessionStorage.getItem("taId"),
+                    token:sessionStorage.getItem("token"),
+                    uid:sessionStorage.getItem("uid"),
+                },
                 tableData: [],  
                 hotelList:[],
                 scenicList:[],
@@ -580,7 +598,10 @@
                 this.editVisible = true;
             },
             downLoadModal(){
-                this.$message.warning('开发中，即将发布！');
+                let link = document.createElement('a');
+                link.setAttribute("download", "");
+                link.href = BaseUrl.hostUrl+"/File/TravelTemplate.xlsx";
+                link.click();
             },
             uploadTravelGroup(){
                 this.$message.warning('开发中，即将发布！');
@@ -697,11 +718,52 @@
             deleteVisitorsRow(index,row){
                 this.form["visitor"].splice(index,1)
             },
+
+            /*****import travelList**** */
+            handleAvatarSuccess(res, file) {
+                if(res.code=="00000"){                    
+                    this.importTravelVisible = false;
+                    this.$message.success(`行程导入成功`)
+                    this.getData();
+                }                
+            },
+            beforeAvatarUpload(file) {
+                const fileName=file.name;
+                let type=fileName.substring(fileName.lastIndexOf("."))
+                const typesArray=[".xls",".xlsx"]
+                const isXlsx = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                //const isLt2M = file.size / 1024 / 1024 < 2;
+                console.log(file.type)
+                if (typesArray.indexOf(type)<0) {
+                this.$message.error('上传文件只能是.xlsx/.xls格式的表格!');
+                }
+               
+                return isXlsx ;
+            }
         }
     }
 
 </script>
-<style >
+<style lang="scss">
+    .travelManage{
+        .uploadWrap{
+            display:inline-block
+        }
+        .el-upload__tip{
+            display:none;
+        }
+        .el-upload--text{
+            width: auto;
+            height: auto;
+            overflow: unset;
+            .el-icon-upload {
+                font-size: unset;
+                color: #fff;
+                margin:  unset;
+                line-height:  unset;
+            }
+        }
+    }
     .visitorList, .travelList{
         width:100%;
         margin-bottom: 15px;
