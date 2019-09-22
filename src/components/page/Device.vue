@@ -1,5 +1,5 @@
 <template>
-    <div class="table">
+    <div class="table device">
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>设备列表</el-breadcrumb-item>
@@ -41,10 +41,10 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
+        <el-dialog title="编辑" :visible.sync="editVisible" class="modal" width="60%" :close-on-click-modal="false">
             <el-form ref="form" :model="form" label-width="110px">
-                <el-form-item label="设备SN">
-                    <el-input v-model="form.sn"></el-input>
+                <el-form-item label="设备名称">
+                    <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="设备类型名">
                     <el-select v-model="form.deviceTypeId" placeholder="请选择">
@@ -56,7 +56,10 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="设备版本名">
+                <el-form-item label="设备SN">
+                    <el-input v-model="form.sn"></el-input>
+                </el-form-item>
+                <el-form-item label="当前版本">
                     <el-select v-model="form.versionId" placeholder="请选择">
                         <el-option
                         v-for="item in versionList"
@@ -64,18 +67,40 @@
                         :label="item.versionName"
                         :value="item.Id">
                         </el-option>
-                    </el-select>
-                    
+                    </el-select>                    
                 </el-form-item>
-                <el-form-item label="设备归属">
-                    <el-input v-model="form.belongName"></el-input>
-                </el-form-item>
-                
-                <el-form-item label="设备部署位置">
-                    <el-input v-model="form.location"></el-input>
+                <el-form-item label="设备状态">
+                     <el-radio-group v-model="form.status">
+                        <el-radio :label="0">停用</el-radio>
+                        <el-radio :label="1">启用</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input v-model="form.remark"></el-input>
+                    <el-input type="textarea"  maxlength="30"  show-word-limit v-model="form.remark"></el-input>
+                </el-form-item>
+                <el-form-item label="设备归属">
+                    <el-row :gutter="15" class="belongRow"> 
+                        <el-col :span="8">
+                            <el-select v-model="form.belongType" placeholder="请选择" @change="belongTypeChange">
+                                <el-option key="0" label="景区" value="0"></el-option>
+                                <el-option key="1" label="酒店" value="1"></el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="16">
+                            <el-select v-model="form.belongId" placeholder="请选择景区或酒店" @change="belongChange">
+                                <el-option
+                                v-for="item in belongList"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row> 
+                </el-form-item>
+                
+                <el-form-item label="放置位置">
+                    <el-input v-model="form.location"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -104,7 +129,10 @@
             return {
                 tableData: [], 
                 deviceTypes:[],
-                versionList:[],               
+                versionList:[],
+                belongList:[],
+                hotelList:[],
+                scenicList:[],
                 cur_page: 1,
                 pageTotal:0,
                 multipleSelection: [],
@@ -118,6 +146,7 @@
                 form: {
                     name: '',
                     date: '',
+                    belongId:'',
                     address: ''
                 },
                 idx: -1,
@@ -197,23 +226,86 @@
                 })
                 
             },
+            getHotelData() {
+                if(this.hotelList.length>0) return
+                let params={                   
+                    page:1,
+                    pageSize:20,
+                }
+                fetch({
+                    url:'/GetHotelList',
+                    query:{...params}
+                }).then((res) => {
+                    let hotelList=[];
+                    res.result.map(item=>{
+                        hotelList.push({
+                            id:item.id,
+                            name:item.hotelName
+                        })
+                    })
+                    this.hotelList = [...hotelList];
+                    if(this.form&&this.form.belongType=='1'){
+                        this.belongList=[...this.hotelList]
+                    }
+
+                })
+            },         
+            getScenicData() {
+                if(this.scenicList.length>0) return
+                let params={
+                    page:1,
+                    pageSize:20,
+                }
+                fetch({
+                    url:'/GetScenicList',
+                    query:{...params}
+                }).then((res) => {
+                    let scenicList=[];
+                    res.result.map(item=>{
+                        scenicList.push({
+                            id:item.id,
+                            name:item.scenicName
+                        })
+                    })
+                    this.scenicList = [...scenicList];
+                    this.belongList=[...this.scenicList] 
+                })
+            },
+            belongTypeChange(v){
+                this.form['belongId']="";
+                if(v==1){
+                    this.belongList=[].concat(this.hotelList) 
+                }else{
+                    this.belongList=[].concat(this.scenicList) 
+                }
+            },
+            belongChange(v){
+                this.$forceUpdate();               
+                console.log(v);
+            },
             search() {
                 //this.is_search = true;
                 this.getData();
             },
-            create(){  
-                this.getDeviceTypeData()
-                this.getVersionData()
-                this.form = {
+           async create(){  
+               this.dialogTitle='新增设备';
+               this.editVisible = true;
+               await this.getDeviceTypeData()
+               await this.getVersionData()
+               await this.getHotelData() 
+               await this.getScenicData() 
+               this.belongList=[...this.scenicList] 
+               this.form = {
                     sn:"",
                     type:"",
                     remark:"",
                     version:"",
+                    belongType:"0",
                     belongName:'',
+                    status:1,
                     location:''
-                },
-                this.dialogTitle='新增设备',
-                this.editVisible = true;
+                };
+                
             },
             formatter(row, column) {
                 return row.address;
@@ -221,10 +313,11 @@
             filterTag(value, row) {
                 return row.tag === value;
             },
-            handleEdit(index, row) {
-                this.getDeviceTypeData()
-                this.getVersionData()
-
+            async handleEdit(index, row) {
+                await this.getDeviceTypeData()
+                await this.getVersionData()
+                await this.getHotelData() 
+                await this.getScenicData()                 
                 this.idx = index;
                 this.id = row.id;
                 let params={
@@ -238,7 +331,9 @@
                 }).then((res) => {
                     let rlt=res.result;
                     if(rlt.length>0){
-                        this.form = {...rlt[0]}
+                        let deviceDetail={...rlt[0]}
+                        deviceDetail.belongType=="1"?this.belongList=[...this.hotelList]:this.belongList=[...this.scenicList]; 
+                        this.form = {...deviceDetail,belongId:deviceDetail.belong.id,deviceTypeId:deviceDetail.deviceType.id,versionId:deviceDetail.version.id}
                         this.editVisible = true;
                     }                    
                    
@@ -299,8 +394,18 @@
     }
 
 </script>
-
-<style scoped>
+<style lang="scss">
+    .device{
+        .belongRow {
+            margin: unset!important;
+            .el-col{
+                padding: unset!important;
+            }
+        }
+        
+    }
+</style>
+<style scoped >
     .handle-box {
         margin-bottom: 20px;
     }
