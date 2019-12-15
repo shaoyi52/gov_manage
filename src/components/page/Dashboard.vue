@@ -1,29 +1,33 @@
 <template>
     <div>
-        <el-row :gutter="20">
+        <el-row :gutter="20" class="sumDataWrap">
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
+                <el-card shadow="hover" class="mgb20 card-wrap bg1">                   
+                    <div class="card-caption">投放设备数</div>
+                    <div class="card-data">150人</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg2">                   
+                    <div class="card-caption">投放景点数</div>
+                    <div class="card-data">82个</div>
+                </el-card>  
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg3">                   
+                    <div class="card-caption">活动广告数</div>
+                    <div class="card-data">150个</div>
+                </el-card>                           
             </el-col>
             <el-col :span="6">
-                <el-card shadow="hover" class="mgb20" style="height:85px;">                   
-                    <div class="user-info-list">播放设备数<span>148</span>台</div>
-                </el-card>               
+                <el-card shadow="hover" class="mgb20 card-wrap bg4">                   
+                    <div class="card-caption">广告客户数</div>
+                    <div class="card-data">33家</div>
+                </el-card>  
             </el-col>
-           
-        </el-row>
-        <el-row :gutter="20">           
+         </el-row>
+ 
+        <el-row :gutter="20" v-if="false">           
             <el-col :span="24">
                 <el-card shadow="hover">
                     <div slot="header" class="clearfix">
@@ -56,36 +60,38 @@
                         <el-tab-pane :label="`未提交家数(5)`" name="second">
                             <template v-if="message === 'second'">
                                  <el-table
-                                :data="tableData2"
-                                style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="旅行社"
-                                width="180">
-                            </el-table-column> 
-                            <el-table-column
-                                prop="tel"
-                                label="联系电话"
-                                 width="180">
-                            </el-table-column>   
-                            <el-table-column
-                                prop="address"
-                                label="地址"
-                                width="180">
-                            </el-table-column>                                </el-table>
+                                    :data="tableData2"
+                                    style="width: 100%">
+                                    <el-table-column
+                                        prop="name"
+                                        label="旅行社"
+                                        width="180">
+                                    </el-table-column> 
+                                    <el-table-column
+                                        prop="tel"
+                                        label="联系电话"
+                                        width="180">
+                                    </el-table-column>   
+                                    <el-table-column
+                                        prop="address"
+                                        label="地址"
+                                        width="180">
+                                    </el-table-column>                                
+                                </el-table>
                             </template>
                         </el-tab-pane>
                     </el-tabs>
                 </el-card>
             </el-col>
         </el-row>
+        
     </div>
 </template>
 
 <script>
     import Schart from 'vue-schart';
     import bus from '../common/bus';
-    export default {
+    export default {//AK:EE4be8c1b10155902fd87c5ed7359809
         name: 'dashboard',
         data() {
             return {                
@@ -181,7 +187,7 @@
             }
         },
         components: {
-            Schart
+            Schart,
         },
         computed: {
             role() {
@@ -227,7 +233,33 @@
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
+    .sumDataWrap{
+        .bg1{
+            background: #33CCFF;
+        }
+        .bg2{
+            background: rgb(39, 123, 248);
+        }
+        .bg3{
+            background: rgb(20, 118, 245);
+        }
+        .bg4{
+            background: rgb(25, 0, 255);
+        }
+        .card-wrap{
+            color:#fff;
+            font-size: 18px;
+        }       
+        .card-data{
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 74px;
+        }
+        
+    }
+
     .el-row {
         margin-bottom: 20px;
     }
@@ -297,28 +329,7 @@
         border-radius: 50%;
     }
 
-    .user-info-cont {
-        padding-left: 50px;
-        flex: 1;
-        font-size: 14px;
-        color: #999;
-    }
-
-    .user-info-cont div:first-child {
-        font-size: 30px;
-        color: #222;
-    }
-
-    .user-info-list {
-        font-size: 14px;
-        color: #999;
-        line-height: 25px;
-    }
-
-    .user-info-list span {
-        margin-left: 70px;
-    }
-
+    
     .mgb20 {
         margin-bottom: 20px;
     }
