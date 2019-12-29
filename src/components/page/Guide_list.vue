@@ -2,13 +2,12 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>导游业绩</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>导游列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">         
                 <el-input v-model="formSearch.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
-                <el-input v-model="formSearch.guideName" placeholder="导游姓名" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -19,14 +18,13 @@
                 </el-table-column>
                 <el-table-column prop="workTime" label="从业时间" width="120">
                 </el-table-column>
-                <el-table-column prop="visitorCount" label="游客数"  width="120">                                      
+                <el-table-column prop="guideNum" label="导游证号"  width="120">                                      
                 </el-table-column>              
-                <el-table-column prop="travelCount" label="达标团次" width="150">
+                <el-table-column prop="status" label="状态" width="150">
                 </el-table-column>                 
-                 <el-table-column prop="rewardAmount" label="应奖励金额（元）" width="120">
-                </el-table-column>             
-                 <el-table-column prop="isReward" label="是否已奖励" width="120" :formatter="formatter">
-                </el-table-column>             
+                 <el-table-column prop="signingTime" label="签约时间" width="120">
+                </el-table-column>            
+                           
                 <el-table-column label="操作" width="180" align="center" v-if=false >
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-link" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
@@ -216,7 +214,7 @@
                 // }]
                 // return;
                 fetch({
-                    url:'/Tourism/GetGuideAchievementList',
+                    url:'/Tourism/GetGuideList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;

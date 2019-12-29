@@ -2,32 +2,34 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i>导游业绩</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 旅行社业绩</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">         
-                <el-input v-model="formSearch.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
-                <el-input v-model="formSearch.guideName" placeholder="导游姓名" class="handle-input mr10"></el-input>
+                <el-input v-model="searchForm.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="travelName" label="旅行社名称" sortable >
-                </el-table-column> 
-                <el-table-column prop="guideName" label="导游姓名" width="120">
+                <el-table-column prop="travelName" label="旅行社名称" sortable width="250">
+                </el-table-column>               
+                <el-table-column prop="guideCount" label="注册导游数">
+                     <template slot-scope="scope">
+                           <el-link type="primary"  @click="linkTo(scope.$index, scope.row)">{{scope.row.guideCount}}</el-link>
+                    </template> 
+                </el-table-column>                
+                 <el-table-column prop="scenicPeople" label="景区奖励人次" width="120">
                 </el-table-column>
-                <el-table-column prop="workTime" label="从业时间" width="120">
+                 <el-table-column prop="scenicBonus" label="景区累计奖金" width="120">
                 </el-table-column>
-                <el-table-column prop="visitorCount" label="游客数"  width="120">                                      
-                </el-table-column>              
-                <el-table-column prop="travelCount" label="达标团次" width="150">
-                </el-table-column>                 
-                 <el-table-column prop="rewardAmount" label="应奖励金额（元）" width="120">
-                </el-table-column>             
-                 <el-table-column prop="isReward" label="是否已奖励" width="120" :formatter="formatter">
-                </el-table-column>             
-                <el-table-column label="操作" width="180" align="center" v-if=false >
+                 <el-table-column prop="stayPeople" label="住宿累计人次" width="120">
+                </el-table-column>
+                 <el-table-column prop="stayPeople" label="住宿累计人次" width="120">
+                </el-table-column>
+                 <el-table-column prop="yearBonus" label="年度累计奖金(元)" width="120">
+                </el-table-column>
+                <el-table-column label="操作" width="180" align="center" v-if="false" >
                     <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-link" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
                         <el-button type="text" v-if="false" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -135,10 +137,10 @@
         name: 'basetable',
         data() {
             return {
-                tableData: [], 
-                formSearch:{},               
+                tableData: [],                
                 cur_pageCount: 1,
                 pageTotal:0,
+                searchForm:{},
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -192,31 +194,11 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 let params={
-                    ...this.formSearch,
+                     ...this.searchForm,
                     pageCount:this.cur_page,
                 }
-                // this.tableData=[{
-                //     id:'111',
-                //     travelName:"旅行社测试名1",
-                //     guideName:"王二五",
-                //     workingSeniority:"20160528",
-                //     touristsCount:"1000",
-                //     groupBonus:"32",
-                //     hasBonus:"4000",
-                //     isBonus:"0",
-                // },{
-                //     id:'222',
-                //     travelName:"旅行社测试名2",
-                //     guideName:"王二五",
-                //     workingSeniority:"20170828",
-                //     touristsCount:"850",
-                //     groupBonus:"18",
-                //     hasBonus:"3200",
-                //     isBonus:"0",
-                // }]
-                // return;
                 fetch({
-                    url:'/Tourism/GetGuideAchievementList',
+                    url:'/Tourism/GetTravelAchievementList',
                     query:{...params}
                 }).then((res) => {
                     this.tableData = res.result;
@@ -232,7 +214,7 @@
                 this.getData();
             },
             formatter(row, column) {
-                return row.isBonus=='1'?'已奖励':'未奖励';
+                return row.address;
             },
             filterTag(value, row) {
                 return row.tag === value;

@@ -70,6 +70,11 @@ export default new Router({
                     meta: { title: '导游业绩' }
                 },
                 {
+                    path: '/guideList',
+                    component: resolve => require(['../components/page/Guide_list.vue'], resolve),
+                    meta: { title: '导游列表' }
+                },
+                {
                     // 富文本编辑器组件
                     path: '/visitorsRecord',
                     component: resolve => require(['../components/page/VisitorsRecord.vue'], resolve),

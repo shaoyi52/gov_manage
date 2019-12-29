@@ -99,8 +99,10 @@
                         icon: 'el-icon-lx-group',
                         index: '3',
                         title: '导游管理',
-                        subs: [
-                            {
+                        subs: [{ 
+                                index: 'guideList',
+                                title: '导游列表',
+                                }, {
                                 index: 'touristGuide',
                                 title: '导游业绩',
                             }
