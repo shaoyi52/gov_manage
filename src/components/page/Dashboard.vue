@@ -4,78 +4,80 @@
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg1">                   
                     <div class="card-caption">在案酒店数</div>
-                    <div class="card-data">30家</div>
+                    <div class="card-data">{{sumsData.hotelTotal}}家</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg2">                   
                     <div class="card-caption">管理景点数</div>
-                    <div class="card-data">18个</div>
+                    <div class="card-data">{{sumsData.scenicTotal}}个</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg3">                   
                     <div class="card-caption">在册旅行社数</div>
-                    <div class="card-data">30家</div>
+                    <div class="card-data">{{sumsData.travelTotal}}家</div>
                 </el-card>               
             </el-col>
             <el-col :span="6">
                 <el-card shadow="hover" class="mgb20 card-wrap bg4">                   
                     <div class="card-caption">平台注册导游数</div>
-                    <div class="card-data">1234人</div>
+                    <div class="card-data">{{sumsData.guideTotal}}人</div>
                 </el-card>               
             </el-col>
            
         </el-row>
         <el-row :gutter="20">           
             <el-col :span="24">
-                <el-card shadow="hover">
+                <el-card shadow="hover" class="monthDataCard">
                     <div slot="header" class="clearfix">
-                        <span>2019年7月月报完成情况</span>
+                        <span class="monthDataCardTitle">2019年7月月报完成情况</span>
                     </div>
-                    <el-tabs v-model="message">
-                        <el-tab-pane :label="`已提交家数(16)`" name="first">
+                    <el-tabs v-model="message" >
+                        <el-tab-pane class="monthDataCardLabel" :label="`已提交家数(16)`" name="first">
                             <el-table
                             :data="tableData"
+                            class="travelList"
                             style="width: 100%">
                             <el-table-column
                                 prop="name"
                                 label="旅行社"
-                                width="180">
+                                width="230">
                             </el-table-column> 
                             <el-table-column
                                 prop="tel"
                                 label="联系电话"
-                                 width="180">
+                                 width="230">
                             </el-table-column>   
                             <el-table-column
                                 prop="address"
                                 label="地址"
-                                width="180">
+                                width="230">
                             </el-table-column>                          
                             
                             
                             </el-table>
                         </el-tab-pane>
-                        <el-tab-pane :label="`未提交家数(5)`" name="second">
+                        <el-tab-pane class="monthDataCardLabel"  :label="`未提交家数(5)`" name="second">
                             <template v-if="message === 'second'">
                                  <el-table
+                                 class="travelList"
                                 :data="tableData2"
                                 style="width: 100%">
                             <el-table-column
                                 prop="name"
                                 label="旅行社"
-                                width="180">
+                                width="230">
                             </el-table-column> 
                             <el-table-column
                                 prop="tel"
                                 label="联系电话"
-                                 width="180">
+                                 width="230">
                             </el-table-column>   
                             <el-table-column
                                 prop="address"
                                 label="地址"
-                                width="180">
+                                width="230">
                             </el-table-column>                                </el-table>
                             </template>
                         </el-tab-pane>
@@ -89,6 +91,7 @@
 <script>
     import Schart from 'vue-schart';
     import bus from '../common/bus';
+    import { fetchData,fetch } from '../../api/index';
     export default {
         name: 'dashboard',
         data() {
@@ -119,6 +122,12 @@
                         status: true,
                     }
                 ],
+                sumsData:{
+                    hotelTotal: 0,
+                    scenicTotal:0,
+                    travelTotal:0,
+                    guideTotal:0,
+                },
                 data: [{
                         name: '2018/09/04',
                         value: 1083
@@ -184,17 +193,15 @@
                 },]
             }
         },
-        components: {
-            Schart
-        },
         computed: {
             role() {
                 return this.name === 'admin' ? '超级管理员' : '普通用户';
             }
         },
         created(){
+            this.getData();
             this.handleListener();
-            this.changeDate();
+            //this.changeDate();
         },
         activated(){
             this.handleListener();
@@ -204,6 +211,23 @@
             bus.$off('collapse', this.handleBus);
         },
         methods: {
+             getData() {
+                let params={}
+                fetch({
+                    url:'/Tourism/HomeTotalData',
+                    query:{...params}
+                }).then((res) => {
+                    let sumData=res.result;
+                    this.sumsData={
+                        hotelTotal: sumData.hotelTotal,
+                        scenicTotal:sumData.scenicTotal,
+                        travelTotal: sumData.travelTotal,
+                        guideTotal: sumData.guideTotal,
+                    }
+                    
+                    console.log(res.result)
+                })
+            },
             changeDate(){
                 const now = new Date().getTime();
                 this.data.forEach((item, index) => {
@@ -366,6 +390,18 @@
     .schart {
         width: 100%;
         height: 300px;
+    }
+    .monthDataCard{
+        .monthDataCardTitle{
+            font-size: 18px !important;
+        }
+        
+    }
+    .el-tabs__item{
+        font-size: 16px !important;
+    }
+    .travelList{
+        font-size: 16px !important;        
     }
 
 </style>

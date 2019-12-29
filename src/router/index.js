@@ -48,7 +48,7 @@ export default new Router({
                     path: '/scenic',
                     component: resolve => require(['../components/page/Scenic.vue'], resolve),
                     meta: { title: '景区信息' }
-                },                
+                },
                 {
                     path: '/travelAgency',
                     component: resolve => require(['../components/page/TravelAgency.vue'], resolve),
@@ -74,7 +74,16 @@ export default new Router({
                     path: '/visitorsRecord',
                     component: resolve => require(['../components/page/VisitorsRecord.vue'], resolve),
                     meta: { title: '游客记录' }
-                },                                
+                },                
+                {
+                    path: '/travelStatistics',
+                    component: resolve => require(['../components/page/Travel_statistics.vue'], resolve),
+                    meta: { title: '旅行社排行' }
+                },  {
+                    path: '/guideStatistics',
+                    component: resolve => require(['../components/page/Guide_statistics.vue'], resolve),
+                    meta: { title: '导游排行' }
+                },                                  
                 {
                     path: '/form',
                     component: resolve => require(['../components/page/BaseForm.vue'], resolve),

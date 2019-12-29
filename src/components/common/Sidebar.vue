@@ -114,6 +114,12 @@
                             {
                                 index: 'visitorsRecord',
                                 title: '游客记录',
+                            }, {
+                                index: 'travelStatistics',
+                                title: '旅行社排行',
+                            }, {
+                                index: 'guideStatistics',
+                                title: '导游排行',
                             }
                         ]
                     }]
