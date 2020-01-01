@@ -8,6 +8,13 @@
         <div class="container">
             <div class="handle-box">         
                 <el-input v-model="searchForm.travelName" placeholder="旅行社名称" class="handle-input mr10"></el-input>
+                <el-date-picker
+                    v-model="searchForm.year"
+                    class="handle-input mr10"
+                    value-format='yyyy'
+                    type="year"
+                    placeholder="选择年">
+                 </el-date-picker>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
             <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -207,7 +214,7 @@
             },
             linkTo(index, row) {
                 //this.$router.push({path:'/VisitorsRecord',query: {paicheNo: obj.paicheNo}})
-                this.$router.push({path:'/visitorsRecord'})
+                this.$router.push({path:'/guideList',query: {travelId: row.id,refresh:true}})
             },
             search() {
                 //this.is_search = true;

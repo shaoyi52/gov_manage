@@ -159,6 +159,12 @@
         created() {
             this.getData();
         },
+        activated(){
+            //let tourId=this.$route.query.tourId||'';
+            console.log('activated')            
+            this.getData();
+            
+        },
         computed: {
             data() {
                 return this.tableData;
@@ -189,8 +195,10 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
+                let travelId=this.$route.query.travelId;
                 let params={
                     ...this.formSearch,
+                    travelId,
                     pageCount:this.cur_page,
                 }
                 // this.tableData=[{

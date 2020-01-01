@@ -41,77 +41,207 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="查看" :visible.sync="editVisible" width="60%">
-            <el-form ref="form" :model="form" label-width="120px">
-                <el-row :gutter="20">
+
+         <el-dialog title="查看" :visible.sync="editVisible" width="80%"  :close-on-click-modal="false">
+            <el-form ref="form" :model="form" label-width="110px">
+                <el-row :gutter="40">
                     <el-col :span="12">
-                        <el-form-item label="团队编号">
-                            <template>
+                         <el-form-item label="团队编号">
+                             <template>
                                 <span v-text="form.teamNum"></span>
                             </template>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="线路名称">
-                            <template>
+                         <el-form-item label="线路名称">
+                             <template>
                                 <span v-text="form.route"></span>
                             </template>
                         </el-form-item>
-                    </el-col>                   
-                </el-row>               
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="接团日期">
-                            <template>
+                    </el-col> 
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">                             
+                         <el-form-item label="接团日期">
+                             <template>
                                 <span v-text="form.startTime"></span>
-                            </template>
+                            </template> 
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="送团日期">
+                         <el-form-item label="送团日期">
                             <template>
                                 <span v-text="form.endTime"></span>
                             </template>
                         </el-form-item>
-                    </el-col>                   
-                </el-row>
-               
-                <el-row :gutter="20">
+                    </el-col> 
+                </el-row> 
+                <el-row :gutter="40">
                     <el-col :span="12">
-                        <el-form-item label="导游姓名">
-                            <template>
+                         <el-form-item label="车牌号">
+                             <template>
+                                <span v-text="form.carNum"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="司机姓名">
+                             <template>
+                                <span v-text="form.driverName"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="司机电话">
+                             <template>
+                                <span v-text="form.driverPhone"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="司机身份证">
+                             <template>
+                                <span v-text="form.driverIdCard"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="导游姓名">
+                             <template>
                                 <span v-text="form.guideName"></span>
                             </template>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="车牌号">
-                            <template>
-                                <span v-text="form.carNum"></span>
+                         <el-form-item label="导游电话">
+                             <template>
+                                <span v-text="form.guidePhone"></span>
                             </template>
                         </el-form-item>
-                    </el-col>                   
-                </el-row>
-               
-                <el-row :gutter="20">
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
                     <el-col :span="12">
-                        <el-form-item label="司机姓名">
-                            <template>
-                                <span v-text="form.driverName"></span>
+                         <el-form-item label="导游证号">
+                             <template>
+                                <span v-text="form.guideNum"></span>
                             </template>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="司机电话">
-                            <template>
-                                <span v-text="form.driverPhone"></span>
+                         <el-form-item label="导游身份证">
+                             <template>
+                                <span v-text="form.guideIdCard"></span>
                             </template>
                         </el-form-item>
-                    </el-col>                   
-                </el-row>
-               
-
+                    </el-col>
+                </el-row> 
+                <el-row :gutter="40">
+                    <el-col :span="12">
+                         <el-form-item label="游玩天数">
+                             <template>
+                                <span v-text="form.dateCount"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                         <el-form-item label="游客人数">
+                             <template>
+                                <span v-text="form.visitorCount"></span>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                </el-row> 
+                 
             </el-form>
+            <el-card class="box-card travelList">
+                <div slot="header" class="clearfix">
+                    <span>行程单</span> 
+                </div>
+                <el-table
+                    class="tableList"
+                    height="150"
+                    :data="form.detail"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    header-align="center">
+                    <el-table-column label="序列"   width="50" header-align="center">
+                        <template slot-scope="{row,$index}">
+                            <span>{{$index + 1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="日期"  prop="date"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.date"></span>                            
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="景区"  prop="scenicName"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.scenicName"></span> 
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="酒店"  prop="hotelName"   align="center">
+                        <template slot-scope="{row}">
+                             <span v-text="row.hotelName"></span>                             
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="行程描述"  prop="description"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.description"></span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
+
+            <el-card class="box-card visitorList">
+                <div slot="header" class="clearfix">
+                    <span>游客信息</span>
+                </div>
+                <el-table   
+                    class="tableList" 
+                    height="150"                
+                    :data="form.visitor"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    header-align="center">
+                    <el-table-column label="序列"   width="50" header-align="center">
+                        <template slot-scope="{row,$index}">
+                            <span>{{$index + 1}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="证件类型"     align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="formatterSfzjlx(row.IdType)"></span>                           
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="证件号码"  prop="IdNumber"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.IdNumber"></span>                           
+                        </template>
+                        
+                    </el-table-column>
+                    <el-table-column label="姓名"  prop="name"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.name"></span>                           
+                        </template> 
+                    </el-table-column>
+                    <el-table-column label="性别"  prop="sex"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="formatter(row.sex)"></span>                           
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="出生日期"  prop="birthday"   align="center">
+                        <template slot-scope="{row}">
+                            <span v-text="row.birthday"></span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+            </el-card>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
@@ -137,7 +267,26 @@
         name: 'basetable',
         data() {
             return {
-                tableData: [],                
+                tableData: [],
+                idList:[{
+                    id:"1",
+                    name:"身份证"
+                },{
+                    id:"2",
+                    name:"回乡证"
+                },{
+                    id:"3",
+                    name:"台胞证"
+                },{
+                    id:"4",
+                    name:"港澳通行证"
+                },{
+                    id:"5",
+                    name:"护照"
+                },{
+                    id:"6",
+                    name:"军官证"
+                }],              
                 cur_pageCount: 1,
                 pageTotal:0,
                 multipleSelection: [],
@@ -147,6 +296,7 @@
                 grade:"",
                 scenicName:'',
                 del_list: [],
+                
                 is_search: false,
                 editVisible: false,
                 delVisible: false,
@@ -214,8 +364,15 @@
                 //this.is_search = true;
                 this.getData();
             },
-            formatter(row, column) {
-                return row.address;
+            formatter(sex) {
+                return sex=='1'?'男':'女';
+            },
+            formatterSfzjlx(type){
+                let sfzjItem={name:""};
+                this.idList.filter(item=>{
+                     item.id==type?sfzjItem=item:""
+                })
+                return sfzjItem.name
             },
             filterTag(value, row) {
                 return row.tag === value;
@@ -265,7 +422,7 @@
             // 保存编辑
             saveEdit() {
                 this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
+                /* this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);
                 }else{
@@ -275,7 +432,7 @@
                             return ;
                         }
                     }
-                }
+                } */
             },
             // 确定删除
             deleteRow(){
