@@ -41,7 +41,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="60%">
+        <el-dialog title="查看" :visible.sync="editVisible" width="60%">
             <el-form ref="form" :model="form" label-width="120px">
                 <el-row :gutter="20">
                     <el-col :span="12">
@@ -78,9 +78,9 @@
                
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="旅行社名称">
+                        <el-form-item label="导游姓名">
                             <template>
-                                <span v-text="form.travelAgency"></span>
+                                <span v-text="form.guideName"></span>
                             </template>
                         </el-form-item>
                     </el-col>
@@ -97,14 +97,14 @@
                     <el-col :span="12">
                         <el-form-item label="司机姓名">
                             <template>
-                                <span v-text="form.driver"></span>
+                                <span v-text="form.driverName"></span>
                             </template>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="司机电话">
                             <template>
-                                <span v-text="form.driverphone"></span>
+                                <span v-text="form.driverPhone"></span>
                             </template>
                         </el-form-item>
                     </el-col>                   
