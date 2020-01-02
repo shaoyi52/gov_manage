@@ -171,3 +171,8 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
+.el-button--primary {
+    color: #FFF;
+    background-color: #1e75c3!important;
+    border-color: #1e75c3!important;
+}

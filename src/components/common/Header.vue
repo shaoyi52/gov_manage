@@ -119,13 +119,18 @@
         width: 100%;
         height: 70px;
         font-size: 22px;
-        color: #fff;
+        color: #fff;       
+        background: url(../../assets/img/bg_top.png) no-repeat #1e75c3;
+        background-size: cover;
+        /* background-size: 100%; */
     }
     .collapse-btn{
         float: left;
         padding: 0 21px;
         cursor: pointer;
         line-height: 70px;
+        background: rgb(40,52,70);
+
     }
     .header .logo{
         float: left;

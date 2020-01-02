@@ -27,3 +27,8 @@
 .collapse-btn:hover{
     background: #00d1b2;
 }
+.el-button--primary {
+    color: #FFF;
+    background-color: #1e75c3;
+    border-color: #1e75c3;
+}

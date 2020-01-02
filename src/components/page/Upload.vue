@@ -123,7 +123,7 @@
         line-height: 40px;
         padding: 0 20px;
         margin-left: 30px;
-        background-color: #409eff;
+        background-color: #1e75c3;
         color: #fff;
         font-size: 14px;
         border-radius: 4px;
