@@ -243,8 +243,7 @@
 
             </el-card>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
+                <el-button type="primary" @click="editVisible = false">关 闭</el-button>
             </span>
         </el-dialog>
 
@@ -252,8 +251,7 @@
         <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
             <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="delVisible = false">取 消</el-button>
-                <el-button type="primary" @click="deleteRow">确 定</el-button>
+                <el-button type="primary" @click="delVisible = false">关 闭</el-button>
             </span>
         </el-dialog>
     </div>
@@ -480,6 +478,9 @@
     }
     .mr10{
         margin-right: 10px;
+    }
+    .el-dialog__footer {
+        text-align: center;
     }
 </style>
 
