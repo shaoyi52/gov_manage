@@ -110,8 +110,8 @@
         }
         .el-button--primary:active,.el-button--primary:hover{
            color: #FFF;
-           background-color: #409EFF;
-           border-color: #409EFF;
+           background-color: #67C23A;
+           border-color: #67C23A;
         }
     }
 </style>

@@ -276,7 +276,7 @@
     }
     .getVerCode1{
         .el-input-group__append{
-            background-color:#409EFF;
+            background-color:#67C23A;
             color:#fff;
             cursor: pointer;
         }
@@ -371,7 +371,7 @@
         overflow: hidden;
     }
     .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
+        border-color: #67C23A;
     }
     .avatar-uploader-icon {
         font-size: 28px;

@@ -41,6 +41,6 @@ export default {
     margin-bottom: 20px;
 }
 a{
-    color: #409eff;
+    color: #67C23A;
 }
 </style>
