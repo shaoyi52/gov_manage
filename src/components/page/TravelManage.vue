@@ -108,26 +108,37 @@
                     </el-col>
                 </el-row> 
                 <el-row :gutter="40">
+                     <el-col :span="12">
+                        <el-form-item label="导游身份证">
+                                <el-autocomplete
+                                v-model="form.guideIdCard"
+                                :fetch-suggestions="querySearchGuide"
+                                placeholder="请输入内容"
+                                @select="idCardSelect"
+                                >
+                                    <i class="el-icon-edit el-input__icon" slot="suffix" ></i>
+                                    <template slot-scope="{ item }">
+                                        <div class="name">{{ item.guideName }}<span class="guideName">({{ item.idCard }})</span></div>
+                                    </template>
+                                </el-autocomplete>                            
+                        </el-form-item>
+                    </el-col>
                     <el-col :span="12">
                          <el-form-item label="导游姓名">
-                            <el-input v-model="form.guideName"></el-input>
+                            <el-input v-model="form.guideName" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                         <el-form-item label="导游电话">
-                            <el-input v-model="form.guidePhone"></el-input>
-                        </el-form-item>
-                    </el-col>
+                    
                 </el-row> 
                 <el-row :gutter="40">
                     <el-col :span="12">
                          <el-form-item label="导游证号">
-                            <el-input v-model="form.guideNum"></el-input>
+                            <el-input v-model="form.guideNum" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                         <el-form-item label="导游身份证">
-                            <el-input v-model="form.guideIdCard"></el-input>
+                         <el-form-item label="导游电话">
+                            <el-input v-model="form.guidePhone" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row> 
@@ -573,7 +584,7 @@
                     guideIdCard: "",
                     guideName: "",
                     guideNum: "",
-                    GuidePhone: "",
+                    guidePhone: "",
                     route: "",
                     sex: 1,
                     startTime: "",
@@ -702,6 +713,26 @@
                 })
                 
             },
+            querySearchGuide(queryString, cb){
+                let params={idCard:queryString,pageCount:1,pageSize:100}
+                fetch({
+                    url:'/Travel/GetGuideList',
+                    type:"post",
+                    query:{...params}
+                }).then((res) => {
+                    this.getGuideList=res.result;
+                   console.log('GetScenicList',res)
+                    cb(res.result)
+                })
+            },
+            idCardSelect(item){
+                this.form["guideIdCard"]=item.idCard;
+                this.form["guideName"]=item.guideName;
+                this.form["guidePhone"]=item.phone;
+                this.form["guideNum"]=item.guideNum;
+                
+                 console.log(item);
+            },
             /*******travelList action****** */
             addTravel(){
                 const  travel={date:"",scenicName:"", scenicId:"", hotelName:"",hotelId:"",description:""}
@@ -762,6 +793,9 @@
                 margin:  unset;
                 line-height:  unset;
             }
+        }
+        .el-autocomplete{
+            width:100%;
         }
     }
     .visitorList, .travelList{
