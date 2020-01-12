@@ -35,7 +35,7 @@
                 </el-table-column>
             </el-table>            
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="pageTotal">
+                <el-pagination background @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next" @size-change="handleSizeChange" :page-size="pageSize" :page-sizes="[20,50,100, 200, 300, 400]" :total="pageTotal">
                 </el-pagination>
             </div>
         </div>
@@ -287,6 +287,7 @@
                 }],              
                 cur_pageCount: 1,
                 pageTotal:0,
+                pageSize:20,
                 multipleSelection: [],
                 select_cate: '',
                 select_word: '',
@@ -336,6 +337,10 @@
             // 分页导航
             handleCurrentChange(val) {
                 this.cur_page = val;
+                this.getData();
+            },
+            handleSizeChange(val){
+                this.pageSize=val;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
