@@ -1,4 +1,4 @@
-let URL = "http://121.204.164.176:8001/Api";
+let URL = "http://120.76.247.196:8040/Api";
 
 let ROOT;
 //console.log('NODE_ENV',process.env.NODE_ENV)
