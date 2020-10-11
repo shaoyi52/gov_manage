@@ -1,5 +1,5 @@
-let URL = "http://121.204.164.176:8001/Api";
-let hostUrl='http://121.204.164.176:8001';
+let URL = "http://120.76.247.196:8040/Api";
+let hostUrl='http://120.76.247.196:8040';
 let ROOT;
 //console.log('NODE_ENV',process.env.NODE_ENV)
 //由于封装的axios请求中，会将ROOT打包进去，为了方便之后不再更改，判断了当前环境，而生成的不同的ROOT
