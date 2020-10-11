@@ -1,5 +1,5 @@
-let URL = "http://121.204.164.176:8002/web";
-let FileUrl='http://121.204.164.176:8002/Api'
+let URL = "http://120.76.247.196:8041/web";
+let FileUrl='http://120.76.247.196:8041/Api'
 let FileRootROOT;
 let FileRoot;
 //console.log('NODE_ENV',process.env.NODE_ENV)
