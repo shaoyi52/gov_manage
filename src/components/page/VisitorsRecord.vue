@@ -15,6 +15,13 @@
                     <el-option   key="1" label="证件号一致" value="1"> </el-option>
                     <el-option   key="0" label="证件号不一致" value="0"> </el-option>
                 </el-select>
+                <el-date-picker
+                v-model="searchForm.brushTime"
+                type="date"
+                placeholder="刷证日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                ></el-date-picker>
                 <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
                 <el-button type="primary" icon="el-icon-circle-plus-outline" @click="calAward">计入奖励</el-button>
             </div>
@@ -207,7 +214,8 @@
                     url:'/Tourism/RecordIsReward',
                     query:{...params}
                 }).then((res) => {
-                    this.$message.success("记入奖励成功！")
+                    let msg=row.isReward=="0"?"取消奖励成功！":"记入奖励成功！"
+                    this.$message.success(msg)
                 })
             },
             formatter(row, column) {
