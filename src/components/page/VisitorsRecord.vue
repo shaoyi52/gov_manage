@@ -10,6 +10,14 @@
                 <el-input v-model="searchForm.visitorName" placeholder="游客姓名" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.guideName" placeholder="导游姓名" class="handle-input mr10"></el-input>
                 <el-input v-model="searchForm.scenic" placeholder="刷证景点" class="handle-input mr10"></el-input>
+                <!-- <el-date-picker
+                            v-model="searchForm.brushTime"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            format="yyyy-MM-dd"
+                            class="edit-cell"
+                            placeholder="刷证时间">
+                            </el-date-picker> -->
                 <el-button type="success" icon="el-icon-search" @click="search">搜索</el-button>
             </div>
             <el-table :data="data" border class="table" ref="multipleTable">

@@ -46,22 +46,22 @@
 
         <!-- 编辑弹出框 -->
         <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="80%"  :close-on-click-modal="false">
-            <el-form ref="form" :model="form" label-width="110px">
+            <el-form ref="form" :model="form" :rules="rules" label-width="110px">
                 <el-row :gutter="40">
                     <el-col :span="12">
-                         <el-form-item label="团队编号">
+                         <el-form-item label="团队编号" prop="teamNum">
                             <el-input v-model="form.teamNum"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                         <el-form-item label="线路名称">
+                         <el-form-item label="线路名称" prop="route">
                             <el-input v-model="form.route"></el-input>
                         </el-form-item>
                     </el-col> 
                 </el-row> 
                 <el-row :gutter="40">
                     <el-col :span="12">
-                         <el-form-item label="接团日期">
+                         <el-form-item label="接团日期"  prop="startTime">
                             <el-date-picker
                             v-model="form.startTime"                            
                             type="date"
@@ -72,7 +72,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                         <el-form-item label="送团日期">
+                         <el-form-item label="送团日期"  prop="endTime">
                             <el-date-picker
                             v-model="form.endTime"
                             type="date"
@@ -97,19 +97,19 @@
                 </el-row>
                 <el-row :gutter="40">
                     <el-col :span="12">
-                         <el-form-item label="司机电话">
+                         <el-form-item prop="driverPhone" label="司机电话">
                             <el-input v-model="form.driverPhone"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                         <el-form-item label="司机身份证">
+                         <el-form-item prop="driverIdCard" label="司机身份证">
                             <el-input v-model="form.driverIdCard"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row> 
                 <el-row :gutter="40">
                      <el-col :span="12">
-                        <el-form-item label="导游身份证">
+                        <el-form-item label="导游身份证" prop="guideIdCard">
                                 <el-autocomplete
                                 v-model="form.guideIdCard"
                                 :fetch-suggestions="querySearchGuide"
@@ -117,7 +117,7 @@
                                 @select="idCardSelect"
                                 >
                                     <i class="el-icon-edit el-input__icon" slot="suffix" ></i>
-                                    <template slot-scope="{ item }">
+                                    <template slot-scope="{ item }" >
                                         <div class="name">{{ item.guideName }}<span class="guideName">({{ item.idCard }})</span></div>
                                     </template>
                                 </el-autocomplete>                            
@@ -299,7 +299,7 @@
             </el-card>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
+                <el-button type="primary" @click="saveEdit('form')">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -389,6 +389,27 @@
                     date: '',
                     address: ''                   
                 },
+                 rules: {
+                     teamNum: [
+                        { required: true, message: '请输入团队编号', trigger: 'blur' },                       
+                    ],
+                    route: [
+                        { required: true, message: '请输入旅行线路', trigger: 'blur' },                       
+                    ],
+                    startTime: [
+                        { required: true, message: '请输入接团日期', trigger: 'blur' },                       
+                    ],
+                    endTime: [
+                        { required: true, message: '请输入送团日期', trigger: 'blur' },                       
+                    ],
+                     guideIdCard: [
+                        { required: true, message: '请输入系统存在的导游身份证', trigger: 'blur' },                       
+                        { validator: this.validID, trigger: 'blur' }
+                    ],                   
+                    driverIdCard:[{ validator: this.validID, trigger: 'blur' }],
+                    driverPhone:[{ validator: this.validCellPhone, trigger: 'blur' }]
+                    
+                },
                 idx: -1,
                 id: -1
             }
@@ -438,7 +459,29 @@
                     this.tableData = res.result;
                     this.pageTotal=parseInt(res.pageTotal);
                 })
+            },// 身份证验证
+            validID(rule,value,callback)
+            {
+                // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X 
+                let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                if (reg.test(value)||!value) {
+                //await this.go(value.length);
+                callback()
+                } else {
+                callback(new Error('身份证号码不正确'))
+                }
             },
+            
+            validCellPhone(rule,value,callback) {
+                if (/^1(3|4|5|6|7|8)\d{9}$/.test(value)||!value) {
+                     callback(); 
+                } else {
+                    callback(new Error('手机号码不正确'))
+                                      
+                }
+            },
+
+
             search() {
                 //this.is_search = true;
                 this.getData();
@@ -662,27 +705,69 @@
                 //this.showEdit[index]=true;
             },
             // 保存编辑
-            saveEdit() {
-                let params={...this.form}
-                console.log("params",params)
-                let url="/Travel/TravelAdd"
-                if(params.id){
-                    url="/Travel/TravelEdit"
-                }
-                fetch({
-                    url:url,
-                    type:"post",                   
-                    query:{...params} 
-                }).then((res) => {
-                    console.log("AddFunction:",res)
-                    if(res.code=="00000"){
-                        this.editVisible = false;
-                        this.$message.success(`保存成功`)
-                        this.getData();
+            saveEdit(formName) {
+                this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let params={...this.form}
+                    let msg="";
+                    if(params.detail.length==0){
+                        this.$message.warning("行程单不能为空！")
+                        return 
+                    }else{
+                        
+                        params.detail.forEach((element,index) => {
+                            let row=index+1;
+                           if(element.date=="") {
+                               msg+="行程单第"+row+'行日期不能为空；'
+                           }
+                        });
+                       
                     }
-                   
-                    //this.tableData = res.abilitiesList;
-                })
+                    if(params.visitor.length==0){
+                        this.$message.warning("游客不能为空！")
+                        return 
+                    }else{
+                        params.visitor.forEach((element,index) => {
+                            let row=index+1;
+                           if(!element.IdNumber) {
+                               msg+="游客信息第"+row+'行证件号不能为空；'
+                           }
+                           if(!element.name){
+                                msg+="游客信息第"+row+'姓名不能为空；'
+                           }
+                        });
+                    }
+                    if(msg){
+                        this.$message.warning(msg);
+                        return;
+                    }
+                    console.log("params",params)
+                    let url="/Travel/TravelAdd"
+                    if(params.id){
+                        url="/Travel/TravelEdit"
+                    }
+                    fetch({
+                        url:url,
+                        type:"post",                   
+                        query:{...params} 
+                    }).then((res) => {
+                        console.log("AddFunction:",res)
+                        if(res.code=="00000"){
+                            this.editVisible = false;
+                            this.$message.success(`保存成功`)
+                            this.getData();
+                        }
+                    
+                        //this.tableData = res.abilitiesList;
+                    })
+
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+                });
+                
                 /*this.$message.success(`修改第 ${this.idx+1} 行成功`);
                 if(this.tableData[this.idx].id === this.id){
                     this.$set(this.tableData, this.idx, this.form);
@@ -756,6 +841,8 @@
                     this.importTravelVisible = false;
                     this.$message.success(`行程导入成功`)
                     this.getData();
+                }else{
+                     this.$message.error(res.msg)
                 }                
             },
             beforeAvatarUpload(file) {
